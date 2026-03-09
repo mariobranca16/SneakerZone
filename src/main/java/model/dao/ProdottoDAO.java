@@ -1,6 +1,6 @@
 package model.dao;
 
-import model.Bean.*;
+import model.bean.*;
 import model.ConPool;
 
 import java.sql.*;

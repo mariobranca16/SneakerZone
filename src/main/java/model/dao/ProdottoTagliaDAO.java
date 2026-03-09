@@ -1,6 +1,6 @@
 package model.dao;
 
-import model.Bean.ProdottoTaglia;
+import model.bean.ProdottoTaglia;
 import model.ConPool;
 
 import java.sql.Connection;
