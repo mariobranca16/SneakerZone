@@ -1,6 +1,6 @@
 package model.dao;
 
-import model.Bean.ImmagineProdotto;
+import model.bean.ImmagineProdotto;
 import model.ConPool;
 
 import java.sql.*;

@@ -16,8 +16,8 @@ public class Prodotto implements Serializable {
     private double costo;
     private String colore;
 
-   // private List<ImmagineProdotto> immagini;
-   // private List<ProdottoTaglia> taglie;
+    private List<ImmagineProdotto> immagini;
+    private List<ProdottoTaglia> taglie;
     private List<Categoria> categorie;
 
     private String imgPath;
@@ -75,20 +75,18 @@ public class Prodotto implements Serializable {
         this.colore = colore;
     }
 
-   /* public List<ImmagineProdotto> getImmagini() {
+    public List<ImmagineProdotto> getImmagini() {
         return immagini;
     }
     public void setImmagini(List<ImmagineProdotto> immagini) {
         this.immagini = immagini;
     }
-
     public List<ProdottoTaglia> getTaglie() {
         return taglie;
     }
     public void setTaglie(List<ProdottoTaglia> taglie) {
         this.taglie = taglie;
     }
-*/
     public List<Categoria> getCategorie() {
         return categorie;
     }
