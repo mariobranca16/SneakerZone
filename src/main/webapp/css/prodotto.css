@@ -1,0 +1,482 @@
+/* ===== Pagina Prodotto ===== */
+
+:root {
+    --img-bg: #EEEEEE;
+    --line-soft: #e7e4e1;
+}
+
+.prodotto-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 20px;
+}
+
+
+/* Layout principale: immagine a sinistra, info a destra */
+.prodotto-dettaglio {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 48px;
+}
+
+/* --- Galleria immagini --- */
+.prodotto-immagini {
+    flex: 0 0 400px;
+    max-width: 400px;
+}
+
+.immagine-principale {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--img-bg);
+    border: 1px solid #aaa49f;
+    padding: 16px;
+}
+
+.immagine-principale img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    object-fit: contain;
+    object-position: center;
+}
+
+.no-immagine {
+    text-align: center;
+    color: #999;
+}
+
+.no-immagine i {
+    font-size: 64px;
+    margin-bottom: 12px;
+}
+
+.miniature {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.miniatura {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    background: var(--img-bg);
+    border: 2px solid #aaa49f;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s, border-color 0.2s;
+}
+
+.miniatura:hover,
+.miniatura.attiva {
+    opacity: 1;
+    border-color: #FF4500;
+}
+
+/* --- Info prodotto --- */
+.prodotto-info {
+    flex: 1;
+}
+
+.prodotto-brand {
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #888;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.prodotto-nome {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+.prodotto-colore {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 16px;
+}
+
+.prodotto-prezzo {
+    font-size: 26px;
+    font-weight: 700;
+    color: #FF4500;
+    margin-bottom: 20px;
+}
+
+/* Categorie tag */
+.prodotto-categorie {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.tag-categoria {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #ECE6E1;
+    border: 1px solid #D4DCE5;
+    color: #555;
+    border-radius: 16px;
+    font-size: 13px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.tag-categoria:hover {
+    background-color: #FF4500;
+    color: #fff;
+}
+
+/* Form carrello */
+.form-carrello {
+    margin-bottom: 12px;
+}
+
+.selezione-taglia,
+.selezione-quantita {
+    margin-bottom: 14px;
+}
+
+.selezione-taglia label,
+.selezione-quantita label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.selezione-taglia select {
+    width: auto;
+    max-width: 130px;
+    padding: 10px 12px;
+    font-size: 15px;
+    border: 1px solid #C4CED9;
+    border-radius: 6px;
+    background-color: #F7F2ED;
+}
+
+.selezione-quantita input {
+    width: 80px;
+    padding: 10px 12px;
+    font-size: 15px;
+    border: 1px solid #C4CED9;
+    border-radius: 6px;
+    background-color: #F7F2ED;
+}
+
+.selezione-quantita input::-webkit-inner-spin-button,
+.selezione-quantita input::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+.selezione-taglia select:focus,
+.selezione-quantita input:focus {
+    outline: none;
+    border-color: #FF4500;
+}
+
+/* Bottoni */
+.btn-carrello {
+    display: inline-block;
+    width: 100%;
+    max-width: 300px;
+    padding: 14px 24px;
+    background-color: #FF4500;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-carrello:hover {
+    background-color: #e63e00;
+}
+
+.btn-carrello i {
+    margin-right: 8px;
+}
+
+.form-wishlist {
+    margin-bottom: 24px;
+}
+
+.btn-wishlist {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #FFF9F5;
+    color: #FF4500;
+    border: 2px solid #FF4500;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-wishlist:hover {
+    background-color: #FF4500;
+    color: #fff;
+}
+
+.btn-wishlist i {
+    margin-right: 6px;
+}
+
+/* Descrizione */
+.prodotto-descrizione {
+    border-top: 1px solid #D9DFE6;
+    padding-top: 20px;
+}
+
+.prodotto-descrizione h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.prodotto-descrizione p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* ===== Sezione Recensioni ===== */
+.sezione-recensioni {
+    border-top: 1px solid #D9DFE6;
+    padding-top: 32px;
+    margin-bottom: 32px;
+}
+
+.sezione-recensioni h2 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #222;
+}
+
+.lista-recensioni {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.recensione-card {
+    padding: 16px;
+    border: 1px solid #D9DFE6;
+    border-radius: 8px;
+    background-color: #F7F2ED;
+}
+
+.recensione-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.recensione-titolo {
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+}
+
+.recensione-data {
+    font-size: 13px;
+    color: #999;
+}
+
+.recensione-stelle {
+    margin-bottom: 8px;
+    color: #FF4500;
+    font-size: 14px;
+}
+
+.recensione-stelle .far {
+    color: #ccc;
+}
+
+.recensione-commento {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #555;
+}
+
+.nessuna-recensione {
+    color: #999;
+    font-style: italic;
+}
+
+/* Form aggiungi recensione */
+.form-recensione-wrapper {
+    background: #F7F2ED;
+    border: 1px solid #D9DFE6;
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.form-recensione-wrapper h3 {
+    font-size: 18px;
+    color: #222;
+    margin-bottom: 16px;
+}
+
+.recensione-campo {
+    margin-bottom: 16px;
+}
+
+.recensione-campo label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.obbligatorio {
+    color: #FF4500;
+}
+
+.recensione-campo input[type="text"],
+.recensione-campo textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border: 1px solid #C4CED9;
+    border-radius: 6px;
+    background-color: #fff;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.recensione-campo input[type="text"]:focus,
+.recensione-campo textarea:focus {
+    outline: none;
+    border-color: #FF4500;
+}
+
+.stelle-input {
+    display: flex;
+    gap: 6px;
+    font-size: 28px;
+    cursor: pointer;
+    color: #ccc;
+}
+
+.stelle-input i.fas {
+    color: #FF4500;
+}
+
+.stelle-errore {
+    color: #c0392b;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.btn-recensione {
+    padding: 12px 24px;
+    background-color: #FF4500;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-recensione:hover {
+    background-color: #e63e00;
+}
+
+.info-recensione {
+    color: #888;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.form-rimuovi-recensione {
+    margin-top: 10px;
+}
+
+.btn-rimuovi-recensione {
+    padding: 6px 12px;
+    background: none;
+    color: #c0392b;
+    border: 1px solid #c0392b;
+    border-radius: 5px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-rimuovi-recensione:hover {
+    background-color: #c0392b;
+    color: #fff;
+}
+
+/* Torna al catalogo */
+.torna-catalogo {
+    margin-bottom: 32px;
+}
+
+.torna-catalogo a {
+    color: #FF4500;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.torna-catalogo a:hover {
+    text-decoration: underline;
+}
+
+.torna-catalogo i {
+    margin-right: 4px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .prodotto-dettaglio {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .prodotto-immagini {
+        flex: none;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .prodotto-nome {
+        font-size: 22px;
+    }
+
+    .prodotto-prezzo {
+        font-size: 22px;
+    }
+
+    .btn-carrello {
+        max-width: 100%;
+    }
+
+    .recensione-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+}
