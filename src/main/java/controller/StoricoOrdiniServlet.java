@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Bean.Ordine;
-import model.Bean.Utente;
-import model.DAO.IndirizzoSpedizioneDAO;
-import model.DAO.OrdineDAO;
+import model.bean.Ordine;
+import model.bean.Utente;
+import model.dao.IndirizzoSpedizioneDAO;
+import model.dao.OrdineDAO;
 
 import java.io.IOException;
 import java.util.List;
