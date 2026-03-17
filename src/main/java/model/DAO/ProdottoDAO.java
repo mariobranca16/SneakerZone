@@ -75,11 +75,11 @@ public class ProdottoDAO {
     }
 
     public List<Prodotto> doRetrieveByFiltriRandom() {
-        return doRetrieveByFiltri(null, null, null, null, null, "RAND()");
+        return doRetrieveByFiltri(null, null, null, null, null, "p.id");
     }
 
     public List<Prodotto> doRetrieveByFiltriRandom(String categoria, String q, Double prezzoMin, Double prezzoMax, String genere) {
-        return doRetrieveByFiltri(categoria, q, prezzoMin, prezzoMax, genere, "RAND()");
+        return doRetrieveByFiltri(categoria, q, prezzoMin, prezzoMax, genere, "p.id");
     }
 
     private List<Prodotto> doRetrieveByFiltri(String categoria, String q, Double prezzoMin, Double prezzoMax,
@@ -161,7 +161,7 @@ public class ProdottoDAO {
     }
 
     public List<Prodotto> doRetrieveAllRandom() {
-        return doRetrieveAll("RAND()");
+        return doRetrieveAll("id");
     }
 
     private List<Prodotto> doRetrieveAll(String orderBy) {

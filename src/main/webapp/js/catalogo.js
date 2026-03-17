@@ -149,7 +149,12 @@ document.addEventListener('DOMContentLoaded', function () {
     if (btnAzzera) {
         btnAzzera.addEventListener('click', function (e) {
             e.preventDefault();
-            filtriForm.reset();
+            filtriForm.querySelectorAll('input[type="text"], input[type="number"]').forEach(function (inp) {
+                inp.value = '';
+            });
+            filtriForm.querySelectorAll('input[type="radio"]').forEach(function (r) {
+                r.checked = r.value === '';
+            });
             caricaProdotti();
         });
     }

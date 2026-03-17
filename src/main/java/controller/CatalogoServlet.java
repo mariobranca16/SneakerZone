@@ -12,7 +12,12 @@ import model.DAO.CategoriaDAO;
 import model.DAO.ProdottoDAO;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet(name = "catalogo", urlPatterns = "/catalogo")
 public class CatalogoServlet extends HttpServlet {
@@ -43,6 +48,7 @@ public class CatalogoServlet extends HttpServlet {
         List<Prodotto> prodotti = anyFilter
                 ? prodottoDAO.doRetrieveByFiltriRandom(categoria, q, prezzoMin, prezzoMax, genere)
                 : prodottoDAO.doRetrieveAllRandom();
+        ordinaRandom(prodotti);
 
         request.setAttribute("prodotti", prodotti);
         request.setAttribute("tutteCategorie", new CategoriaDAO().doRetrieveAllUsed());
@@ -93,6 +99,29 @@ public class CatalogoServlet extends HttpServlet {
         }
 
         request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
+    }
+
+    private static final String ORDINE_KEY = "catalogoOrdine";
+
+    private List<Long> getOrCreateOrdine() {
+        @SuppressWarnings("unchecked")
+        List<Long> ordine = (List<Long>) getServletContext().getAttribute(ORDINE_KEY);
+        if (ordine == null) {
+            List<Prodotto> tutti = new ProdottoDAO().doRetrieveAll();
+            List<Long> ids = new ArrayList<>();
+            for (Prodotto p : tutti) ids.add(p.getId());
+            Collections.shuffle(ids);
+            getServletContext().setAttribute(ORDINE_KEY, ids);
+            return ids;
+        }
+        return ordine;
+    }
+
+    private void ordinaRandom(List<Prodotto> prodotti) {
+        List<Long> ordine = getOrCreateOrdine();
+        Map<Long, Integer> pos = new HashMap<>();
+        for (int i = 0; i < ordine.size(); i++) pos.put(ordine.get(i), i);
+        prodotti.sort(Comparator.comparingInt(p -> pos.getOrDefault(p.getId(), Integer.MAX_VALUE)));
     }
 
     private static String escJson(String s) {
