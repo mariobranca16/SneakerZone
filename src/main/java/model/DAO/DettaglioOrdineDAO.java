@@ -1,7 +1,6 @@
 package model.DAO;
 
 import model.Bean.DettaglioOrdine;
-import model.Bean.ImmagineProdotto;
 import model.Bean.Prodotto;
 import model.ConPool;
 
@@ -61,13 +60,7 @@ public class DettaglioOrdineDAO {
         d.setCosto(rs.getDouble("costo"));
 
         Prodotto p = new ProdottoDAO().doRetrieveByKey(d.getIdProdotto());
-        if (p != null) {
-            List<ImmagineProdotto> immagini = p.getImmagini();
-            if (immagini != null && !immagini.isEmpty()) {
-                String imgPath = immagini.get(0).getImgPath();
-                if (imgPath != null) p.setImgPath(imgPath);
-            }
-        } else {
+        if (p == null) {
             p = new Prodotto();
             p.setId(d.getIdProdotto());
             p.setNome("Prodotto non più disponibile");

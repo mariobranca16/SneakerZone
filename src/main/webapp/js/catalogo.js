@@ -12,12 +12,14 @@ function caricaProdotti() {
         headers: {'X-Requested-With': 'XMLHttpRequest'}
     })
         .then(function (res) {
+            if (!res.ok) throw new Error();
             return res.json();
         })
         .then(function (data) {
             renderRisultati(data);
         })
         .catch(function () {
+            console.warn('Fetch catalogo fallita');
         });
 }
 
@@ -56,6 +58,7 @@ function renderRisultati(data) {
             risultati.appendChild(grid);
         }
         grid.innerHTML = data.prodotti.map(cardHTML).join('');
+        if (typeof initWishlist === 'function') initWishlist();
     }
 }
 

@@ -21,7 +21,7 @@
     <div class="checkout-page">
 
         <c:if test="${not empty erroreStock}">
-            <div class="alert alert-error" style="margin:1rem auto;max-width:900px;">
+            <div class="alert alert-error alert-wide">
                 <i class="ti ti-alert-circle"></i>&nbsp;<c:out value="${erroreStock}"/>
             </div>
         </c:if>
@@ -117,142 +117,51 @@
                     <i class="ti ti-credit-card"></i> Dati di pagamento
                 </h2>
 
-                <c:choose>
-
-                    <c:when test="${not empty metodoPagamento}">
-
-                        <div class="pay-choice-list">
-
-                            <label class="pay-choice-card">
-                                <input class="pay-choice-radio" type="radio"
-                                       name="usaCarta" value="salvata" checked>
-                                <i class="ti ti-credit-card pay-choice-icon"></i>
-                                <div class="pay-choice-info">
-                                    <span class="pay-choice-number">${metodoPagamento.numeroMascherato}</span>
-                                    <span class="pay-choice-meta">
-                                        ${metodoPagamento.nomeCarta}&nbsp;&middot;&nbsp;Scad.&nbsp;${metodoPagamento.scadenza}
-                                    </span>
-                                </div>
-                                <span class="pay-choice-check">
-                                    <i class="ti ti-circle-check"></i>
-                                </span>
-                            </label>
-
-
-                            <label class="pay-choice-card">
-                                <input class="pay-choice-radio" type="radio"
-                                       name="usaCarta" value="nuova">
-                                <i class="ti ti-plus pay-choice-icon"></i>
-                                <div class="pay-choice-info">
-                                    <span class="pay-choice-number">Inserisci una carta diversa</span>
-                                </div>
-                                <span class="pay-choice-check">
-                                    <i class="ti ti-circle-check"></i>
-                                </span>
-                            </label>
-                        </div>
-
-
-                        <div id="nuovaCartaForm" class="pay-grid pay-grid-hidden"
-                             data-card-error="${(not empty erroreNomeCarta) || (not empty erroreNumeroCarta) || (not empty erroreScadenza)}">
-                            <div class="pay-group pay-full">
-                                <label class="pay-label" for="nomeCarta">Nome sulla carta</label>
-                                <input class="pay-input ${not empty erroreNomeCarta ? 'pay-input-error' : ''}"
-                                       type="text" id="nomeCarta" name="nomeCarta"
-                                       placeholder="Es. Mario Rossi"
-                                       value="${fn:escapeXml(param.nomeCarta)}"
-                                       autocomplete="cc-name">
-                                <c:if test="${not empty erroreNomeCarta}">
-                                    <span class="pay-error">${erroreNomeCarta}</span>
-                                </c:if>
-                            </div>
-                            <div class="pay-group pay-full">
-                                <label class="pay-label" for="numeroCarta">Numero carta</label>
-                                <input class="pay-input js-card-number ${not empty erroreNumeroCarta ? 'pay-input-error' : ''}"
-                                       type="text" id="numeroCarta" name="numeroCarta"
-                                       placeholder="1234 5678 9012 3456" maxlength="19"
-                                       value="${fn:escapeXml(param.numeroCarta)}"
-                                       autocomplete="cc-number">
-                                <c:if test="${not empty erroreNumeroCarta}">
-                                    <span class="pay-error">${erroreNumeroCarta}</span>
-                                </c:if>
-                            </div>
-                            <div class="pay-group pay-full">
-                                <label class="pay-label" for="scadenza">Scadenza</label>
-                                <input class="pay-input js-card-expiry ${not empty erroreScadenza ? 'pay-input-error' : ''}"
-                                       type="text" id="scadenza" name="scadenza"
-                                       placeholder="MM/AA" maxlength="5"
-                                       value="${fn:escapeXml(param.scadenza)}"
-                                       autocomplete="cc-exp">
-                                <c:if test="${not empty erroreScadenza}">
-                                    <span class="pay-error">${erroreScadenza}</span>
-                                </c:if>
-                            </div>
-                        </div>
-
-
-                        <div class="pay-group pay-full pay-cvv-row">
-                            <label class="pay-label" for="cvv">CVV</label>
-                            <input class="pay-input ${not empty erroreCvv ? 'pay-input-error' : ''}"
-                                   type="password" id="cvv" name="cvv"
-                                   placeholder="&bull;&bull;&bull;" maxlength="4"
-                                   autocomplete="cc-csc" required>
-                            <c:if test="${not empty erroreCvv}">
-                                <span class="pay-error">${erroreCvv}</span>
-                            </c:if>
-                        </div>
-
-                    </c:when>
-
-
-                    <c:otherwise>
-                        <div class="pay-grid">
-                            <div class="pay-group pay-full">
-                                <label class="pay-label" for="nomeCarta">Nome sulla carta</label>
-                                <input class="pay-input ${not empty erroreNomeCarta ? 'pay-input-error' : ''}"
-                                       type="text" id="nomeCarta" name="nomeCarta"
-                                       placeholder="Es. Mario Rossi"
-                                       value="${fn:escapeXml(param.nomeCarta)}"
-                                       autocomplete="cc-name" required>
-                                <c:if test="${not empty erroreNomeCarta}">
-                                    <span class="pay-error">${erroreNomeCarta}</span>
-                                </c:if>
-                            </div>
-                            <div class="pay-group pay-full">
-                                <label class="pay-label" for="numeroCarta">Numero carta</label>
-                                <input class="pay-input js-card-number ${not empty erroreNumeroCarta ? 'pay-input-error' : ''}"
-                                       type="text" id="numeroCarta" name="numeroCarta"
-                                       placeholder="1234 5678 9012 3456" maxlength="19"
-                                       value="${fn:escapeXml(param.numeroCarta)}"
-                                       autocomplete="cc-number" required>
-                                <c:if test="${not empty erroreNumeroCarta}">
-                                    <span class="pay-error">${erroreNumeroCarta}</span>
-                                </c:if>
-                            </div>
-                            <div class="pay-group">
-                                <label class="pay-label" for="scadenza">Scadenza</label>
-                                <input class="pay-input js-card-expiry ${not empty erroreScadenza ? 'pay-input-error' : ''}"
-                                       type="text" id="scadenza" name="scadenza"
-                                       placeholder="MM/AA" maxlength="5"
-                                       value="${fn:escapeXml(param.scadenza)}"
-                                       autocomplete="cc-exp" required>
-                                <c:if test="${not empty erroreScadenza}">
-                                    <span class="pay-error">${erroreScadenza}</span>
-                                </c:if>
-                            </div>
-                            <div class="pay-group">
-                                <label class="pay-label" for="cvv">CVV</label>
-                                <input class="pay-input ${not empty erroreCvv ? 'pay-input-error' : ''}"
-                                       type="password" id="cvv" name="cvv"
-                                       placeholder="&bull;&bull;&bull;" maxlength="4"
-                                       autocomplete="cc-csc" required>
-                                <c:if test="${not empty erroreCvv}">
-                                    <span class="pay-error">${erroreCvv}</span>
-                                </c:if>
-                            </div>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
+                <div class="pay-grid">
+                    <div class="pay-group pay-full">
+                        <label class="pay-label" for="nomeCarta">Nome sulla carta</label>
+                        <input class="pay-input ${not empty erroreNomeCarta ? 'pay-input-error' : ''}"
+                               type="text" id="nomeCarta" name="nomeCarta"
+                               placeholder="Es. Mario Rossi"
+                               value="${fn:escapeXml(param.nomeCarta)}"
+                               autocomplete="cc-name" required>
+                        <c:if test="${not empty erroreNomeCarta}">
+                            <span class="pay-error">${erroreNomeCarta}</span>
+                        </c:if>
+                    </div>
+                    <div class="pay-group pay-full">
+                        <label class="pay-label" for="numeroCarta">Numero carta</label>
+                        <input class="pay-input js-card-number ${not empty erroreNumeroCarta ? 'pay-input-error' : ''}"
+                               type="text" id="numeroCarta" name="numeroCarta"
+                               placeholder="1234 5678 9012 3456" maxlength="19"
+                               value="${fn:escapeXml(param.numeroCarta)}"
+                               autocomplete="cc-number" required>
+                        <c:if test="${not empty erroreNumeroCarta}">
+                            <span class="pay-error">${erroreNumeroCarta}</span>
+                        </c:if>
+                    </div>
+                    <div class="pay-group">
+                        <label class="pay-label" for="scadenza">Scadenza</label>
+                        <input class="pay-input js-card-expiry ${not empty erroreScadenza ? 'pay-input-error' : ''}"
+                               type="text" id="scadenza" name="scadenza"
+                               placeholder="MM/AA" maxlength="5"
+                               value="${fn:escapeXml(param.scadenza)}"
+                               autocomplete="cc-exp" required>
+                        <c:if test="${not empty erroreScadenza}">
+                            <span class="pay-error">${erroreScadenza}</span>
+                        </c:if>
+                    </div>
+                    <div class="pay-group">
+                        <label class="pay-label" for="cvv">CVV</label>
+                        <input class="pay-input ${not empty erroreCvv ? 'pay-input-error' : ''}"
+                               type="password" id="cvv" name="cvv"
+                               placeholder="&bull;&bull;&bull;" maxlength="4"
+                               autocomplete="cc-csc" required>
+                        <c:if test="${not empty erroreCvv}">
+                            <span class="pay-error">${erroreCvv}</span>
+                        </c:if>
+                    </div>
+                </div>
 
             </div>
 

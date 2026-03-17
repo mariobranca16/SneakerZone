@@ -7,10 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Bean.IndirizzoSpedizione;
-import model.Bean.MetodoPagamento;
 import model.Bean.Utente;
 import model.DAO.IndirizzoSpedizioneDAO;
-import model.DAO.MetodoPagamentoDAO;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,8 +42,6 @@ public class AccountServlet extends HttpServlet {
         request.setAttribute("utente", utente);
         List<IndirizzoSpedizione> indirizzi = new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId());
         request.setAttribute("indirizzi", indirizzi);
-        MetodoPagamento mp = new MetodoPagamentoDAO().doRetrieveByUtente(utente.getId());
-        request.setAttribute("metodoPagamento", mp);
         request.getRequestDispatcher("/WEB-INF/jsp/account.jsp").forward(request, response);
     }
 }

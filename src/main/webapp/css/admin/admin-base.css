@@ -150,7 +150,7 @@ main {
 
 
 .admin-card {
-    background: var(--card);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 22px 24px;
@@ -174,6 +174,18 @@ main {
     font-weight: 700;
     color: var(--text);
     margin: 0 0 14px;
+}
+
+.admin-card--flush .admin-card-title {
+    padding: 0 24px;
+    margin-bottom: 0;
+    line-height: 56px;
+}
+
+.admin-empty-note {
+    padding: 16px 24px;
+    color: var(--muted);
+    font-style: italic;
 }
 
 .admin-actions {
@@ -221,7 +233,7 @@ td.col-center > .admin-table-actions {
 }
 
 .admin-table a {
-    color: var(--accent);
+    color: var(--brand);
     font-weight: 700;
     text-decoration: none;
 }
@@ -243,7 +255,7 @@ td.col-center > .admin-table-actions {
     border-spacing: 0;
     border: 1px solid var(--border);
     border-radius: 14px;
-    background: var(--card);
+    background: var(--surface);
     overflow: hidden;
 }
 
@@ -252,7 +264,7 @@ td.col-center > .admin-table-actions {
     padding: 12px 14px;
     text-align: left;
     vertical-align: middle;
-    border-bottom: 1px solid #F1F5F9;
+    border-bottom: 1px solid var(--border);
     font-size: 14px;
     color: var(--text);
 }
@@ -292,7 +304,7 @@ td.col-center > .admin-table-actions {
     padding: 0 16px;
     border: 1px solid var(--border);
     border-radius: 8px;
-    background: var(--card);
+    background: var(--surface);
     color: var(--text);
     font-weight: 700;
     font-size: 14px;
@@ -315,9 +327,9 @@ td.col-center > .admin-table-actions {
 
 
 .btn--primary {
-    background: var(--accent);
+    background: var(--brand);
     color: #fff;
-    border-color: var(--accent);
+    border-color: var(--brand);
 }
 
 .btn--primary:hover {
@@ -333,14 +345,14 @@ td.col-center > .admin-table-actions {
 }
 
 .btn--danger {
-    background: rgba(239, 68, 68, 0.08);
+    background: #fef2f2;
     color: #7F1D1D;
-    border: 1px solid rgba(239, 68, 68, 0.30);
+    border: 1px solid #fca5a5;
 }
 
 .btn--danger:hover {
-    background: rgba(239, 68, 68, 0.16);
-    border-color: rgba(239, 68, 68, 0.42);
+    background: #fee2e2;
+    border-color: #f87171;
 }
 
 .btn:disabled {
@@ -361,14 +373,14 @@ td.col-center > .admin-table-actions {
 }
 
 .alert-success {
-    background: rgba(16, 185, 129, 0.10);
-    border: 1px solid rgba(16, 185, 129, 0.32);
+    background: #d1fae5;
+    border: 1px solid #6ee7b7;
     color: #065F46;
 }
 
 .alert-error {
-    background: rgba(239, 68, 68, 0.10);
-    border: 1px solid rgba(239, 68, 68, 0.32);
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
     color: #7F1D1D;
 }
 

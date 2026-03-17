@@ -1,6 +1,5 @@
 package model.DAO;
 
-import model.Bean.ImmagineProdotto;
 import model.Bean.Prodotto;
 import model.Bean.ProdottoTaglia;
 import model.ConPool;
@@ -189,15 +188,6 @@ public class ProdottoDAO {
         try (Connection connection = ConPool.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                ImmagineProdottoDAO ipDAO = new ImmagineProdottoDAO();
-                ipDAO.deleteByProdotto(connection, prodotto.getId());
-                if (prodotto.getImmagini() != null) {
-                    for (ImmagineProdotto ip : prodotto.getImmagini()) {
-                        ip.setIdProdotto(prodotto.getId());
-                        ipDAO.doSave(connection, ip);
-                    }
-                }
-
                 ProdottoTagliaDAO ptDAO = new ProdottoTagliaDAO();
                 ptDAO.doDeleteByProdotto(connection, prodotto.getId());
                 if (prodotto.getTaglie() != null) {
@@ -291,14 +281,8 @@ public class ProdottoDAO {
 
         long id = p.getId();
 
-        ImmagineProdottoDAO ipDAO = new ImmagineProdottoDAO();
-        List<ImmagineProdotto> immagini = ipDAO.doRetrieveByProdotto(id);
-        p.setImmagini(immagini);
-
-        if (!immagini.isEmpty()) {
-            String imgPath = immagini.get(0).getImgPath();
-            if (imgPath != null) p.setImgPath(imgPath);
-        }
+        String imgPath = new ImmagineProdottoDAO().doRetrievePrimaImmagine(id);
+        if (imgPath != null) p.setImgPath(imgPath);
 
         p.setTaglie(new ProdottoTagliaDAO().doRetrieveDisponibilitaByProdotto(id));
         p.setCategorie(new CategoriaDAO().doRetrieveByProdotto(id));

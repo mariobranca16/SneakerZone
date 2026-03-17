@@ -32,12 +32,9 @@
 <div class="admin-page-header">
     <div>
         <h1 class="admin-page-title">${titoloPagina}</h1>
-        <p class="admin-page-subtitle">
-            <c:choose>
-                <c:when test="${prodotto != null && prodotto.id > 0}">ID prodotto: ${prodotto.id}</c:when>
-                <c:otherwise>Compila i campi e salva per poter aggiungere le immagini</c:otherwise>
-            </c:choose>
-        </p>
+        <c:if test="${prodotto != null && prodotto.id > 0}">
+            <p class="admin-page-subtitle">ID prodotto: ${prodotto.id}</p>
+        </c:if>
     </div>
     <div class="admin-page-actions">
         <a class="btn btn--small" href="${pageContext.request.contextPath}/admin/prodotti">
@@ -50,7 +47,8 @@
 <div class="admin-card">
     <div class="admin-card-title"><i class="ti ti-package"></i> Dati prodotto e taglie</div>
 
-    <form method="post" action="${pageContext.request.contextPath}/admin/prodotto" class="admin-form">
+    <form method="post" action="${pageContext.request.contextPath}/admin/prodotto" class="admin-form"
+          enctype="multipart/form-data">
         <c:if test="${prodotto != null && prodotto.id > 0}">
             <input type="hidden" name="id" value="${prodotto.id}">
         </c:if>
@@ -155,6 +153,19 @@
             </c:if>
         </div>
 
+        <div class="form-row form-row--full">
+            <label class="label" for="fileImmagine">Immagine prodotto</label>
+            <input class="input" type="file" id="fileImmagine" name="fileImmagine"
+                   accept="image/jpeg,image/png,image/webp">
+            <c:if test="${not empty prodotto.imgPath}">
+                <span class="field-hint">
+                    Immagine attuale:
+                    <img src="${pageContext.request.contextPath}${prodotto.imgPath}"
+                         class="img-preview">
+                </span>
+            </c:if>
+        </div>
+
         <div class="admin-actions">
             <button class="btn btn--primary" type="submit">
                 Salva prodotto
@@ -164,100 +175,15 @@
 </div>
 
 
-<c:choose>
-
-    <c:when test="${prodotto != null && prodotto.id > 0}">
-        <div class="admin-card">
-            <div class="admin-card-title"><i class="ti ti-photo-plus"></i> Immagini prodotto</div>
-
-
-            <c:choose>
-                <c:when test="${empty immagini}">
-                    <p class="img-empty-msg">
-                        <i class="ti ti-info-circle"></i> Nessuna immagine caricata per questo prodotto.
-                    </p>
-                </c:when>
-                <c:otherwise>
-                    <div class="img-grid">
-                        <c:forEach var="img" items="${immagini}">
-                            <div class="img-card ${img.posizione == 1 ? 'img-card--cover' : ''}">
-                                <div class="img-card-preview">
-                                    <img src="${pageContext.request.contextPath}${img.imgPath}"
-                                         alt="${fn:escapeXml(img.descrizione)}">
-                                    <c:if test="${img.posizione == 1}">
-                                        <span class="img-card-badge">Copertina</span>
-                                    </c:if>
-                                </div>
-                                <div class="img-card-body">
-                                    <span class="img-card-pos">Posizione ${img.posizione}</span>
-                                    <c:if test="${not empty img.descrizione}">
-                                        <span class="img-card-desc"><c:out value="${img.descrizione}"/></span>
-                                    </c:if>
-                                </div>
-                                <form class="img-card-actions" method="post"
-                                      action="${pageContext.request.contextPath}/admin/prodotto/immagine">
-                                    <input type="hidden" name="azione" value="elimina">
-                                    <input type="hidden" name="idProdotto" value="${prodotto.id}">
-                                    <input type="hidden" name="idImmagine" value="${img.id}">
-                                    <button type="submit" class="btn btn--small btn--danger img-del-btn"
-                                            onclick="return confirm('Eliminare questa immagine?')">
-                                        <i class="ti ti-trash"></i> Elimina
-                                    </button>
-                                </form>
-                            </div>
-                        </c:forEach>
-                    </div>
-                </c:otherwise>
-            </c:choose>
-
-
-            <div class="img-upload-section">
-                <div class="img-upload-title">Aggiungi immagine</div>
-                <form class="img-upload-form" method="post" enctype="multipart/form-data"
-                      action="${pageContext.request.contextPath}/admin/prodotto/immagine">
-                    <input type="hidden" name="azione" value="upload">
-                    <input type="hidden" name="idProdotto" value="${prodotto.id}">
-
-                    <div class="img-upload-row">
-                        <label class="img-file-label" for="fileImmagine"><i class="ti ti-photo"></i><span
-                                id="imgPickerText">Sfoglia</span><input type="file" id="fileImmagine"
-                                                                        name="fileImmagine"
-                                                                        accept="image/jpeg,image/png,image/webp"
-                                                                        onchange="aggiornaFileLabel(this)"></label>
-
-                        <div class="form-row img-desc-row">
-                            <label class="label" for="imgDesc">Descrizione (opzionale)</label>
-                            <input class="input" type="text" id="imgDesc" name="descrizione"
-                                   placeholder="Es. Vista laterale">
-                        </div>
-
-                        <button class="btn btn--primary img-upload-btn" type="submit">Carica</button>
-                    </div>
-                </form>
-            </div>
-
-        </div>
-    </c:when>
-
-    <c:otherwise>
-        <div class="admin-card img-note-card">
-            <i class="ti ti-info-circle"></i>
-            Salva prima il prodotto per poter aggiungere le immagini.
-        </div>
-    </c:otherwise>
-
-</c:choose>
-
-
 <c:if test="${prodotto != null && prodotto.id > 0}">
     <div class="admin-card admin-card--flush">
-        <div class="admin-card-title" style="padding: 0 24px; margin-bottom: 0; line-height: 56px;">
+        <div class="admin-card-title">
             <i class="ti ti-star"></i> Recensioni
         </div>
 
         <c:choose>
             <c:when test="${empty recensioni}">
-                <p style="padding: 16px 24px; color: var(--text-muted); font-style: italic;">
+                <p class="admin-empty-note">
                     Nessuna recensione per questo prodotto.
                 </p>
             </c:when>
@@ -313,15 +239,6 @@
 
 </div>
 </main>
-
-<script>
-    function aggiornaFileLabel(input) {
-        var label = document.getElementById('imgPickerText');
-        if (label && input.files && input.files.length > 0) {
-            label.textContent = input.files[0].name;
-        }
-    }
-</script>
 
 <jsp:include page="/WEB-INF/jsp/admin/footer_admin.jsp"/>
 

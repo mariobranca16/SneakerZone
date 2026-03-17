@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Bean.Utente;
 import model.DAO.IndirizzoSpedizioneDAO;
-import model.DAO.MetodoPagamentoDAO;
 import model.DAO.UtenteDAO;
 
 import java.io.IOException;
@@ -97,7 +96,6 @@ public class ModificaDatiPersonaliServlet extends HttpServlet {
             request.setAttribute("formTelefono", request.getParameter("telefono"));
             request.setAttribute("formDataNascita", dataNascitaStr);
             request.setAttribute("indirizzi", new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId()));
-            request.setAttribute("metodoPagamento", new MetodoPagamentoDAO().doRetrieveByUtente(utente.getId()));
             request.getRequestDispatcher("/WEB-INF/jsp/account.jsp").forward(request, response);
             return;
         }

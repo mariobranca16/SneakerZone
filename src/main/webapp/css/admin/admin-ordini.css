@@ -11,27 +11,27 @@
 }
 
 .badge--elaborazione {
-    background: rgba(245, 158, 11, 0.12);
+    background: #fef3c7;
     color: #92400E;
-    border: 1px solid rgba(245, 158, 11, 0.30);
+    border: 1px solid #fcd34d;
 }
 
 .badge--spedito {
-    background: rgba(59, 130, 246, 0.12);
+    background: #dbeafe;
     color: #1E3A5F;
-    border: 1px solid rgba(59, 130, 246, 0.30);
+    border: 1px solid #93c5fd;
 }
 
 .badge--consegnato {
-    background: rgba(16, 185, 129, 0.12);
+    background: #d1fae5;
     color: #065F46;
-    border: 1px solid rgba(16, 185, 129, 0.30);
+    border: 1px solid #6ee7b7;
 }
 
 .badge--annullato {
-    background: rgba(239, 68, 68, 0.10);
+    background: #fef2f2;
     color: #7F1D1D;
-    border: 1px solid rgba(239, 68, 68, 0.30);
+    border: 1px solid #fca5a5;
 }
 
 
@@ -73,7 +73,7 @@
 .ordine-totale-val {
     font-size: 15px;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--brand);
     white-space: nowrap;
 }
 

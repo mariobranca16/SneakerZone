@@ -87,7 +87,7 @@
 .prod-price {
     font-size: 15px;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--brand);
     white-space: nowrap;
 }
 

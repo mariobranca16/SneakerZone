@@ -14,12 +14,6 @@
     --muted: #6B7280;
     --input-bg: #F6F2EE;
 
-    --accent: #FF4500;
-    --card: #FFFCFA;
-}
-
-html {
-    min-height: 100%;
 }
 
 body {
@@ -239,7 +233,7 @@ main {
     font-weight: 600;
     font-size: 14px;
     width: max-content;
-    max-width: min(340px, calc(100% - 32px));
+    max-width: 340px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 

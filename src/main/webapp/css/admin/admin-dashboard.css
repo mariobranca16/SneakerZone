@@ -28,7 +28,7 @@ main {
 
 
 .admin-tile {
-    background: var(--card);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-top: 4px solid #FF4500;
     border-radius: 16px;
@@ -40,8 +40,6 @@ main {
     transition: box-shadow 0.2s;
 }
 
-.admin-tile:hover {
-}
 
 .admin-tile-icon {
     width: 46px;
@@ -50,7 +48,7 @@ main {
     display: grid;
     place-items: center;
     background: rgba(255, 69, 0, 0.10);
-    color: var(--accent);
+    color: var(--brand);
     font-size: 20px;
 }
 

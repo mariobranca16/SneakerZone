@@ -47,11 +47,6 @@
                 <i class="ti ti-map-pin"></i>
                 <span>Indirizzi</span>
             </button>
-            <button class="tab-btn" type="button" id="tab-pagamento" data-section="pagamento"
-                    role="tab" aria-controls="section-pagamento" aria-selected="false" tabindex="-1">
-                <i class="ti ti-credit-card"></i>
-                <span>Pagamento</span>
-            </button>
         </div>
 
 
@@ -206,10 +201,10 @@
                                     </button>
                                     <form method="post"
                                           action="${pageContext.request.contextPath}/myAccount/indirizzo/elimina"
-                                          class="form-inline-del"
-                                          onsubmit="return confirm('Eliminare questo indirizzo?')">
+                                          class="form-inline-del">
                                         <input type="hidden" name="idIndirizzo" value="${ind.id}">
-                                        <button type="submit" class="btn-addr-del">
+                                        <button type="submit" class="btn-addr-del"
+                                                data-confirm="Eliminare questo indirizzo?">
                                             <i class="ti ti-trash"></i> Elimina
                                         </button>
                                     </form>
@@ -287,82 +282,6 @@
             </a>
         </div>
 
-
-        <div class="account-section" id="section-pagamento" role="tabpanel"
-             aria-labelledby="tab-pagamento" hidden>
-            <div class="section-header">
-                <h1 class="section-title">Dati di pagamento</h1>
-                <p class="section-subtitle">Il tuo metodo di pagamento predefinito</p>
-            </div>
-
-            <c:if test="${not empty metodoPagamento}">
-                <div class="saved-payment-row">
-                    <i class="ti ti-credit-card saved-payment-icon"></i>
-                    <div class="saved-payment-info">
-                        <span class="saved-payment-number"><c:out value="${metodoPagamento.numeroMascherato}"/></span>
-                        <span class="saved-payment-meta"><c:out value="${metodoPagamento.nomeCarta}"/>&nbsp;&middot;&nbsp;Scad.&nbsp;<c:out
-                                value="${metodoPagamento.scadenza}"/></span>
-                    </div>
-                </div>
-                <p class="payment-edit-label">Aggiorna i dati della carta:</p>
-            </c:if>
-            <c:if test="${empty metodoPagamento}">
-                <p class="no-data-msg">
-                    <i class="ti ti-info-circle"></i> Nessun metodo di pagamento salvato.
-                </p>
-            </c:if>
-
-            <form id="formPagamento" class="account-form"
-                  action="${pageContext.request.contextPath}/myAccount/pagamento" method="post" novalidate>
-
-                <div class="form-group full">
-                    <label for="nomeCarta">Nome sulla carta</label>
-                    <input type="text" id="nomeCarta" name="nomeCarta"
-                           value="${not empty metodoPagamento ? fn:escapeXml(metodoPagamento.nomeCarta) : ''}"
-                           placeholder="Es. Mario Rossi" autocomplete="cc-name" required>
-                    <c:if test="${not empty erroreNomeCarta}">
-                        <span class="field-error"><c:out value="${erroreNomeCarta}"/></span>
-                    </c:if>
-                </div>
-
-                <div class="form-group full">
-                    <label for="numeroCarta">Numero carta</label>
-                    <input type="text" id="numeroCarta" name="numeroCarta" class="js-card-number"
-                           placeholder="${fn:escapeXml(not empty metodoPagamento ? metodoPagamento.numeroMascherato : '1234 5678 9012 3456')}"
-                           maxlength="19" autocomplete="cc-number">
-                    <c:if test="${not empty metodoPagamento}">
-                        <span class="field-hint">Lascia vuoto per mantenere la carta attuale.</span>
-                    </c:if>
-                    <c:if test="${not empty erroreNumeroCarta}">
-                        <span class="field-error"><c:out value="${erroreNumeroCarta}"/></span>
-                    </c:if>
-                </div>
-
-                <div class="form-group">
-                    <label for="scadenzaCarta">Scadenza</label>
-                    <input type="text" id="scadenzaCarta" name="scadenza" class="js-card-expiry"
-                           value="${fn:escapeXml(not empty metodoPagamento ? metodoPagamento.scadenza : '')}"
-                           placeholder="MM/AA" maxlength="5" autocomplete="cc-exp" required>
-                    <c:if test="${not empty erroreScadenza}">
-                        <span class="field-error"><c:out value="${erroreScadenza}"/></span>
-                    </c:if>
-                </div>
-
-                <div class="form-group">
-                    <label for="cvvInfo">CVV</label>
-                    <input type="text" id="cvvInfo" value="Non memorizzato" disabled class="input-disabled"
-                           aria-describedby="cvvInfoHint">
-                    <span class="field-hint"
-                          id="cvvInfoHint">Il CVV viene richiesto solo al momento del pagamento.</span>
-                </div>
-
-                <div class="account-actions">
-                    <button class="btn-primary" type="submit">
-                        ${not empty metodoPagamento ? 'Aggiorna carta' : 'Salva carta'}
-                    </button>
-                </div>
-            </form>
-        </div>
 
     </div>
 

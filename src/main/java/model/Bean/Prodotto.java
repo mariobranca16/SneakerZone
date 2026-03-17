@@ -17,7 +17,6 @@ public class Prodotto implements Serializable {
     private String colore;
     private String genere;
 
-    private List<ImmagineProdotto> immagini;
     private List<ProdottoTaglia> taglie;
     private List<Categoria> categorie;
 
@@ -89,14 +88,6 @@ public class Prodotto implements Serializable {
 
     public void setGenere(String genere) {
         this.genere = genere;
-    }
-
-    public List<ImmagineProdotto> getImmagini() {
-        return immagini;
-    }
-
-    public void setImmagini(List<ImmagineProdotto> immagini) {
-        this.immagini = immagini;
     }
 
     public List<ProdottoTaglia> getTaglie() {

@@ -17,7 +17,6 @@ import java.io.IOException;
         "/myAccount/password",
         "/myAccount/indirizzo/modifica",
         "/myAccount/indirizzo/elimina",
-        "/myAccount/pagamento",
         "/checkout",
         "/ordini",
         "/wishlist",

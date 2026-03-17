@@ -2,16 +2,19 @@ package controller.admin;
 
 import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.Bean.*;
 import model.DAO.*;
 
 import java.io.IOException;
 import java.util.*;
 
+@MultipartConfig(maxFileSize = 5 * 1024 * 1024)
 @WebServlet(name = "gestioneProdottoAdmin", urlPatterns = "/admin/prodotto")
 public class GestioneProdottoAdminServlet extends HttpServlet {
 
@@ -230,13 +233,28 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
         if (prodotto.getId() > 0) {
             prodottoDAO.doUpdate(prodotto);
             new ProdottoCategoriaDAO().doReplace(prodotto.getId(), idCategorie);
+            salvaImmagine(request, prodotto.getId());
             response.sendRedirect(request.getContextPath() + "/admin/prodotti");
             return;
         }
 
         prodottoDAO.doSave(prodotto);
         new ProdottoCategoriaDAO().doReplace(prodotto.getId(), idCategorie);
+        salvaImmagine(request, prodotto.getId());
         response.sendRedirect(request.getContextPath() + "/admin/prodotto?id=" + prodotto.getId());
+    }
+
+    private void salvaImmagine(HttpServletRequest request, long idProdotto) throws ServletException, IOException {
+        Part part = request.getPart("fileImmagine");
+        if (part == null || part.getSize() == 0) return;
+        String contentType = part.getContentType();
+        if (contentType == null || !contentType.startsWith("image/")) return;
+        byte[] bytes = part.getInputStream().readAllBytes();
+        String ext = contentType.contains("png") ? ".png" : contentType.contains("webp") ? ".webp" : ".jpg";
+        String nomeFile = "prodotto_" + idProdotto + ext;
+        String uploadDir = getServletContext().getRealPath("/uploads/prodotti");
+        String imgPath = "/uploads/prodotti/" + nomeFile;
+        new ImmagineProdottoDAO().doSaveWithFile(idProdotto, bytes, uploadDir, nomeFile, imgPath);
     }
 
     // carica tutti i dati necessari alla pagina form prodotto (categorie, taglie, immagini, recensioni)
@@ -267,7 +285,6 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
                 idCategorieSelezionate != null ? idCategorieSelezionate : Collections.emptySet());
 
         if (prodotto != null && prodotto.getId() > 0) {
-            request.setAttribute("immagini", new ImmagineProdottoDAO().doRetrieveByProdotto(prodotto.getId()));
             List<Recensione> recensioni = new RecensioneDAO().doRetrieveByProdotto(prodotto.getId());
             request.setAttribute("recensioni", recensioni);
 

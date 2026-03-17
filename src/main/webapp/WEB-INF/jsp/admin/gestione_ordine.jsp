@@ -57,12 +57,12 @@
             <form method="post" action="${pageContext.request.contextPath}/admin/ordini">
                 <input type="hidden" name="id" value="${ordine.id}">
                 <label class="label">Stato ordine</label>
-                <select name="stato" class="select" style="width:auto; min-width:160px;">
+                <select name="stato" class="select select-stato">
                     <c:forEach var="s" items="${stati}">
                         <option value="${s}" <c:if test="${ordine.stato == s}">selected</c:if>>${s.label}</option>
                     </c:forEach>
                 </select>
-                <button class="btn btn--small btn--primary" type="submit" style="margin-top:18px;">
+                <button class="btn btn--small btn--primary btn-form-submit" type="submit">
                     Aggiorna
                 </button>
             </form>

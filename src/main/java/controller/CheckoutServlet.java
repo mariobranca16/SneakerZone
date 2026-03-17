@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Bean.*;
 import model.DAO.IndirizzoSpedizioneDAO;
-import model.DAO.MetodoPagamentoDAO;
 import model.DAO.OrdineDAO;
 
 import java.io.IOException;
@@ -36,7 +35,6 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         request.setAttribute("indirizzi", new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId()));
-        request.setAttribute("metodoPagamento", new MetodoPagamentoDAO().doRetrieveByUtente(utente.getId()));
         request.setAttribute("carrello", carrello);
         request.getRequestDispatcher("/WEB-INF/jsp/checkout.jsp").forward(request, response);
     }
@@ -55,54 +53,28 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         IndirizzoSpedizioneDAO indirizzoDAO = new IndirizzoSpedizioneDAO();
-        MetodoPagamentoDAO pagamentoDAO = new MetodoPagamentoDAO();
 
         boolean hasError = false;
-        String nomeCarta = "";
-        String numeroCarta = "";
-        String scadenza = "";
-        String cifre = "";
 
-        String usaCarta = request.getParameter("usaCarta");
+        String nomeCarta = ValidatoreInput.normalizzaTesto(request.getParameter("nomeCarta"));
+        String numeroCarta = request.getParameter("numeroCarta");
+        String scadenza = ValidatoreInput.normalizzaTesto(request.getParameter("scadenza"));
+        String cifre = ValidatoreInput.normalizzaNumeroCarta(numeroCarta);
 
-        if ("salvata".equals(usaCarta)) {
-            MetodoPagamento mpSalvato = pagamentoDAO.doRetrieveByUtente(utente.getId());
-            if (mpSalvato == null) {
-                request.setAttribute("erroreNomeCarta", "Nessuna carta salvata trovata. Inserisci i dati manualmente.");
-                hasError = true;
-            } else {
-                nomeCarta = mpSalvato.getNomeCarta();
-                numeroCarta = mpSalvato.getNumeroCarta();
-                cifre = ValidatoreInput.normalizzaNumeroCarta(numeroCarta);
-                scadenza = mpSalvato.getScadenza();
+        if (!ValidatoreInput.isNomeCartaValido(nomeCarta)) {
+            request.setAttribute("erroreNomeCarta", "Inserisci nome e cognome come appaiono sulla carta (es. Mario Rossi).");
+            hasError = true;
+        }
 
-                String erroreScadenza = ValidatoreInput.getErroreScadenzaCarta(scadenza);
-                if (erroreScadenza != null) {
-                    request.setAttribute("erroreScadenza", erroreScadenza);
-                    hasError = true;
-                }
-            }
-        } else {
-            nomeCarta = ValidatoreInput.normalizzaTesto(request.getParameter("nomeCarta"));
-            numeroCarta = request.getParameter("numeroCarta");
-            scadenza = ValidatoreInput.normalizzaTesto(request.getParameter("scadenza"));
+        if (!ValidatoreInput.isNumeroCartaValido(numeroCarta)) {
+            request.setAttribute("erroreNumeroCarta", "Inserisci un numero di carta valido (16 cifre).");
+            hasError = true;
+        }
 
-            if (!ValidatoreInput.isNomeCartaValido(nomeCarta)) {
-                request.setAttribute("erroreNomeCarta", "Inserisci nome e cognome come appaiono sulla carta (es. Mario Rossi).");
-                hasError = true;
-            }
-
-            cifre = ValidatoreInput.normalizzaNumeroCarta(numeroCarta);
-            if (!ValidatoreInput.isNumeroCartaValido(numeroCarta)) {
-                request.setAttribute("erroreNumeroCarta", "Inserisci un numero di carta valido (16 cifre).");
-                hasError = true;
-            }
-
-            String erroreScadenza = ValidatoreInput.getErroreScadenzaCarta(scadenza);
-            if (erroreScadenza != null) {
-                request.setAttribute("erroreScadenza", erroreScadenza);
-                hasError = true;
-            }
+        String erroreScadenza = ValidatoreInput.getErroreScadenzaCarta(scadenza);
+        if (erroreScadenza != null) {
+            request.setAttribute("erroreScadenza", erroreScadenza);
+            hasError = true;
         }
 
         String cvv = ValidatoreInput.normalizzaTesto(request.getParameter("cvv"));
@@ -112,14 +84,14 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         if (hasError) {
-            mostraCheckout(request, response, utente, carrello, indirizzoDAO, pagamentoDAO);
+            mostraCheckout(request, response, utente, carrello, indirizzoDAO);
             return;
         }
 
         String idIndirizzoParam = request.getParameter("idIndirizzo");
         if (idIndirizzoParam == null || idIndirizzoParam.isBlank()) {
             request.setAttribute("erroreIndirizzo", "Seleziona un indirizzo di spedizione.");
-            mostraCheckout(request, response, utente, carrello, indirizzoDAO, pagamentoDAO);
+            mostraCheckout(request, response, utente, carrello, indirizzoDAO);
             return;
         }
 
@@ -128,14 +100,14 @@ public class CheckoutServlet extends HttpServlet {
             idIndirizzo = Long.parseLong(idIndirizzoParam);
         } catch (NumberFormatException e) {
             request.setAttribute("erroreIndirizzo", "Indirizzo non valido.");
-            mostraCheckout(request, response, utente, carrello, indirizzoDAO, pagamentoDAO);
+            mostraCheckout(request, response, utente, carrello, indirizzoDAO);
             return;
         }
 
         IndirizzoSpedizione indirizzoScelto = indirizzoDAO.doRetrieveByKey(idIndirizzo);
         if (indirizzoScelto == null || indirizzoScelto.getIdUtente() != utente.getId()) {
             request.setAttribute("erroreIndirizzo", "Indirizzo non valido.");
-            mostraCheckout(request, response, utente, carrello, indirizzoDAO, pagamentoDAO);
+            mostraCheckout(request, response, utente, carrello, indirizzoDAO);
             return;
         }
 
@@ -160,17 +132,8 @@ public class CheckoutServlet extends HttpServlet {
             new OrdineDAO().doSave(ordine);
         } catch (RuntimeException e) {
             request.setAttribute("erroreStock", "Uno o piu prodotti non sono piu disponibili nella quantita richiesta. Aggiorna il carrello e riprova.");
-            mostraCheckout(request, response, utente, carrello, indirizzoDAO, pagamentoDAO);
+            mostraCheckout(request, response, utente, carrello, indirizzoDAO);
             return;
-        }
-
-        if (!"salvata".equals(usaCarta) && !cifre.isEmpty()) {
-            MetodoPagamento mp = new MetodoPagamento();
-            mp.setIdUtente(utente.getId());
-            mp.setNomeCarta(nomeCarta.trim());
-            mp.setNumeroCarta(cifre);
-            mp.setScadenza(scadenza);
-            pagamentoDAO.doSaveOrUpdate(mp);
         }
 
         carrello.svuotaCarrello();
@@ -183,10 +146,9 @@ public class CheckoutServlet extends HttpServlet {
 
     private void mostraCheckout(HttpServletRequest request, HttpServletResponse response,
                                 Utente utente, Carrello carrello,
-                                IndirizzoSpedizioneDAO indirizzoDAO, MetodoPagamentoDAO pagamentoDAO)
+                                IndirizzoSpedizioneDAO indirizzoDAO)
             throws ServletException, IOException {
         request.setAttribute("indirizzi", indirizzoDAO.doRetrieveByUtente(utente.getId()));
-        request.setAttribute("metodoPagamento", pagamentoDAO.doRetrieveByUtente(utente.getId()));
         request.setAttribute("carrello", carrello);
         request.getRequestDispatcher("/WEB-INF/jsp/checkout.jsp").forward(request, response);
     }

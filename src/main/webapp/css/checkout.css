@@ -269,90 +269,6 @@ main {
     color: #DC2626;
 }
 
-.pay-choice-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 16px;
-}
-
-.pay-choice-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border: 2px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    cursor: pointer;
-}
-
-.pay-choice-card:hover {
-    border-color: #aaa;
-}
-
-.pay-choice-card.selected {
-    border-color: var(--brand);
-    background: #fff8f5;
-}
-
-.pay-choice-radio {
-    accent-color: var(--brand);
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    cursor: pointer;
-}
-
-.pay-choice-icon {
-    font-size: 16px;
-    color: var(--muted);
-    width: 20px;
-    text-align: center;
-    flex-shrink: 0;
-}
-
-.pay-choice-card.selected .pay-choice-icon {
-    color: var(--brand);
-}
-
-.pay-choice-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
-.pay-choice-number {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-}
-
-.pay-choice-meta {
-    font-size: 12px;
-    color: var(--muted);
-}
-
-.pay-choice-check {
-    color: var(--brand);
-    font-size: 18px;
-    opacity: 0;
-    flex-shrink: 0;
-}
-
-.pay-choice-card.selected .pay-choice-check {
-    opacity: 1;
-}
-
-.pay-grid-hidden {
-    display: none;
-}
-
-.pay-cvv-row {
-    margin-top: 14px;
-}
-
-
 .btn-confirm {
     height: 48px;
     width: 100%;
@@ -382,6 +298,10 @@ main {
 
 .checkout-back:hover {
     text-decoration: underline;
+}
+
+.alert-wide {
+    max-width: 700px;
 }
 
 

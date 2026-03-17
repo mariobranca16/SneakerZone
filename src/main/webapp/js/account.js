@@ -231,45 +231,4 @@
         });
     }
 
-    var formPagamento = document.getElementById('formPagamento');
-    if (formPagamento) {
-        formPagamento.addEventListener('submit', function (e) {
-            formPagamento.querySelectorAll('.field-error').forEach(function (el) {
-                el.remove();
-            });
-            var valido = true;
-
-            function mostraErrorePagamento(inputId, messaggio) {
-                var input = document.getElementById(inputId);
-                if (!input) return;
-                var gruppo = input.closest('.form-group') || input.parentNode;
-                var span = document.createElement('span');
-                span.className = 'field-error';
-                span.textContent = messaggio;
-                gruppo.appendChild(span);
-                valido = false;
-            }
-
-            var nomeCarta = inputValidation.normalizeText(document.getElementById('nomeCarta').value);
-            var numeroCarta = document.getElementById('numeroCarta').value;
-            var numeroNormalizzato = inputValidation.normalizeCardNumber(numeroCarta);
-            var scad = inputValidation.normalizeText(document.getElementById('scadenzaCarta').value);
-            var erroreScadenza;
-
-            if (!nomeCarta) {
-                mostraErrorePagamento('nomeCarta', 'Il nome sulla carta e obbligatorio.');
-            } else if (!inputValidation.isNomeCartaValido(nomeCarta)) {
-                mostraErrorePagamento('nomeCarta', 'Inserisci nome e cognome come appaiono sulla carta (es. Mario Rossi).');
-            }
-            if (numeroNormalizzato !== '' && !inputValidation.isNumeroCartaValido(numeroCarta)) {
-                mostraErrorePagamento('numeroCarta', 'Il numero di carta deve essere di 16 cifre.');
-            }
-
-            erroreScadenza = inputValidation.getErroreScadenzaCarta(scad);
-            if (erroreScadenza) {
-                mostraErrorePagamento('scadenzaCarta', erroreScadenza);
-            }
-            if (!valido) e.preventDefault();
-        });
-    }
 })();

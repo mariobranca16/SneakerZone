@@ -28,6 +28,7 @@ function initRimuovi() {
                 body: params.toString()
             })
                 .then(function (res) {
+                    if (!res.ok) throw new Error();
                     return res.json();
                 })
                 .then(function (data) {
@@ -67,6 +68,7 @@ function initAggiorna() {
                 body: params.toString()
             })
                 .then(function (res) {
+                    if (!res.ok) throw new Error();
                     return res.json();
                 })
                 .then(function (data) {

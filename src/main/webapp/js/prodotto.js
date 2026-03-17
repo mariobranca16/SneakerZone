@@ -1,13 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var mainImg = document.getElementById('imgPrincipale');
-    document.querySelectorAll('.miniatura').forEach(function (thumb) {
-        thumb.addEventListener('click', function () {
-            if (mainImg) mainImg.src = thumb.src;
-            document.querySelectorAll('.miniatura').forEach(function (m) {
-                m.classList.toggle('attiva', m === thumb);
-            });
-        });
-    });
     var form = document.getElementById('formCarrello');
     if (form) {
         form.addEventListener('submit', function (e) {

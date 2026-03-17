@@ -41,7 +41,7 @@
 
 .hero .btn {
     padding: 12px 28px;
-    background-color: #FF4500;
+    background-color: var(--brand);
     color: #FFFFFF;
     border: none;
     cursor: pointer;
@@ -53,7 +53,7 @@
 }
 
 .hero .btn:hover {
-    background-color: #e63e00;
+    background-color: var(--brand-dark);
 }
 
 
@@ -78,7 +78,7 @@
 .evidenza-link-tutti {
     font-size: 14px;
     font-weight: 700;
-    color: #FF4500;
+    color: var(--brand);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -181,7 +181,7 @@
     height: 34px;
     padding: 0 14px;
     border-radius: 10px;
-    background: #FF4500;
+    background: var(--brand);
     color: #fff;
     font-size: 13px;
     font-weight: 700;
@@ -192,7 +192,7 @@
 }
 
 .ev-card-btn:hover {
-    background-color: #e63e00;
+    background-color: var(--brand-dark);
 }
 
 @media (max-width: 1024px) {

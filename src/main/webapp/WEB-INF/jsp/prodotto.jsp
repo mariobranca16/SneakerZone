@@ -30,8 +30,8 @@
         <div class="prodotto-immagini">
             <div class="immagine-principale">
                 <c:choose>
-                    <c:when test="${not empty prodotto.immagini}">
-                        <img id="imgPrincipale" src="${pageContext.request.contextPath}${prodotto.immagini[0].imgPath}"
+                    <c:when test="${not empty prodotto.imgPath}">
+                        <img src="${pageContext.request.contextPath}${prodotto.imgPath}"
                              alt="${prodotto.nome}">
                     </c:when>
                     <c:otherwise>
@@ -42,14 +42,6 @@
                     </c:otherwise>
                 </c:choose>
             </div>
-            <c:if test="${not empty prodotto.immagini && fn:length(prodotto.immagini) > 1}">
-                <div class="miniature">
-                    <c:forEach var="img" items="${prodotto.immagini}">
-                        <img src="${pageContext.request.contextPath}${img.imgPath}"
-                             alt="${prodotto.nome}" class="miniatura">
-                    </c:forEach>
-                </div>
-            </c:if>
         </div>
 
         <div class="prodotto-info">
@@ -160,9 +152,11 @@
                                 </button>
                             </c:forEach>
                         </div>
-                        <p class="stelle-errore" id="stelleErrore"
-                           style="${not empty erroreValutazioneRecensione ? 'display:block;' : 'display:none;'}">
-                                ${not empty erroreValutazioneRecensione ? erroreValutazioneRecensione : 'Seleziona una valutazione.'}
+                        <p class="stelle-errore<c:if test="${not empty erroreValutazioneRecensione}"> visibile</c:if>" id="stelleErrore">
+                            <c:choose>
+                                <c:when test="${not empty erroreValutazioneRecensione}">${erroreValutazioneRecensione}</c:when>
+                                <c:otherwise>Seleziona una valutazione.</c:otherwise>
+                            </c:choose>
                         </p>
                     </div>
 

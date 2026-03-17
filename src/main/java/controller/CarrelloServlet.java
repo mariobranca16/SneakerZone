@@ -17,6 +17,7 @@ import model.DAO.ProdottoTagliaDAO;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 @WebServlet(name = "carrello", urlPatterns = "/carrello")
 public class CarrelloServlet extends HttpServlet {
@@ -47,8 +48,8 @@ public class CarrelloServlet extends HttpServlet {
             if (isAjax) {
                 boolean vuoto = carrello.getProdotti().isEmpty();
                 double totale = carrello.getTotale();
-                ValidatoreInput.sendJson(response, 200, String.format(
-                        "{\"success\":true,\"vuoto\":%b,\"totale\":\"%.2f\"}", vuoto, totale));
+                ValidatoreInput.sendJson(response, 200, String.format(Locale.US,
+                        "{\"success\":true,\"vuoto\":%b,\"totale\":%.2f}", vuoto, totale));
                 return;
             }
             response.sendRedirect(request.getContextPath() + "/carrello");
@@ -98,8 +99,8 @@ public class CarrelloServlet extends HttpServlet {
                     boolean rimosso = qtyEffettiva == 0;
                     boolean vuoto = carrello.getProdotti().isEmpty();
                     double totale = carrello.getTotale();
-                    ValidatoreInput.sendJson(response, 200, String.format(
-                            "{\"success\":true,\"nuovaQuantita\":%d,\"subtotale\":\"%.2f\",\"totale\":\"%.2f\",\"rimosso\":%b,\"vuoto\":%b}",
+                    ValidatoreInput.sendJson(response, 200, String.format(Locale.US,
+                            "{\"success\":true,\"nuovaQuantita\":%d,\"subtotale\":%.2f,\"totale\":%.2f,\"rimosso\":%b,\"vuoto\":%b}",
                             qtyEffettiva, subtotale, totale, rimosso, vuoto));
                     return;
                 }
