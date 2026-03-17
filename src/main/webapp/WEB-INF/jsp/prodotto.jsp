@@ -8,17 +8,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><c:out value="${prodotto.nome}"/> - SneakerZone</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/prodotto.css">
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/jsp/header.jsp" />
+<jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
 <main class="prodotto-page">
 
-    <!-- Messaggi -->
     <c:if test="${not empty messaggio}">
         <div class="alert alert-success">${messaggio}</div>
     </c:if>
@@ -26,19 +25,18 @@
         <div class="alert alert-error">${erroreCarrello}</div>
     </c:if>
 
-    <!-- Sezione prodotto -->
     <section class="prodotto-dettaglio">
 
-        <!-- Galleria immagini -->
         <div class="prodotto-immagini">
             <div class="immagine-principale">
                 <c:choose>
                     <c:when test="${not empty prodotto.immagini}">
-                        <img id="imgPrincipale" src="${pageContext.request.contextPath}${prodotto.immagini[0].imgPath}" alt="${prodotto.nome}">
+                        <img id="imgPrincipale" src="${pageContext.request.contextPath}${prodotto.immagini[0].imgPath}"
+                             alt="${prodotto.nome}">
                     </c:when>
                     <c:otherwise>
                         <div class="no-immagine">
-                            <i class="fas fa-image"></i>
+                            <i class="ti ti-photo"></i>
                             <p>Immagine non disponibile</p>
                         </div>
                     </c:otherwise>
@@ -47,14 +45,13 @@
             <c:if test="${not empty prodotto.immagini && fn:length(prodotto.immagini) > 1}">
                 <div class="miniature">
                     <c:forEach var="img" items="${prodotto.immagini}">
-                        <img src="${pageContext.request.contextPath}${img.imgPath}" alt="${img.descrizione}"
-                             class="miniatura">
+                        <img src="${pageContext.request.contextPath}${img.imgPath}"
+                             alt="${prodotto.nome}" class="miniatura">
                     </c:forEach>
                 </div>
             </c:if>
         </div>
 
-        <!-- Info prodotto -->
         <div class="prodotto-info">
             <p class="prodotto-brand"><c:out value="${prodotto.brand}"/></p>
             <h1 class="prodotto-nome"><c:out value="${prodotto.nome}"/></h1>
@@ -64,22 +61,21 @@
                 <fmt:formatNumber value="${prodotto.costo}" minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
             </p>
 
-            <!-- Categorie -->
             <c:if test="${not empty prodotto.categorie}">
                 <div class="prodotto-categorie">
                     <c:forEach var="cat" items="${prodotto.categorie}">
-                        <a href="${pageContext.request.contextPath}/catalogo?categoria=${cat.nome}" class="tag-categoria">${cat.nome}</a>
+                        <a href="${pageContext.request.contextPath}/catalogo?categoria=${cat.nome}"
+                           class="tag-categoria">${cat.nome}</a>
                     </c:forEach>
                 </div>
             </c:if>
 
-            <!-- Form aggiungi al carrello -->
-            <form method="post" action="${pageContext.request.contextPath}/carrello" class="form-carrello" id="formCarrello">
+            <form method="post" action="${pageContext.request.contextPath}/carrello" class="form-carrello"
+                  id="formCarrello">
                 <input type="hidden" name="azione" value="aggiungi"/>
                 <input type="hidden" name="id" value="${prodotto.id}"/>
                 <input type="hidden" name="origine" value="prodotto"/>
 
-                <!-- Selezione taglia -->
                 <c:if test="${not empty prodotto.taglie}">
                     <div class="selezione-taglia">
                         <label for="taglia">Taglia:</label>
@@ -94,28 +90,25 @@
                     </div>
                 </c:if>
 
-                <!-- Quantita -->
                 <div class="selezione-quantita">
                     <label for="quantita">Quantit&agrave;:</label>
                     <input type="number" name="quantita" id="quantita" value="1" min="1" max="10" required>
                 </div>
 
                 <button type="submit" class="btn-carrello">
-                    <i class="fas fa-shopping-cart" aria-hidden="true"></i> Aggiungi al carrello
+                    <i class="ti ti-shopping-cart" aria-hidden="true"></i> Aggiungi al carrello
                 </button>
             </form>
 
-            <!-- Wishlist -->
             <c:if test="${not empty sessionScope.utenteConnesso}">
                 <form method="post" action="${pageContext.request.contextPath}/add-to-wishlist" class="form-wishlist">
                     <input type="hidden" name="idProdotto" value="${prodotto.id}"/>
                     <button type="submit" class="btn-wishlist">
-                        <i class="fas fa-heart" aria-hidden="true"></i> Aggiungi alla wishlist
+                        <i class="ti ti-hearts" aria-hidden="true"></i> Aggiungi alla wishlist
                     </button>
                 </form>
             </c:if>
 
-            <!-- Descrizione -->
             <c:if test="${not empty prodotto.descrizione}">
                 <div class="prodotto-descrizione">
                     <h3>Descrizione</h3>
@@ -125,42 +118,61 @@
         </div>
     </section>
 
-    <!-- Sezione recensioni -->
     <section class="sezione-recensioni">
         <h2>Recensioni</h2>
 
         <c:if test="${param.successoRecensione == '1'}">
             <div class="alert alert-success">Recensione pubblicata con successo!</div>
         </c:if>
-        <c:if test="${param.erroreRecensione == '1'}">
+        <c:if test="${not empty erroreRecensione}">
+            <div class="alert alert-error"><c:out value="${erroreRecensione}"/></div>
+        </c:if>
+        <c:if test="${param.erroreRecensione == '1' && empty erroreRecensione}">
             <div class="alert alert-error">Errore nell'invio della recensione. Verifica i dati e riprova.</div>
         </c:if>
 
         <c:if test="${puoRecensire}">
             <div class="form-recensione-wrapper">
                 <h3>Scrivi una recensione</h3>
-                <form method="post" action="${pageContext.request.contextPath}/aggiungi-recensione" class="form-recensione" id="formRecensione">
+                <form method="post" action="${pageContext.request.contextPath}/aggiungi-recensione"
+                      class="form-recensione" id="formRecensione">
                     <input type="hidden" name="id" value="${prodotto.id}"/>
 
                     <div class="recensione-campo">
                         <label for="titolo">Titolo <span class="obbligatorio">*</span></label>
-                        <input type="text" id="titolo" name="titolo" maxlength="255" required placeholder="Riassumi la tua esperienza">
+                        <input type="text" id="titolo" name="titolo" maxlength="255" required
+                               placeholder="Riassumi la tua esperienza"
+                               value="${fn:escapeXml(recensioneTitolo)}">
+                        <c:if test="${not empty erroreTitoloRecensione}">
+                            <p class="recensione-errore-campo">${erroreTitoloRecensione}</p>
+                        </c:if>
                     </div>
 
                     <div class="recensione-campo">
                         <label>Valutazione <span class="obbligatorio">*</span></label>
-                        <div class="stelle-input" id="stelleInput" role="group" aria-label="Valutazione da 1 a 5 stelle">
-                            <input type="hidden" name="valutazione" id="valutazioneHidden">
+                        <div class="stelle-input" id="stelleInput" role="group"
+                             aria-label="Valutazione da 1 a 5 stelle">
+                            <input type="hidden" name="valutazione" id="valutazioneHidden"
+                                   value="${fn:escapeXml(recensioneValutazione)}">
                             <c:forEach begin="1" end="5" var="s">
-                                <i class="far fa-star" data-valore="${s}" role="button" aria-label="${s} stelle" tabindex="0"></i>
+                                <button type="button" class="stella-input" data-valore="${s}" aria-label="${s} stelle">
+                                    <span aria-hidden="true">&#9734;</span>
+                                </button>
                             </c:forEach>
                         </div>
-                        <p class="stelle-errore" id="stelleErrore" style="display:none;">Seleziona una valutazione.</p>
+                        <p class="stelle-errore" id="stelleErrore"
+                           style="${not empty erroreValutazioneRecensione ? 'display:block;' : 'display:none;'}">
+                                ${not empty erroreValutazioneRecensione ? erroreValutazioneRecensione : 'Seleziona una valutazione.'}
+                        </p>
                     </div>
 
                     <div class="recensione-campo">
                         <label for="commento">Commento</label>
-                        <textarea id="commento" name="commento" rows="4" maxlength="2000" placeholder="Descrivi la tua esperienza con questo prodotto..."></textarea>
+                        <textarea id="commento" name="commento" rows="4" maxlength="2000"
+                                  placeholder="Descrivi la tua esperienza con questo prodotto...">${fn:escapeXml(recensioneCommento)}</textarea>
+                        <c:if test="${not empty erroreCommentoRecensione}">
+                            <p class="recensione-errore-campo">${erroreCommentoRecensione}</p>
+                        </c:if>
                     </div>
 
                     <button type="submit" class="btn-recensione">Pubblica recensione</button>
@@ -180,7 +192,8 @@
                             <div class="recensione-header">
                                 <span class="recensione-titolo"><c:out value="${rec.titolo}"/></span>
                                 <span class="recensione-data">
-                                    <fmt:parseDate value="${rec.dataRecensione}" pattern="yyyy-MM-dd" var="parsedDate" type="date"/>
+                                    <fmt:parseDate value="${rec.dataRecensione}" pattern="yyyy-MM-dd" var="parsedDate"
+                                                   type="date"/>
                                     <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy"/>
                                 </span>
                             </div>
@@ -188,10 +201,10 @@
                                 <c:forEach begin="1" end="5" var="i">
                                     <c:choose>
                                         <c:when test="${i <= rec.valutazione}">
-                                            <i class="fas fa-star" aria-hidden="true"></i>
+                                            <span class="stella piena" aria-hidden="true">&#9733;</span>
                                         </c:when>
                                         <c:otherwise>
-                                            <i class="far fa-star" aria-hidden="true"></i>
+                                            <span class="stella vuota" aria-hidden="true">&#9734;</span>
                                         </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
@@ -200,10 +213,11 @@
                                 <p class="recensione-commento"><c:out value="${rec.commento}"/></p>
                             </c:if>
                             <c:if test="${not empty sessionScope.utenteConnesso && (rec.idUtente == sessionScope.utenteConnesso.id || sessionScope.utenteConnesso.admin)}">
-                                <form method="post" action="${pageContext.request.contextPath}/rimuovi-recensione" class="form-rimuovi-recensione">
+                                <form method="post" action="${pageContext.request.contextPath}/rimuovi-recensione"
+                                      class="form-rimuovi-recensione">
                                     <input type="hidden" name="idRecensione" value="${rec.id}"/>
                                     <button type="submit" class="btn-rimuovi-recensione">
-                                        <i class="fas fa-trash-alt" aria-hidden="true"></i> Elimina
+                                        <i class="ti ti-trash" aria-hidden="true"></i> Elimina
                                     </button>
                                 </form>
                             </c:if>
@@ -218,11 +232,12 @@
     </section>
 
     <div class="torna-catalogo">
-        <a href="${pageContext.request.contextPath}/catalogo"><i class="fas fa-arrow-left" aria-hidden="true"></i> Torna al catalogo</a>
+        <a href="${pageContext.request.contextPath}/catalogo"><i class="ti ti-arrow-left" aria-hidden="true"></i> Torna
+            al catalogo</a>
     </div>
 </main>
 
-<jsp:include page="/WEB-INF/jsp/footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 
 <script src="${pageContext.request.contextPath}/js/prodotto.js"></script>
 </body>

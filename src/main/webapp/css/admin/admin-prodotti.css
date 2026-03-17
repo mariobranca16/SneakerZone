@@ -1,21 +1,10 @@
 
-.admin-card--flush {
-    padding: 0;
-    overflow: hidden;
-}
-
-
 .prod-table-wrap {
     overflow-x: auto;
     margin-bottom: 0;
 }
 
-
-.admin-card--flush .admin-table {
-    border: none;
-    border-radius: 0;
-    overflow: visible;
-    margin: 0;
+.prod-table {
     min-width: 480px;
 }
 
@@ -24,6 +13,7 @@
     width: 84px;
     padding-left: 18px !important;
     padding-right: 8px !important;
+    text-align: center;
 }
 
 .col-info {
@@ -51,6 +41,7 @@
     background: #F0ECE8;
     padding: 6px;
     display: block;
+    margin: 0 auto;
 }
 
 .prod-thumb-empty {
@@ -60,6 +51,7 @@
     background: #F0ECE8;
     color: #C8BDB6;
     font-size: 22px;
+    margin: 0 auto;
 }
 
 

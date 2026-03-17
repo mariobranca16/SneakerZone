@@ -19,11 +19,11 @@ function initRimuovi() {
                 params.append(key, value);
             });
 
+            params.append('ajax', '1');
             fetch(form.getAttribute('action'), {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: params.toString()
             })
@@ -58,11 +58,11 @@ function initAggiorna() {
             });
             var row = form.closest('tr');
 
+            params.append('ajax', '1');
             fetch(form.getAttribute('action'), {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: params.toString()
             })

@@ -5,14 +5,15 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SneakerZone - Home</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/jsp/header.jsp" />
+<jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
 <main>
     <section class="hero">
@@ -27,13 +28,14 @@
         <div class="evidenza-header">
             <h2>Prodotti in evidenza</h2>
             <a class="evidenza-link-tutti" href="${pageContext.request.contextPath}/catalogo">
-                Vedi tutti <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                Vedi tutti <i class="ti ti-arrow-right" aria-hidden="true"></i>
             </a>
         </div>
         <div class="evidenza-grid">
             <c:forEach var="p" items="${prodottiInEvidenza}">
                 <div class="ev-card">
-                    <a class="ev-card-img-link" href="${pageContext.request.contextPath}/prodotto?id=${p.id}" aria-hidden="true" tabindex="-1">
+                    <a class="ev-card-img-link" href="${pageContext.request.contextPath}/prodotto?id=${p.id}"
+                       aria-hidden="true" tabindex="-1">
                         <div class="ev-card-img">
                             <c:if test="${not empty p.imgPath}">
                                 <img src="${pageContext.request.contextPath}${p.imgPath}"
@@ -47,7 +49,8 @@
                             <a href="${pageContext.request.contextPath}/prodotto?id=${p.id}">${p.nome}</a>
                         </h3>
                         <div class="ev-card-footer">
-                            <span class="ev-card-prezzo"><fmt:formatNumber value="${p.costo}" minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;</span>
+                            <span class="ev-card-prezzo"><fmt:formatNumber value="${p.costo}" minFractionDigits="2"
+                                                                           maxFractionDigits="2"/>&nbsp;&euro;</span>
                             <a class="ev-card-btn"
                                href="${pageContext.request.contextPath}/prodotto?id=${p.id}"
                                aria-label="Scopri ${p.nome}">
@@ -61,7 +64,7 @@
     </section>
 </main>
 
-<jsp:include page="/WEB-INF/jsp/footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 
 </body>
 </html>

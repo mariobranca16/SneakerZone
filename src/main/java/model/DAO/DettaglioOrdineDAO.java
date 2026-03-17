@@ -3,6 +3,7 @@ package model.DAO;
 import model.Bean.DettaglioOrdine;
 import model.Bean.ImmagineProdotto;
 import model.Bean.Prodotto;
+import model.ConPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -46,30 +47,6 @@ public class DettaglioOrdineDAO {
 
         } catch (SQLException e) {
             throw new RuntimeException("Errore nel recupero dei dettagli per l'ordine con ID: " + idOrdine, e);
-        }
-
-        return dettagli;
-    }
-
-    public List<DettaglioOrdine> doRetrieveByOrdine(Connection connection, long idOrdine) throws SQLException {
-        List<DettaglioOrdine> dettagli = new ArrayList<>();
-
-        try (PreparedStatement ps = connection.prepareStatement(
-                "SELECT ordine_id, prodotto_id, taglia, quantita, costo FROM Dettaglio_Ordine WHERE ordine_id = ?"
-        )) {
-            ps.setLong(1, idOrdine);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    DettaglioOrdine d = new DettaglioOrdine();
-                    d.setIdOrdine(rs.getLong("ordine_id"));
-                    d.setIdProdotto(rs.getLong("prodotto_id"));
-                    d.setTaglia(rs.getInt("taglia"));
-                    d.setQuantita(rs.getInt("quantita"));
-                    d.setCosto(rs.getDouble("costo"));
-                    dettagli.add(d);
-                }
-            }
         }
 
         return dettagli;

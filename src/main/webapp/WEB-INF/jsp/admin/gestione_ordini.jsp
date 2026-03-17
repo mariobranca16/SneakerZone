@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="it">
@@ -14,77 +15,113 @@
 
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
 
+<c:if test="${not empty sessionScope.flashErrore}">
+    <div class="alert alert-error">
+        <c:out value="${sessionScope.flashErrore}"/>
+    </div>
+    <c:remove var="flashErrore" scope="session"/>
+</c:if>
+
+
 <div class="admin-page-header">
     <div>
         <h1 class="admin-page-title">Gestione ordini</h1>
-        <p class="admin-page-subtitle">Consulta e aggiorna lo stato degli ordini</p>
+        <p class="admin-page-subtitle">
+            <c:choose>
+                <c:when test="${empty ordini}">Nessun ordine presente</c:when>
+                <c:otherwise>${fn:length(ordini)} ordini totali</c:otherwise>
+            </c:choose>
+        </p>
     </div>
 </div>
 
-<div class="admin-table-wrap">
-<table class="admin-table">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Utente</th>
-        <th>Data</th>
-        <th>Totale</th>
-        <th>Stato</th>
-        <th>Aggiorna stato</th>
-    </tr>
-    </thead>
-    <tbody>
+
+<div class="admin-card admin-card--flush">
 
     <c:choose>
         <c:when test="${empty ordini}">
-            <tr>
-                <td colspan="6" style="color:#6B7280; font-style:italic;">Nessun ordine presente.</td>
-            </tr>
+            <div class="prod-empty">
+                <i class="ti ti-truck"></i>
+                <p>Nessun ordine presente.</p>
+            </div>
         </c:when>
         <c:otherwise>
-            <c:forEach var="o" items="${ordini}">
-                <tr>
-                    <td>
-                        <a href="${pageContext.request.contextPath}/admin/ordine?id=${o.id}">#${o.id}</a>
-                    </td>
-                    <td>${emailUtenti[o.idUtente]}</td>
-                    <td>${o.dataOrdineFormattata}</td>
-                    <td style="font-weight:800;"><fmt:formatNumber value="${o.calcolaTotaleOrdine()}" type="number" minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;</td>
-                    <td>
-                        <c:choose>
-                            <c:when test="${o.stato.name() == 'IN_ELABORAZIONE'}">
-                                <span class="badge badge--elaborazione"><i class="fas fa-clock"></i> ${o.stato.label}</span>
-                            </c:when>
-                            <c:when test="${o.stato.name() == 'SPEDITO'}">
-                                <span class="badge badge--spedito"><i class="fas fa-truck"></i> ${o.stato.label}</span>
-                            </c:when>
-                            <c:when test="${o.stato.name() == 'CONSEGNATO'}">
-                                <span class="badge badge--consegnato"><i class="fas fa-circle-check"></i> ${o.stato.label}</span>
-                            </c:when>
-                            <c:when test="${o.stato.name() == 'ANNULLATO'}">
-                                <span class="badge badge--annullato"><i class="fas fa-ban"></i> ${o.stato.label}</span>
-                            </c:when>
-                            <c:otherwise>-</c:otherwise>
-                        </c:choose>
-                    </td>
-                    <td class="admin-table-actions">
-                        <form class="inline-form" method="post" action="${pageContext.request.contextPath}/admin/ordini">
-                            <input type="hidden" name="id" value="${o.id}">
-                            <select name="stato" class="select-inline">
-                                <c:forEach var="s" items="${stati}">
-                                    <option value="${s}" <c:if test="${o.stato == s}">selected</c:if>>${s.label}</option>
-                                </c:forEach>
-                            </select>
-                            <button class="btn btn--small btn--primary" type="submit">Aggiorna</button>
-                        </form>
-                    </td>
-                </tr>
-            </c:forEach>
+            <div class="admin-table-wrap ordini-table-wrap">
+                <table class="admin-table ordini-table">
+                    <thead>
+                    <tr>
+                        <th class="col-id col-center">ID</th>
+                        <th class="col-utente">Utente</th>
+                        <th class="col-data col-hide-sm">Data</th>
+                        <th class="col-totale col-center col-hide-xs">Totale</th>
+                        <th class="col-stato col-center">Stato</th>
+                        <th class="col-aggiorna col-center">Aggiorna stato</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <c:forEach var="o" items="${ordini}">
+                        <tr>
+                            <td class="col-id col-center">
+                                <a href="${pageContext.request.contextPath}/admin/ordine?id=${o.id}">#${o.id}</a>
+                            </td>
+                            <td class="col-utente">${emailUtenti[o.idUtente]}</td>
+                            <td class="col-data col-hide-sm">${o.dataOrdineFormattata}</td>
+                            <td class="col-totale col-center col-hide-xs">
+                                <span class="ordine-totale-val">
+                                    <fmt:formatNumber value="${o.totaleOrdine}" type="number"
+                                                      minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
+                                </span>
+                            </td>
+                            <td class="col-stato col-center">
+                                <c:choose>
+                                    <c:when test="${o.stato.name() == 'IN_ELABORAZIONE'}">
+                                        <span class="badge badge--elaborazione">
+                                            <i class="ti ti-clock"></i> ${o.stato.label}
+                                        </span>
+                                    </c:when>
+                                    <c:when test="${o.stato.name() == 'SPEDITO'}">
+                                        <span class="badge badge--spedito">
+                                            <i class="ti ti-truck"></i> ${o.stato.label}
+                                        </span>
+                                    </c:when>
+                                    <c:when test="${o.stato.name() == 'CONSEGNATO'}">
+                                        <span class="badge badge--consegnato">
+                                            <i class="ti ti-circle-check"></i> ${o.stato.label}
+                                        </span>
+                                    </c:when>
+                                    <c:when test="${o.stato.name() == 'ANNULLATO'}">
+                                        <span class="badge badge--annullato">
+                                            <i class="ti ti-circle-off"></i> ${o.stato.label}
+                                        </span>
+                                    </c:when>
+                                    <c:otherwise>-</c:otherwise>
+                                </c:choose>
+                            </td>
+                            <td class="col-aggiorna col-center">
+                                <div class="admin-table-actions">
+                                    <form class="inline-form" method="post"
+                                          action="${pageContext.request.contextPath}/admin/ordini">
+                                        <input type="hidden" name="id" value="${o.id}">
+                                        <select name="stato" class="select-inline">
+                                            <c:forEach var="s" items="${stati}">
+                                                <option value="${s}"
+                                                        <c:if test="${o.stato == s}">selected</c:if>>${s.label}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <button class="btn btn--small btn--primary" type="submit">Aggiorna</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </c:forEach>
+
+                    </tbody>
+                </table>
+            </div>
         </c:otherwise>
     </c:choose>
 
-    </tbody>
-</table>
 </div>
 
 </div>

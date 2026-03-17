@@ -1,12 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Carrello</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/carrello.css">
 </head>
@@ -23,12 +25,11 @@
                 <div class="alert alert-error">${erroreCarrello}</div>
             </c:if>
 
-            <jsp:useBean id="carrello" class="model.Bean.Carrello" scope="session"/>
             <c:choose>
                 <c:when test="${empty carrello.prodotti}">
                     <div class="cart-empty-state">
                         <div class="cart-empty-icon" aria-hidden="true">
-                            <i class="bi bi-bag-fill"></i>
+                            <i class="ti ti-shopping-bag"></i>
                         </div>
                         <p class="cart-empty-kicker">Nessun articolo</p>
                         <p class="cart-empty">Il carrello &egrave; vuoto. Scopri le ultime sneaker e aggiungi i tuoi
@@ -64,7 +65,7 @@
                                                    aria-hidden="true" tabindex="-1">
                                                     <img class="cart-item-thumb"
                                                          src="${pageContext.request.contextPath}${item.prodotto.imgPath}"
-                                                         alt="">
+                                                         alt="${fn:escapeXml(item.prodotto.nome)}">
                                                 </a>
                                             </c:if>
                                             <a class="cart-item-name"
@@ -86,7 +87,7 @@
                                         </form>
                                     </td>
                                     <td class="cart-price"><fmt:formatNumber
-                                            value="${item.prodotto.costo * item.quantita}" minFractionDigits="2"
+                                            value="${item.subtotale}" minFractionDigits="2"
                                             maxFractionDigits="2"/> &euro;
                                     </td>
                                     <td class="cart-action-cell">
@@ -106,14 +107,10 @@
                         </table>
                     </div>
 
-                    <c:set var="totaleCarrello" value="0.0"/>
-                    <c:forEach var="item" items="${carrello.prodotti}">
-                        <c:set var="totaleCarrello" value="${totaleCarrello + item.prodotto.costo * item.quantita}"/>
-                    </c:forEach>
                     <div class="cart-totale">
-                        <span class="cart-totale-label">Totale ordine:</span>
+                        <span class="cart-totale-label">Totale:</span>
                         <span class="cart-totale-valore">
-                            <span id="cart-totale-valore"><fmt:formatNumber value="${totaleCarrello}"
+                            <span id="cart-totale-valore"><fmt:formatNumber value="${carrello.totale}"
                                                                             minFractionDigits="2"
                                                                             maxFractionDigits="2"/></span>&nbsp;&euro;
                         </span>
@@ -137,4 +134,3 @@
 <script src="${pageContext.request.contextPath}/js/carrello.js"></script>
 </body>
 </html>
-

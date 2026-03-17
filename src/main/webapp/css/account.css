@@ -3,76 +3,36 @@ html {
     height: auto;
 }
 
-
 main {
     min-height: calc(100vh - 160px);
     padding: 40px 20px 56px;
-    background: var(--grigio-chiaro);
+    background: var(--bg);
 }
 
-
 .account-wrap {
-    width: min(860px, 100%);
+    max-width: 860px;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-
-.account-hero {
-    background: linear-gradient(140deg, #FF4500 0%, #FF7A45 100%);
-    border-radius: 18px;
-    padding: 24px 28px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    box-shadow: 0 8px 24px rgba(255, 69, 0, 0.22);
+.account-page-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    text-align: center;
 }
-
-.account-hero-avatar {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.22);
-    border: 3px solid rgba(255, 255, 255, 0.45);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 26px;
-    color: #fff;
-    flex-shrink: 0;
-}
-
-.account-hero-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 0;
-}
-
-.account-hero-name {
-    font-size: 18px;
-    font-weight: 800;
-    color: #fff;
-    line-height: 1.2;
-}
-
-.account-hero-email {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.80);
-    word-break: break-all;
-}
-
 
 .account-tabs {
     display: flex;
     gap: 4px;
-    background: var(--superficie-chiara);
-    border: 1px solid var(--bordo-superficie);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 14px;
     padding: 6px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .tab-btn {
@@ -91,16 +51,16 @@ main {
     cursor: pointer;
     font-family: inherit;
     white-space: nowrap;
-    transition: background 0.2s, color 0.2s;
+    transition: background 0.2s;
 }
 
 .tab-btn:hover {
     background: var(--input-bg);
-    color: #111111;
+    color: var(--text);
 }
 
 .tab-btn.active {
-    background: #FF4500;
+    background: var(--brand);
     color: #fff;
 }
 
@@ -112,33 +72,31 @@ main {
 
 .account-section {
     display: none;
-    background: var(--superficie-chiara);
-    border: 1px solid var(--bordo-superficie);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 18px;
     padding: 32px 36px 36px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
 }
 
 .account-section.active {
     display: block;
 }
 
-
 .section-header {
     margin-bottom: 26px;
     padding-bottom: 18px;
-    border-bottom: 1px solid var(--bordo-superficie);
+    border-bottom: 1px solid var(--border);
 }
 
 .section-title {
     font-size: 20px;
     font-weight: 700;
-    color: #111111;
+    color: var(--text);
     margin-bottom: 4px;
 }
 
 .section-subtitle {
-    color: #6B7280;
+    color: var(--muted);
     font-size: 14px;
 }
 
@@ -153,6 +111,7 @@ main {
     display: flex;
     flex-direction: column;
     gap: 7px;
+    position: relative;
 }
 
 .form-group.full,
@@ -163,35 +122,28 @@ main {
 .form-group label {
     font-size: 13px;
     font-weight: 600;
-    color: #111111;
+    color: var(--text);
 }
 
 .form-group input {
-    height: 48px;
-    border: 1px solid var(--bordo-superficie);
-    border-radius: 12px;
+    height: 46px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
     padding: 0 16px;
     outline: none;
     font-size: 15px;
     background: var(--input-bg);
-    color: #111111;
+    color: var(--text);
     font-family: inherit;
-    transition: border-color 140ms ease, box-shadow 140ms ease;
 }
 
 .form-group input:focus {
-    border-color: rgba(255, 69, 0, 0.55);
-    box-shadow: 0 0 0 4px rgba(255, 69, 0, 0.15);
+    border-color: var(--brand);
 }
 
 .form-group input:disabled {
     opacity: 0.55;
     cursor: default;
-}
-
-.form-group input:-webkit-autofill {
-    -webkit-text-fill-color: #111111;
-    box-shadow: 0 0 0px 1000px var(--superficie-chiara) inset;
 }
 
 .field-hint {
@@ -205,16 +157,47 @@ main {
     cursor: default;
 }
 
+.ac-dropdown {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px #ccc;
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    z-index: 200;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.ac-dropdown li {
+    padding: 9px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.ac-dropdown li:hover,
+.ac-dropdown li.ac-active {
+    background: #fff5f0;
+    color: var(--brand);
+}
+
 
 .no-data-msg {
     display: flex;
     align-items: center;
     gap: 8px;
     font-size: 14px;
-    color: #6B7280;
+    color: var(--muted);
     background: var(--input-bg);
-    border: 1px solid var(--bordo-superficie);
-    border-radius: 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
     padding: 14px 16px;
     margin-bottom: 18px;
 }
@@ -231,15 +214,14 @@ main {
     display: flex;
     align-items: center;
     gap: 16px;
-    border: 1px solid var(--bordo-superficie);
-    border-radius: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     padding: 14px 18px;
     background: var(--input-bg);
-    transition: border-color 0.2s;
 }
 
 .profilo-addr-card:hover {
-    border-color: rgba(255, 69, 0, 0.35);
+    border-color: #aaa;
 }
 
 .profilo-addr-info {
@@ -251,14 +233,14 @@ main {
 
 .addr-destinatario {
     font-size: 14px;
-    font-weight: 800;
-    color: #111111;
+    font-weight: 700;
+    color: var(--text);
 }
 
 .addr-detail {
     font-size: 13px;
-    color: #6B7280;
-    line-height: 1.35;
+    color: var(--muted);
+    line-height: 1.4;
 }
 
 .profilo-addr-actions {
@@ -270,8 +252,8 @@ main {
 
 .btn-addr-edit,
 .btn-addr-del {
-    height: 36px;
-    border-radius: 10px;
+    height: 34px;
+    border-radius: 8px;
     font-size: 12px;
     font-weight: 700;
     font-family: inherit;
@@ -280,24 +262,23 @@ main {
     align-items: center;
     gap: 5px;
     padding: 0 12px;
-    transition: background 130ms ease, border-color 130ms ease, color 130ms ease;
 }
 
 .btn-addr-edit {
-    border: 1px solid var(--bordo-superficie);
-    background: var(--superficie-chiara);
+    border: 1px solid var(--border);
+    background: var(--surface);
     color: #374151;
 }
 
 .btn-addr-edit:hover {
-    background: #FF4500;
-    border-color: #FF4500;
+    background: var(--brand);
+    border-color: var(--brand);
     color: #fff;
 }
 
 .btn-addr-del {
-    border: 1px solid #FCA5A5;
-    background: #FEF2F2;
+    border: 1px solid #fca5a5;
+    background: #fef2f2;
     color: #DC2626;
 }
 
@@ -314,10 +295,10 @@ main {
 
 .profilo-edit-section {
     display: none;
-    border: 1px solid rgba(255, 69, 0, 0.30);
-    border-radius: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     padding: 20px 22px;
-    background: rgba(255, 69, 0, 0.03);
+    background: #fff8f5;
     margin-bottom: 16px;
     margin-top: 4px;
 }
@@ -328,14 +309,13 @@ main {
 
 .edit-section-title {
     font-size: 15px;
-    font-weight: 800;
-    color: #FF4500;
+    font-weight: 700;
+    color: var(--brand);
     margin-bottom: 16px;
     display: flex;
     align-items: center;
     gap: 7px;
 }
-
 
 .btn-add-addr {
     display: inline-flex;
@@ -344,9 +324,8 @@ main {
     margin-top: 4px;
     font-size: 13px;
     font-weight: 700;
-    color: #FF4500;
+    color: var(--brand);
     text-decoration: none;
-    transition: text-decoration 130ms;
 }
 
 .btn-add-addr:hover {
@@ -358,8 +337,8 @@ main {
     display: flex;
     align-items: center;
     gap: 14px;
-    border: 1px solid var(--bordo-superficie);
-    border-radius: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
     padding: 14px 18px;
     background: var(--input-bg);
     margin-bottom: 20px;
@@ -367,7 +346,7 @@ main {
 
 .saved-payment-icon {
     font-size: 22px;
-    color: var(--arancione);
+    color: var(--brand);
     flex-shrink: 0;
 }
 
@@ -380,20 +359,20 @@ main {
 
 .saved-payment-number {
     font-size: 14px;
-    font-weight: 800;
-    color: #111111;
+    font-weight: 700;
+    color: var(--text);
     letter-spacing: 1px;
 }
 
 .saved-payment-meta {
     font-size: 13px;
-    color: #6B7280;
+    color: var(--muted);
 }
 
 .payment-edit-label {
     font-size: 13px;
     font-weight: 700;
-    color: #6B7280;
+    color: var(--muted);
     margin-bottom: 16px;
 }
 
@@ -405,79 +384,46 @@ main {
 }
 
 .btn-primary {
-    height: 48px;
+    height: 44px;
     border: 0;
-    border-radius: 14px;
-    background: #FF4500;
+    border-radius: 8px;
+    background: var(--brand);
     color: #FFFFFF;
     font-weight: 700;
     font-size: 15px;
     cursor: pointer;
     padding: 0 28px;
     font-family: inherit;
-    box-shadow: 0 2px 8px rgba(255, 69, 0, 0.3);
-    transition: background-color 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .btn-primary:hover {
-    background-color: #e63e00;
-}
-
-.btn-primary:focus-visible {
-    outline: 3px solid #000000;
-    outline-offset: 3px;
+    background: var(--brand-dark);
 }
 
 .btn-secondary {
-    height: 48px;
-    border: 1px solid var(--bordo-superficie);
-    border-radius: 14px;
-    background: var(--superficie-chiara);
-    color: #111111;
-    font-weight: 900;
+    height: 44px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 700;
     font-size: 15px;
     cursor: pointer;
     padding: 0 28px;
-    font-family: inherit;
     text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 140ms ease, border-color 140ms ease;
+    display: inline-block;
+    line-height: 44px;
+    font-family: inherit;
 }
 
 .btn-secondary:hover {
     background: var(--input-bg);
-    border-color: #b0b8c4;
-}
-
-.btn-secondary:focus-visible {
-    outline: 3px solid #000000;
-    outline-offset: 3px;
 }
 
 
 @media (max-width: 640px) {
     main {
         padding: 24px 14px 40px;
-    }
-
-    .account-hero {
-        padding: 18px 20px;
-        gap: 14px;
-    }
-
-    .account-hero-avatar {
-        width: 52px;
-        height: 52px;
-        font-size: 20px;
-    }
-
-    .account-hero-name {
-        font-size: 16px;
     }
 
     .tab-btn span {

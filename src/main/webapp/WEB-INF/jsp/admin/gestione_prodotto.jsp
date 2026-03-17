@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="it">
@@ -60,27 +61,27 @@
             <div class="form-row">
                 <label class="label" for="nome">Nome</label>
                 <input class="input" type="text" id="nome" name="nome"
-                       value="${prodotto.nome}" maxlength="150" required>
+                       value="${fn:escapeXml(prodotto.nome)}" maxlength="150" required>
                 <c:if test="${not empty erroreNome}">
-                    <div class="form-error">${erroreNome}</div>
+                    <div class="form-error"><c:out value="${erroreNome}"/></div>
                 </c:if>
             </div>
 
             <div class="form-row">
                 <label class="label" for="brand">Brand</label>
                 <input class="input" type="text" id="brand" name="brand"
-                       value="${prodotto.brand}" maxlength="100" required>
+                       value="${fn:escapeXml(prodotto.brand)}" maxlength="100" required>
                 <c:if test="${not empty erroreBrand}">
-                    <div class="form-error">${erroreBrand}</div>
+                    <div class="form-error"><c:out value="${erroreBrand}"/></div>
                 </c:if>
             </div>
 
             <div class="form-row">
                 <label class="label" for="colore">Colore</label>
                 <input class="input" type="text" id="colore" name="colore"
-                       value="${prodotto.colore}" maxlength="50">
+                       value="${fn:escapeXml(prodotto.colore)}" maxlength="50">
                 <c:if test="${not empty erroreColore}">
-                    <div class="form-error">${erroreColore}</div>
+                    <div class="form-error"><c:out value="${erroreColore}"/></div>
                 </c:if>
             </div>
 
@@ -94,25 +95,26 @@
                     <option value="Donna"  ${prodotto.genere == 'Donna'  ? 'selected' : ''}>Donna</option>
                 </select>
                 <c:if test="${not empty erroreGenere}">
-                    <div class="form-error">${erroreGenere}</div>
+                    <div class="form-error"><c:out value="${erroreGenere}"/></div>
                 </c:if>
             </div>
 
             <div class="form-row">
                 <label class="label" for="costo">Prezzo (&euro;)</label>
                 <input class="input" type="text" id="costo" name="costo"
-                       value="${not empty formCosto ? formCosto : prodotto.costo}" placeholder="0.00" required>
+                       value="${fn:escapeXml(not empty formCosto ? formCosto : prodotto.costo)}" placeholder="0.00"
+                       required>
                 <c:if test="${not empty erroreCosto}">
-                    <div class="form-error">${erroreCosto}</div>
+                    <div class="form-error"><c:out value="${erroreCosto}"/></div>
                 </c:if>
             </div>
 
             <div class="form-row form-row--full">
                 <label class="label" for="descrizione">Descrizione</label>
                 <textarea class="textarea" id="descrizione" name="descrizione"
-                          rows="4" maxlength="2000">${prodotto.descrizione}</textarea>
+                          rows="4" maxlength="2000">${fn:escapeXml(prodotto.descrizione)}</textarea>
                 <c:if test="${not empty erroreDescrizione}">
-                    <div class="form-error">${erroreDescrizione}</div>
+                    <div class="form-error"><c:out value="${erroreDescrizione}"/></div>
                 </c:if>
             </div>
 
@@ -131,7 +133,7 @@
                 </c:forEach>
             </div>
             <c:if test="${not empty erroreTaglie}">
-                <div class="form-error">${erroreTaglie}</div>
+                <div class="form-error"><c:out value="${erroreTaglie}"/></div>
             </c:if>
         </div>
 
@@ -144,12 +146,12 @@
                         <input type="checkbox" id="cat_${cat.id}" name="categoria_id"
                                value="${cat.id}"
                             ${idCategorieSelezionate.contains(cat.id) ? 'checked' : ''}>
-                        <label class="taglia-label" for="cat_${cat.id}">${cat.nome}</label>
+                        <label class="taglia-label" for="cat_${cat.id}"><c:out value="${cat.nome}"/></label>
                     </div>
                 </c:forEach>
             </div>
             <c:if test="${not empty erroreCategorie}">
-                <div class="form-error">${erroreCategorie}</div>
+                <div class="form-error"><c:out value="${erroreCategorie}"/></div>
             </c:if>
         </div>
 
@@ -166,7 +168,7 @@
 
     <c:when test="${prodotto != null && prodotto.id > 0}">
         <div class="admin-card">
-                    <div class="admin-card-title"><i class="ti ti-photo-plus"></i> Immagini prodotto</div>
+            <div class="admin-card-title"><i class="ti ti-photo-plus"></i> Immagini prodotto</div>
 
 
             <c:choose>
@@ -181,7 +183,7 @@
                             <div class="img-card ${img.posizione == 1 ? 'img-card--cover' : ''}">
                                 <div class="img-card-preview">
                                     <img src="${pageContext.request.contextPath}${img.imgPath}"
-                                         alt="${img.descrizione}">
+                                         alt="${fn:escapeXml(img.descrizione)}">
                                     <c:if test="${img.posizione == 1}">
                                         <span class="img-card-badge">Copertina</span>
                                     </c:if>
@@ -189,7 +191,7 @@
                                 <div class="img-card-body">
                                     <span class="img-card-pos">Posizione ${img.posizione}</span>
                                     <c:if test="${not empty img.descrizione}">
-                                        <span class="img-card-desc">${img.descrizione}</span>
+                                        <span class="img-card-desc"><c:out value="${img.descrizione}"/></span>
                                     </c:if>
                                 </div>
                                 <form class="img-card-actions" method="post"
@@ -274,8 +276,8 @@
                         <tbody>
                         <c:forEach var="rec" items="${recensioni}">
                             <tr>
-                                <td>${emailUtenti[rec.idUtente]}</td>
-                                <td>${rec.titolo}</td>
+                                <td><c:out value="${emailUtenti[rec.idUtente]}"/></td>
+                                <td><c:out value="${rec.titolo}"/></td>
                                 <td>
                                     <c:forEach begin="1" end="5" var="i">
                                         <c:choose>

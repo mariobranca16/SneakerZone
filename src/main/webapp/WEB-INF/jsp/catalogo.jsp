@@ -7,15 +7,16 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogo Prodotti</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/catalogo.css">
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/jsp/header.jsp" />
+<jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
 <main>
     <div class="catalogo-page">
@@ -23,30 +24,30 @@
 
         <div class="catalogo-layout">
 
-            <%-- Sidebar con i filtri di ricerca --%>
+
             <aside class="catalogo-sidebar">
                 <form method="get" action="${pageContext.request.contextPath}/catalogo" id="filtriForm"
-                  data-ctx="${pageContext.request.contextPath}">
+                      data-ctx="${pageContext.request.contextPath}">
 
-                    <%-- Cerca --%>
+
                     <div class="sidebar-section">
                         <label for="q" class="sidebar-label">Cerca</label>
                         <div class="sidebar-search-wrap">
-                            <i class="fas fa-magnifying-glass sidebar-search-icon" aria-hidden="true"></i>
+                            <i class="ti ti-search sidebar-search-icon" aria-hidden="true"></i>
                             <input class="sidebar-input" type="text" id="q" name="q"
                                    placeholder="Nome o brand…"
                                    value="${fn:escapeXml(filtroQ)}">
                         </div>
                     </div>
 
-                    <%-- Categoria --%>
+
                     <div class="sidebar-section">
                         <div class="sidebar-label">Categoria</div>
                         <ul class="sidebar-radio-list">
                             <li>
                                 <label class="sidebar-radio-item">
                                     <input type="radio" name="categoria" value=""
-                                           ${empty filtroCategoria ? 'checked' : ''}>
+                                    ${empty filtroCategoria ? 'checked' : ''}>
                                     <span>Tutte</span>
                                 </label>
                             </li>
@@ -54,7 +55,7 @@
                                 <li>
                                     <label class="sidebar-radio-item">
                                         <input type="radio" name="categoria" value="${cat.nome}"
-                                               ${filtroCategoria == cat.nome ? 'checked' : ''}>
+                                            ${filtroCategoria == cat.nome ? 'checked' : ''}>
                                         <span>${cat.nome}</span>
                                     </label>
                                 </li>
@@ -62,42 +63,42 @@
                         </ul>
                     </div>
 
-                    <%-- Genere --%>
+
                     <div class="sidebar-section">
                         <div class="sidebar-label">Genere</div>
                         <ul class="sidebar-radio-list">
                             <li>
                                 <label class="sidebar-radio-item">
                                     <input type="radio" name="genere" value=""
-                                           ${empty filtroGenere ? 'checked' : ''}>
+                                    ${empty filtroGenere ? 'checked' : ''}>
                                     <span>Tutti</span>
                                 </label>
                             </li>
                             <li>
                                 <label class="sidebar-radio-item">
                                     <input type="radio" name="genere" value="Uomo"
-                                           ${filtroGenere == 'Uomo' ? 'checked' : ''}>
+                                    ${filtroGenere == 'Uomo' ? 'checked' : ''}>
                                     <span>Uomo</span>
                                 </label>
                             </li>
                             <li>
                                 <label class="sidebar-radio-item">
                                     <input type="radio" name="genere" value="Donna"
-                                           ${filtroGenere == 'Donna' ? 'checked' : ''}>
+                                    ${filtroGenere == 'Donna' ? 'checked' : ''}>
                                     <span>Donna</span>
                                 </label>
                             </li>
                             <li>
                                 <label class="sidebar-radio-item">
                                     <input type="radio" name="genere" value="Unisex"
-                                           ${filtroGenere == 'Unisex' ? 'checked' : ''}>
+                                    ${filtroGenere == 'Unisex' ? 'checked' : ''}>
                                     <span>Unisex</span>
                                 </label>
                             </li>
                         </ul>
                     </div>
 
-                    <%-- Fascia prezzo --%>
+
                     <div class="sidebar-section">
                         <div class="sidebar-label">Prezzo (&euro;)</div>
                         <div class="sidebar-prezzo-row">
@@ -115,18 +116,18 @@
                         </div>
                     </div>
 
-                    <%-- Bottone azzera --%>
+
                     <div class="sidebar-actions">
                         <a id="btnAzzera" class="sidebar-btn sidebar-btn--reset"
                            href="${pageContext.request.contextPath}/catalogo">
-                            <i class="fas fa-xmark"></i> Azzera filtri
+                            <i class="ti ti-x"></i> Azzera filtri
                         </a>
                     </div>
 
                 </form>
             </aside>
 
-            <%-- Area con i risultati della ricerca --%>
+
             <div class="catalogo-risultati">
 
                 <c:if test="${not empty messaggio}">
@@ -143,7 +144,7 @@
                 <c:choose>
                     <c:when test="${empty prodotti}">
                         <div class="catalogo-empty">
-                            <i class="fas fa-box-open catalogo-empty-icon" aria-hidden="true"></i>
+                            <i class="ti ti-package catalogo-empty-icon" aria-hidden="true"></i>
                             <p>Nessun prodotto trovato con i filtri selezionati.</p>
                             <a href="${pageContext.request.contextPath}/catalogo">Mostra tutti i prodotti</a>
                         </div>
@@ -153,17 +154,21 @@
                             <c:forEach var="prodotto" items="${prodotti}">
                                 <div class="prodotto-card">
 
-                                    <a class="prodotto-thumb-link" href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}" aria-hidden="true" tabindex="-1">
+                                    <a class="prodotto-thumb-link"
+                                       href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}"
+                                       aria-hidden="true" tabindex="-1">
                                         <div class="prodotto-thumb">
                                             <c:if test="${not empty prodotto.imgPath}">
-                                                <img src="${pageContext.request.contextPath}${prodotto.imgPath}" alt="${prodotto.nome}" loading="lazy">
+                                                <img src="${pageContext.request.contextPath}${prodotto.imgPath}"
+                                                     alt="${prodotto.nome}" loading="lazy">
                                             </c:if>
                                         </div>
                                     </a>
 
                                     <div class="prodotto-body">
                                         <h2 class="prodotto-nome">
-                                            <a class="prodotto-nome-link" href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}">
+                                            <a class="prodotto-nome-link"
+                                               href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}">
                                                 <c:out value="${prodotto.nome}"/>
                                             </a>
                                         </h2>
@@ -182,7 +187,9 @@
 
                                     <div class="prodotto-footer">
                                         <div class="prodotto-prezzo">
-                                            <fmt:formatNumber value="${prodotto.costo}" minFractionDigits="2" maxFractionDigits="2"/><span class="currency">&euro;</span>
+                                            <fmt:formatNumber value="${prodotto.costo}" minFractionDigits="2"
+                                                              maxFractionDigits="2"/><span
+                                                class="currency">&euro;</span>
                                         </div>
 
                                         <div class="prodotto-azioni">
@@ -190,22 +197,22 @@
                                                 <input type="hidden" name="azione" value="aggiungi"/>
                                                 <input type="hidden" name="id" value="${prodotto.id}"/>
                                                 <input type="hidden" name="origine" value="catalogo"/>
-                                                <c:set var="primaTagliaDisp" value=""/>
-                                                <c:forEach var="pt" items="${prodotto.taglie}">
-                                                    <c:if test="${empty primaTagliaDisp && pt.quantita > 0}">
-                                                        <c:set var="primaTagliaDisp" value="${pt.taglia}"/>
-                                                    </c:if>
-                                                </c:forEach>
-                                                <input type="hidden" name="taglia" value="${primaTagliaDisp}"/>
+                                                <input type="hidden" name="taglia"
+                                                       value="${prodotto.primaTagliaDisponibile}"/>
                                                 <input type="hidden" name="quantita" value="1"/>
-                                                <button class="btn-primary" type="submit" aria-label="Aggiungi ${prodotto.nome} al carrello">Aggiungi al carrello</button>
+                                                <button class="btn-primary" type="submit"
+                                                        aria-label="Aggiungi ${prodotto.nome} al carrello">Aggiungi al
+                                                    carrello
+                                                </button>
                                             </form>
 
                                             <c:if test="${not empty sessionScope.utenteConnesso}">
-                                                <form class="form-wishlist" method="post" action="${pageContext.request.contextPath}/add-to-wishlist">
+                                                <form class="form-wishlist" method="post"
+                                                      action="${pageContext.request.contextPath}/add-to-wishlist">
                                                     <input type="hidden" name="idProdotto" value="${prodotto.id}"/>
-                                                    <button class="btn-primary" type="submit" aria-label="Aggiungi ${prodotto.nome} alla wishlist">
-                                                        <i class="fa-regular fa-heart"></i>
+                                                    <button class="btn-primary" type="submit"
+                                                            aria-label="Aggiungi ${prodotto.nome} alla wishlist">
+                                                        <i class="ti ti-heart"></i>
                                                     </button>
                                                 </form>
                                             </c:if>
@@ -219,18 +226,18 @@
                 </c:choose>
 
             </div>
-            <%-- fine .catalogo-risultati --%>
+
 
         </div>
-        <%-- fine .catalogo-layout --%>
+
 
         <a class="catalogo-link-back" href="${pageContext.request.contextPath}/home">Torna alla home</a>
     </div>
 </main>
 
-<jsp:include page="/WEB-INF/jsp/footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 
-<%-- auto-hide degli alert gestito da common.js (caricato dal footer) --%>
+
 <script>var isLoggedIn = ${not empty sessionScope.utenteConnesso};</script>
 <script src="${pageContext.request.contextPath}/js/catalogo.js"></script>
 

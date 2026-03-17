@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <footer class="bottombar">
 
     <div class="footer-main">
@@ -12,23 +13,33 @@
         <div>
             <h4 class="footer-heading">Esplora</h4>
             <ul class="footer-links">
-                <li><a href="${pageContext.request.contextPath}/home">Home</a></li>
-                <li><a href="${pageContext.request.contextPath}/catalogo">Catalogo</a></li>
+                <li><a href="${pageContext.request.contextPath}/catalogo?genere=Uomo">Uomo</a></li>
+                <li><a href="${pageContext.request.contextPath}/catalogo?genere=Donna">Donna</a></li>
+                <li><a href="${pageContext.request.contextPath}/catalogo?genere=Unisex">Unisex</a></li>
             </ul>
         </div>
 
         <div>
             <h4 class="footer-heading">Account</h4>
             <ul class="footer-links">
-                <li><a href="${pageContext.request.contextPath}/login">Accedi</a></li>
-                <li><a href="${pageContext.request.contextPath}/registrazione">Registrati</a></li>
+                <c:choose>
+                    <c:when test="${not empty sessionScope.utenteConnesso}">
+                        <li><a href="${pageContext.request.contextPath}/myAccount">Profilo</a></li>
+                        <li><a href="${pageContext.request.contextPath}/wishlist">Wishlist</a></li>
+                        <li><a href="${pageContext.request.contextPath}/ordini">I miei ordini</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="${pageContext.request.contextPath}/login">Accedi</a></li>
+                        <li><a href="${pageContext.request.contextPath}/registrazione">Registrati</a></li>
+                    </c:otherwise>
+                </c:choose>
             </ul>
         </div>
 
         <div>
             <h4 class="footer-heading">Supporto</h4>
             <address class="footer-address">
-                <p><i class="fas fa-envelope" aria-hidden="true"></i> supporto@sneakerzone.it</p>
+                <p><i class="ti ti-mail" aria-hidden="true"></i> supporto@sneakerzone.it</p>
             </address>
         </div>
 

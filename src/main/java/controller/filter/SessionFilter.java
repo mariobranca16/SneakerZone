@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.bean.Carrello;
+import model.Bean.Carrello;
 
 import java.io.IOException;
 

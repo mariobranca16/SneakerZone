@@ -1,26 +1,28 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SneakerZone - Login</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
 </head>
 <body>
 
-<jsp:include page="/WEB-INF/jsp/header.jsp" />
+<jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
 <c:if test="${not empty errore}">
-    <div class="alert alert-error">${errore}</div>
+    <div class="alert alert-error"><c:out value="${errore}"/></div>
 </c:if>
 
 <c:if test="${not empty messaggio}">
-    <div class="alert alert-success">${messaggio}</div>
+    <div class="alert alert-success"><c:out value="${messaggio}"/></div>
 </c:if>
 
 <main>
@@ -32,15 +34,16 @@
             <form method="post" action="${pageContext.request.contextPath}/login">
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input id="email" name="email" type="email" value="${emailInserita}" required>
+                    <input id="email" name="email" type="email" value="${fn:escapeXml(emailInserita)}" required>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
                     <div class="password-wrapper">
                         <input id="password" name="password" type="password" required>
-                        <button type="button" class="toggle-password" aria-label="Mostra password" onclick="togglePassword('password', this)">
-                            <i class="fa-regular fa-eye" aria-hidden="true"></i>
+                        <button type="button" class="toggle-password" aria-label="Mostra password"
+                                onclick="togglePassword('password', this)">
+                            <i class="ti ti-eye" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
@@ -58,9 +61,8 @@
     </div>
 </main>
 
-<jsp:include page="/WEB-INF/jsp/footer.jsp" />
+<jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 
-<%-- togglePassword è definito in common.js (caricato dal footer) --%>
 
 </body>
 </html>

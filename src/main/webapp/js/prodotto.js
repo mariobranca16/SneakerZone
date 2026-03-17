@@ -1,21 +1,19 @@
-document.addEventListener('DOMContentLoaded', function() {
-
-    // Gallery miniature
+document.addEventListener('DOMContentLoaded', function () {
     var mainImg = document.getElementById('imgPrincipale');
-    document.querySelectorAll('.miniatura').forEach(function(thumb) {
-        thumb.addEventListener('click', function() {
+    document.querySelectorAll('.miniatura').forEach(function (thumb) {
+        thumb.addEventListener('click', function () {
             if (mainImg) mainImg.src = thumb.src;
-            document.querySelectorAll('.miniatura').forEach(function(m) {
+            document.querySelectorAll('.miniatura').forEach(function (m) {
                 m.classList.toggle('attiva', m === thumb);
             });
         });
     });
-
-    // Form aggiungi al carrello
     var form = document.getElementById('formCarrello');
     if (form) {
-        form.addEventListener('submit', function(e) {
-            form.querySelectorAll('.form-error-msg').forEach(function(el) { el.remove(); });
+        form.addEventListener('submit', function (e) {
+            form.querySelectorAll('.form-error-msg').forEach(function (el) {
+                el.remove();
+            });
 
             var taglia = document.getElementById('taglia');
             var quantita = document.getElementById('quantita');
@@ -37,38 +35,41 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // Stelle interattive per il form recensione
     var stelleInput = document.getElementById('stelleInput');
     if (stelleInput) {
-        var stelle = stelleInput.querySelectorAll('i');
+        var stelle = stelleInput.querySelectorAll('.stella-input');
         var valutazioneHidden = document.getElementById('valutazioneHidden');
         var stelleErrore = document.getElementById('stelleErrore');
 
         function aggiornaStelle(valore) {
-            stelle.forEach(function(s) {
+            stelle.forEach(function (s) {
                 var v = parseInt(s.getAttribute('data-valore'));
-                s.classList.toggle('fas', v <= valore);
-                s.classList.toggle('far', v > valore);
+                var attiva = v <= valore;
+                s.classList.toggle('attiva', attiva);
+                s.innerHTML = attiva
+                    ? '<span aria-hidden="true">&#9733;</span>'
+                    : '<span aria-hidden="true">&#9734;</span>';
             });
         }
 
-        stelle.forEach(function(stella) {
-            stella.addEventListener('mouseover', function() {
+        aggiornaStelle(parseInt(valutazioneHidden.value) || 0);
+
+        stelle.forEach(function (stella) {
+            stella.addEventListener('mouseover', function () {
                 aggiornaStelle(parseInt(stella.getAttribute('data-valore')));
             });
 
-            stella.addEventListener('mouseout', function() {
+            stella.addEventListener('mouseout', function () {
                 aggiornaStelle(parseInt(valutazioneHidden.value) || 0);
             });
 
-            stella.addEventListener('click', function() {
+            stella.addEventListener('click', function () {
                 valutazioneHidden.value = stella.getAttribute('data-valore');
                 aggiornaStelle(parseInt(valutazioneHidden.value));
                 if (stelleErrore) stelleErrore.style.display = 'none';
             });
 
-            stella.addEventListener('keydown', function(e) {
+            stella.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
                     stella.click();
@@ -78,11 +79,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         var formRecensione = document.getElementById('formRecensione');
         if (formRecensione) {
-            formRecensione.addEventListener('submit', function(e) {
+            formRecensione.addEventListener('submit', function (e) {
                 if (!valutazioneHidden.value) {
                     e.preventDefault();
                     if (stelleErrore) stelleErrore.style.display = 'block';
-                    stelleInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    stelleInput.scrollIntoView({behavior: 'smooth', block: 'center'});
                 }
             });
         }

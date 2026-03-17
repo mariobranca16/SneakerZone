@@ -1,0 +1,62 @@
+
+.utenti-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 0;
+}
+
+.utenti-table {
+    min-width: 480px;
+}
+
+
+.col-id {
+    width: 64px;
+}
+
+.col-email {
+    min-width: 180px;
+}
+
+.col-admin {
+    width: 90px;
+}
+
+.col-actions {
+    width: 220px;
+}
+
+
+.utente-badge {
+    display: inline-block;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.utente-badge--admin {
+    background: rgba(255, 69, 0, 0.10);
+    color: #8B1A00;
+    border: 1px solid rgba(255, 69, 0, 0.28);
+}
+
+.utente-badge--user {
+    background: #F0ECE8;
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+
+@media (max-width: 768px) {
+    .col-actions {
+        width: auto;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-table-actions {
+        flex-direction: column;
+        gap: 4px;
+    }
+}

@@ -157,6 +157,18 @@ main {
     margin-bottom: 20px;
 }
 
+.admin-card--flush {
+    padding: 0;
+    overflow: hidden;
+}
+
+.admin-card--flush .admin-table {
+    border: none;
+    border-radius: 0;
+    overflow: visible;
+    margin: 0;
+}
+
 .admin-card-title {
     font-size: 16px;
     font-weight: 700;
@@ -192,6 +204,30 @@ main {
     width: 100%;
     overflow-x: auto;
     margin-bottom: 20px;
+}
+
+th.col-center,
+td.col-center {
+    text-align: center;
+}
+
+td.col-center.admin-table-actions {
+    justify-content: center;
+}
+
+td.col-center > .admin-table-actions {
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.admin-table a {
+    color: var(--accent);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.admin-table a:hover {
+    text-decoration: underline;
 }
 
 .td-email {

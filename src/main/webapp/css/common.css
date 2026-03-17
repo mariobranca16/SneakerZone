@@ -5,23 +5,17 @@
 }
 
 :root {
-    --brand:            #FF4500;
-    --brand-dark:       #cc3700;
-    --app-bg:           #ECE9E4;
-    --surface:          #FFFCFA;
-    --surface-alt:      #F6F2EE;
-    --surface-border:   #E5E7EB;
-    --text-main:        #111827;
-    --text-muted:       #6B7280;
-    /* Variabili condivise tra le pagine non-admin */
-    --nero:             #000000;
-    --arancione:        #FF4500;
-    --bianco:           #FFFFFF;
-    --grigio-scuro:     #333333;
-    --grigio-chiaro:    #EBE7E3;
-    --bordo-superficie: #CED6DF;
-    --superficie-chiara:#FFFCFA;
-    --input-bg:         #F6F2EE;
+    --brand: #FF4500;
+    --brand-dark: #e63e00;
+    --bg: #EBE7E3;
+    --surface: #FFFCFA;
+    --border: #CED6DF;
+    --text: #111111;
+    --muted: #6B7280;
+    --input-bg: #F6F2EE;
+
+    --accent: #FF4500;
+    --card: #FFFCFA;
 }
 
 html {
@@ -29,9 +23,9 @@ html {
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: var(--app-bg);
-    color: var(--text-main);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -39,16 +33,55 @@ body {
 
 main {
     flex: 1;
-    background: linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.10) 100%);
 }
 
-/* ─── TOPBAR ────────────────────────────────────────────────────────────────── */
+.btn-primary {
+    display: inline-block;
+    height: 44px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--brand);
+    color: #fff;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s;
+    line-height: 44px;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    background: var(--brand-dark);
+}
+
+.btn-danger {
+    display: inline-block;
+    height: 34px;
+    padding: 0 12px;
+    border: 1px solid #fca5a5;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #991b1b;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-danger:hover {
+    background: #fee2e2;
+}
+
 
 .topbar {
     background: var(--brand);
     position: relative;
     z-index: 100;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    overflow: visible;
 }
 
 .topbar-inner {
@@ -61,19 +94,12 @@ main {
     justify-content: space-between;
 }
 
-/* Logo */
 .topbar-logo img {
     max-height: 52px;
     width: auto;
     display: block;
-    transition: transform 160ms ease;
 }
 
-.topbar-logo img:hover {
-    transform: scale(1.04);
-}
-
-/* Nav */
 .topbar-nav {
     list-style: none;
     display: flex;
@@ -88,14 +114,17 @@ main {
     font-size: 17px;
     padding: 8px 16px;
     border-radius: 10px;
-    transition: background 140ms ease;
+    transition: background-color 0.2s;
 }
 
 .topbar-nav a:hover {
     background: rgba(255, 255, 255, 0.18);
 }
 
-/* Icon buttons */
+.topbar-nav-icon {
+    display: none;
+}
+
 .topbar-icon-btn {
     position: relative;
     display: flex;
@@ -110,12 +139,11 @@ main {
     background: none;
     border: none;
     cursor: pointer;
-    transition: background 140ms ease, transform 140ms ease;
+    transition: background 0.2s;
 }
 
 .topbar-icon-btn:hover {
     background: rgba(255, 255, 255, 0.22);
-    transform: scale(1.08);
 }
 
 .topbar-icon-btn:focus-visible {
@@ -123,30 +151,17 @@ main {
     outline-offset: 3px;
 }
 
-/* User menu toggle — cerchio con bordo */
-.user-menu-toggle {
-    background: rgba(255, 255, 255, 0.15);
-    border: 2px solid rgba(255, 255, 255, 0.35) !important;
-}
-
-.user-menu-toggle:hover {
-    background: rgba(255, 255, 255, 0.28) !important;
-    border-color: rgba(255, 255, 255, 0.55) !important;
-}
-
-/* Cart badge */
 .cart-badge {
     position: absolute;
     top: -4px;
     right: -4px;
     background: #ffffff;
     color: var(--brand-dark);
-    border: 2px solid var(--brand-dark);
     border-radius: 50%;
     min-width: 18px;
     height: 18px;
     font-size: 10px;
-    font-weight: 800;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -155,7 +170,6 @@ main {
     pointer-events: none;
 }
 
-/* ─── DROPDOWN ──────────────────────────────────────────────────────────────── */
 
 .dropdown {
     position: relative;
@@ -168,9 +182,10 @@ main {
     right: 0;
     background: #ffffff;
     min-width: 190px;
-    border: 1px solid var(--surface-border);
+    max-width: calc(100vw - 32px);
+    border: 1px solid var(--border);
     border-radius: 12px;
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 6px #ddd;
     z-index: 1000;
     padding: 6px;
 }
@@ -186,12 +201,11 @@ main {
 .dropdown-menu li a {
     display: block;
     padding: 10px 14px;
-    color: var(--text-main);
+    color: var(--text);
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
     border-radius: 8px;
-    transition: background 120ms ease, color 120ms ease;
 }
 
 .dropdown-menu li a:hover {
@@ -199,7 +213,6 @@ main {
     color: var(--brand);
 }
 
-/* ─── FORM VALIDATION FEEDBACK ──────────────────────────────────────────────── */
 
 .field-error {
     display: block;
@@ -214,7 +227,6 @@ main {
     margin-top: 6px;
 }
 
-/* ─── ALERT TOAST ───────────────────────────────────────────────────────────── */
 
 .alert {
     position: fixed;
@@ -226,8 +238,9 @@ main {
     border-radius: 12px;
     font-weight: 600;
     font-size: 14px;
-    max-width: 340px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.20);
+    width: max-content;
+    max-width: min(340px, calc(100% - 32px));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .alert-success {
@@ -240,7 +253,6 @@ main {
     color: #ffffff;
 }
 
-/* ─── FOOTER ────────────────────────────────────────────────────────────────── */
 
 .bottombar {
     background: #111111;
@@ -257,7 +269,6 @@ main {
     gap: 40px;
 }
 
-/* Brand column */
 .footer-brand-logo {
     display: block;
     margin-bottom: 14px;
@@ -272,16 +283,15 @@ main {
 
 .footer-tagline {
     font-size: 14px;
-    line-height: 1.65;
+    line-height: 1.6;
     color: #6b7280;
     max-width: 210px;
 }
 
-/* Nav columns */
 .footer-heading {
     color: #ffffff;
     font-size: 11px;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 16px;
@@ -298,14 +308,12 @@ main {
     color: #9ca3af;
     text-decoration: none;
     font-size: 14px;
-    transition: color 130ms ease;
 }
 
 .footer-links a:hover {
     color: var(--brand);
 }
 
-/* Contact column */
 .footer-address {
     font-style: normal;
     display: flex;
@@ -329,7 +337,6 @@ main {
     margin-top: 2px;
 }
 
-/* Bottom bar */
 .footer-bottom {
     border-top: 1px solid #1f1f1f;
     padding: 13px 28px;
@@ -341,7 +348,6 @@ main {
     color: #4b5563;
 }
 
-/* ─── RESPONSIVE ────────────────────────────────────────────────────────────── */
 
 @media (max-width: 1024px) {
     .footer-main {
@@ -357,15 +363,50 @@ main {
         height: 72px;
     }
 
-    .topbar-nav a:not(.topbar-icon-btn) {
+    .topbar-nav > li:not(.dropdown) > a:not(.topbar-icon-btn) {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .topbar-nav-label {
         display: none;
+    }
+
+    .topbar-nav-icon {
+        display: inline;
+        font-size: 18px;
+    }
+
+    .footer-main {
+        padding-top: 52px;
     }
 }
 
 @media (max-width: 600px) {
     .footer-main {
         grid-template-columns: 1fr;
-        padding: 36px 20px 28px;
+        padding: 48px 20px 32px;
         gap: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .topbar-logo img {
+        max-height: 40px;
+    }
+
+    .topbar-icon-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 17px;
+    }
+
+    .topbar-nav {
+        gap: 2px;
     }
 }

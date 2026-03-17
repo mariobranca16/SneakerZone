@@ -21,14 +21,14 @@
     </div>
     <div class="admin-page-actions">
         <a class="btn btn--small" href="${pageContext.request.contextPath}/admin/ordini">
-            <i class="fas fa-arrow-left"></i> Torna agli ordini
+            <i class="ti ti-arrow-left"></i> Torna agli ordini
         </a>
     </div>
 </div>
 
 <div class="admin-card">
 
-    <%-- ── Griglia riepilogo: info | indirizzo | stato ── --%>
+
     <div class="admin-grid-3">
 
         <div class="order-info-col">
@@ -44,10 +44,10 @@
                 </c:when>
                 <c:otherwise>
                     <div class="order-info-value">
-                        ${ordine.indirizzo.destinatario}<br>
-                        ${ordine.indirizzo.via}<br>
-                        ${ordine.indirizzo.citta} (${ordine.indirizzo.provincia}) ${ordine.indirizzo.cap}<br>
-                        ${ordine.indirizzo.paese}
+                            ${ordine.indirizzo.destinatario}<br>
+                            ${ordine.indirizzo.via}<br>
+                            ${ordine.indirizzo.citta} (${ordine.indirizzo.provincia}) ${ordine.indirizzo.cap}<br>
+                            ${ordine.indirizzo.paese}
                     </div>
                 </c:otherwise>
             </c:choose>
@@ -63,14 +63,14 @@
                     </c:forEach>
                 </select>
                 <button class="btn btn--small btn--primary" type="submit" style="margin-top:18px;">
-                    <i class="fas fa-floppy-disk"></i> Aggiorna
+                    Aggiorna
                 </button>
             </form>
         </div>
 
     </div>
 
-    <%-- ── Prodotti dell'ordine ── --%>
+
     <c:if test="${not empty ordine.dettagliOrdine}">
         <div class="order-items">
             <c:forEach var="d" items="${ordine.dettagliOrdine}">
@@ -82,7 +82,7 @@
                                  alt="${d.prodotto.nome}">
                         </c:when>
                         <c:otherwise>
-                            <div class="order-item-thumb-empty"><i class="fas fa-shoe-prints"></i></div>
+                            <div class="order-item-thumb-empty"><i class="ti ti-tag"></i></div>
                         </c:otherwise>
                     </c:choose>
 
@@ -103,9 +103,14 @@
                     </div>
 
                     <div class="order-item-price">
-                        <div class="order-item-sub">&euro;&nbsp;<fmt:formatNumber value="${d.subtotale}" type="number" minFractionDigits="2" maxFractionDigits="2"/></div>
+                        <div class="order-item-sub">&euro;&nbsp;<fmt:formatNumber value="${d.subtotale}" type="number"
+                                                                                  minFractionDigits="2"
+                                                                                  maxFractionDigits="2"/></div>
                         <c:if test="${d.quantita > 1}">
-                            <div class="order-item-unit">&euro;&nbsp;<fmt:formatNumber value="${d.costo}" type="number" minFractionDigits="2" maxFractionDigits="2"/> cad.</div>
+                            <div class="order-item-unit">&euro;&nbsp;<fmt:formatNumber value="${d.costo}" type="number"
+                                                                                       minFractionDigits="2"
+                                                                                       maxFractionDigits="2"/> cad.
+                            </div>
                         </c:if>
                     </div>
                 </div>
@@ -113,7 +118,9 @@
 
             <div class="order-total-row">
                 <span class="order-total-label">Totale ordine</span>
-                <span class="order-total-value">&euro;&nbsp;<fmt:formatNumber value="${ordine.calcolaTotaleOrdine()}" type="number" minFractionDigits="2" maxFractionDigits="2"/></span>
+                <span class="order-total-value">&euro;&nbsp;<fmt:formatNumber value="${ordine.totaleOrdine}"
+                                                                              type="number" minFractionDigits="2"
+                                                                              maxFractionDigits="2"/></span>
             </div>
         </div>
     </c:if>

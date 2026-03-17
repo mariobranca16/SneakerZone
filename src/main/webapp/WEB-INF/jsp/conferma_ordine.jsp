@@ -7,6 +7,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ordine Confermato – SneakerZone</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
@@ -19,87 +20,90 @@
 <main>
     <div class="confirm-page">
 
-
-        <div class="checkout-steps">
-            <div class="step step-done">
-                <span class="step-num"><i class="ti ti-check"></i></span>
-                <span class="step-label">Carrello</span>
-            </div>
-            <div class="step-line step-line-done"></div>
-            <div class="step step-done">
-                <span class="step-num"><i class="ti ti-check"></i></span>
-                <span class="step-label">Checkout</span>
-            </div>
-            <div class="step-line step-line-done"></div>
-            <div class="step step-done">
-                <span class="step-num"><i class="ti ti-check"></i></span>
-                <span class="step-label">Conferma</span>
-            </div>
-        </div>
-
-
-        <div class="confirm-success-banner">
-            <div class="confirm-success-icon" aria-hidden="true">
-                <i class="ti ti-circle-check"></i>
-            </div>
+        <div class="confirm-banner">
+            <i class="ti ti-circle-check confirm-banner-icon" aria-hidden="true"></i>
             <div>
-                <h1 class="confirm-title">Grazie per il tuo ordine!</h1>
+                <h1 class="confirm-title">Ordine confermato!</h1>
                 <p class="confirm-subtitle">
-                    L&rsquo;ordine &egrave; stato confermato e verr&agrave; elaborato al pi&ugrave; presto.
-                    Puoi seguire lo stato nella sezione <em>I miei ordini</em>.
+                    Grazie per il tuo acquisto. L&rsquo;ordine <strong>#${ordine.id}</strong>
+                    &egrave; stato ricevuto e verr&agrave; elaborato a breve.
                 </p>
             </div>
         </div>
 
-
         <div class="confirm-card">
 
-
-            <div class="confirm-meta-grid">
-                <div class="confirm-meta-item">
-                    <span class="confirm-meta-label">Numero ordine</span>
-                    <span class="confirm-meta-value">#${ordine.id}</span>
+            <div class="confirm-info">
+                <div class="confirm-info-row">
+                    <span class="confirm-info-label">Numero ordine</span>
+                    <span class="confirm-info-value">#${ordine.id}</span>
                 </div>
-                <div class="confirm-meta-item">
-                    <span class="confirm-meta-label">Data</span>
-                    <span class="confirm-meta-value">${dataOrdine}</span>
+                <div class="confirm-info-row">
+                    <span class="confirm-info-label">Data</span>
+                    <span class="confirm-info-value">${dataOrdine}</span>
                 </div>
-                <div class="confirm-meta-item">
-                    <span class="confirm-meta-label">Stato</span>
+                <div class="confirm-info-row">
+                    <span class="confirm-info-label">Stato</span>
                     <span class="confirm-status-badge">${ordine.stato.label}</span>
                 </div>
-                <div class="confirm-meta-item">
-                    <span class="confirm-meta-label">Articoli</span>
-                    <span class="confirm-meta-value">${fn:length(ordine.dettagliOrdine)}</span>
+                <div class="confirm-info-row">
+                    <span class="confirm-info-label">Articoli</span>
+                    <span class="confirm-info-value">${ordine.numeroArticoli}</span>
                 </div>
+                <c:if test="${not empty ordine.indirizzo}">
+                    <div class="confirm-info-row">
+                        <span class="confirm-info-label">Destinatario</span>
+                        <span class="confirm-info-value">${ordine.indirizzo.destinatario}</span>
+                    </div>
+                    <div class="confirm-info-row">
+                        <span class="confirm-info-label">Indirizzo di spedizione</span>
+                        <span class="confirm-info-value">
+                            ${ordine.indirizzo.via}, ${ordine.indirizzo.cap} ${ordine.indirizzo.citta}
+                            (${ordine.indirizzo.provincia})
+                            <c:if test="${not empty ordine.indirizzo.paese}">&nbsp;&ndash;&nbsp;${ordine.indirizzo.paese}</c:if>
+                        </span>
+                    </div>
+                </c:if>
             </div>
 
+            <div class="confirm-section-title">Prodotti ordinati</div>
 
-            <h2 class="confirm-section-title">Riepilogo prodotti</h2>
             <div class="confirm-table-wrap">
                 <table class="confirm-table">
                     <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Prodotto</th>
                         <th>Taglia</th>
-                        <th>Quantit&agrave;</th>
+                        <th>Qt&agrave;</th>
                         <th>Prezzo&nbsp;unit.</th>
                         <th>Subtotale</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <c:set var="totale" value="0"/>
-                    <c:forEach var="d" items="${ordine.dettagliOrdine}" varStatus="vs">
-                        <c:set var="totale" value="${totale + (d.costo * d.quantita)}"/>
+                    <c:forEach var="d" items="${ordine.dettagliOrdine}">
                         <tr>
-                            <td class="confirm-row-num">${vs.count}</td>
+                            <td>
+                                <div class="confirm-item-info">
+                                    <c:if test="${not empty d.prodotto and not empty d.prodotto.imgPath}">
+                                        <img class="confirm-item-thumb"
+                                             src="${pageContext.request.contextPath}${d.prodotto.imgPath}"
+                                             alt="${d.prodotto.nome}">
+                                    </c:if>
+                                    <div class="confirm-item-text">
+                                        <span class="confirm-item-nome"><c:out value="${d.prodotto.nome}"/></span>
+                                        <c:if test="${not empty d.prodotto.brand}">
+                                            <span class="confirm-item-brand"><c:out value="${d.prodotto.brand}"/></span>
+                                        </c:if>
+                                    </div>
+                                </div>
+                            </td>
                             <td>${d.taglia}</td>
                             <td>${d.quantita}</td>
                             <td>
                                 <fmt:formatNumber value="${d.costo}" type="number"
                                                   minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                             </td>
-                            <td class="confirm-subtotale">
+                            <td class="confirm-item-prezzo">
                                 <fmt:formatNumber value="${d.subtotale}" type="number"
                                                   minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                             </td>
@@ -109,22 +113,20 @@
                 </table>
             </div>
 
-
-            <div class="confirm-total-row">
-                <span class="confirm-total-label">Totale ordine</span>
+            <div class="confirm-total">
+                <span class="confirm-total-label">Totale</span>
                 <span class="confirm-total-value">
-                    <fmt:formatNumber value="${totale}" type="number"
+                    <fmt:formatNumber value="${ordine.totaleOrdine}" type="number"
                                       minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                 </span>
             </div>
-
 
             <div class="confirm-actions">
                 <a class="confirm-btn-primary" href="${pageContext.request.contextPath}/ordini">
                     I miei ordini
                 </a>
-                <a class="confirm-btn-secondary" href="${pageContext.request.contextPath}/home">
-                    Torna alla home
+                <a class="confirm-btn-secondary" href="${pageContext.request.contextPath}/catalogo">
+                    Continua lo shopping
                 </a>
             </div>
 

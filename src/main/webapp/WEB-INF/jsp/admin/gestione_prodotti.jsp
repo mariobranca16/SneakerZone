@@ -60,9 +60,9 @@
                     <tr>
                         <th class="col-thumb"></th>
                         <th class="col-info">Prodotto</th>
-                        <th class="col-brand">Brand</th>
-                        <th class="col-price">Prezzo</th>
-                        <th class="col-actions">Azioni</th>
+                        <th class="col-brand col-center">Brand</th>
+                        <th class="col-price col-center">Prezzo</th>
+                        <th class="col-actions col-center">Azioni</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -88,16 +88,16 @@
                                     <span class="prod-colore">${p.colore}</span>
                                 </c:if>
                             </td>
-                            <td class="col-brand">
+                            <td class="col-brand col-center">
                                 <span class="prod-brand">${p.brand}</span>
                             </td>
-                            <td class="col-price">
+                            <td class="col-price col-center">
                                     <span class="prod-price">
                                         <fmt:formatNumber value="${p.costo}" type="number"
                                                           minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                                     </span>
                             </td>
-                            <td class="col-actions">
+                            <td class="col-actions col-center">
                                 <div class="admin-table-actions">
                                     <a class="btn btn--small"
                                        href="${pageContext.request.contextPath}/admin/prodotto?id=${p.id}">

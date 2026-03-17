@@ -7,6 +7,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout – SneakerZone</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
@@ -26,23 +27,6 @@
         </c:if>
 
 
-        <div class="checkout-steps">
-            <div class="step step-done">
-                <span class="step-num"><i class="ti ti-check"></i></span>
-                <span class="step-label">Carrello</span>
-            </div>
-            <div class="step-line step-line-done"></div>
-            <div class="step step-active">
-                <span class="step-num">2</span>
-                <span class="step-label">Checkout</span>
-            </div>
-            <div class="step-line"></div>
-            <div class="step">
-                <span class="step-num">3</span>
-                <span class="step-label">Conferma</span>
-            </div>
-        </div>
-
         <h1 class="checkout-title">Checkout</h1>
 
 
@@ -52,9 +36,7 @@
             </h2>
 
             <div class="checkout-items">
-                <c:set var="totale" value="0"/>
                 <c:forEach var="item" items="${carrello.prodotti}">
-                    <c:set var="totale" value="${totale + (item.prodotto.costo * item.quantita)}"/>
                     <div class="checkout-item">
                         <c:if test="${not empty item.prodotto.imgPath}">
                             <img class="checkout-item-thumb"
@@ -68,7 +50,7 @@
                             </span>
                         </div>
                         <span class="checkout-item-price">
-                            <fmt:formatNumber value="${item.prodotto.costo * item.quantita}"
+                            <fmt:formatNumber value="${item.subtotale}"
                                               type="number" minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                         </span>
                     </div>
@@ -78,7 +60,7 @@
             <div class="checkout-total-row">
                 <span class="checkout-total-label">Totale</span>
                 <span class="checkout-total-value">
-                    <fmt:formatNumber value="${totale}" type="number"
+                    <fmt:formatNumber value="${carrello.totale}" type="number"
                                       minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                 </span>
             </div>
@@ -171,7 +153,8 @@
                         </div>
 
 
-                        <div id="nuovaCartaForm" class="pay-grid pay-grid-hidden" data-card-error="${(not empty erroreNomeCarta) || (not empty erroreNumeroCarta) || (not empty erroreScadenza)}">
+                        <div id="nuovaCartaForm" class="pay-grid pay-grid-hidden"
+                             data-card-error="${(not empty erroreNomeCarta) || (not empty erroreNumeroCarta) || (not empty erroreScadenza)}">
                             <div class="pay-group pay-full">
                                 <label class="pay-label" for="nomeCarta">Nome sulla carta</label>
                                 <input class="pay-input ${not empty erroreNomeCarta ? 'pay-input-error' : ''}"
@@ -185,8 +168,8 @@
                             </div>
                             <div class="pay-group pay-full">
                                 <label class="pay-label" for="numeroCarta">Numero carta</label>
-                                <input class="pay-input ${not empty erroreNumeroCarta ? 'pay-input-error' : ''}"
-                                       type="text" id="numeroCarta" name="numeroCarta" class="js-card-number"
+                                <input class="pay-input js-card-number ${not empty erroreNumeroCarta ? 'pay-input-error' : ''}"
+                                       type="text" id="numeroCarta" name="numeroCarta"
                                        placeholder="1234 5678 9012 3456" maxlength="19"
                                        value="${fn:escapeXml(param.numeroCarta)}"
                                        autocomplete="cc-number">
@@ -196,8 +179,8 @@
                             </div>
                             <div class="pay-group pay-full">
                                 <label class="pay-label" for="scadenza">Scadenza</label>
-                                <input class="pay-input ${not empty erroreScadenza ? 'pay-input-error' : ''}"
-                                       type="text" id="scadenza" name="scadenza" class="js-card-expiry"
+                                <input class="pay-input js-card-expiry ${not empty erroreScadenza ? 'pay-input-error' : ''}"
+                                       type="text" id="scadenza" name="scadenza"
                                        placeholder="MM/AA" maxlength="5"
                                        value="${fn:escapeXml(param.scadenza)}"
                                        autocomplete="cc-exp">
@@ -237,8 +220,8 @@
                             </div>
                             <div class="pay-group pay-full">
                                 <label class="pay-label" for="numeroCarta">Numero carta</label>
-                                <input class="pay-input ${not empty erroreNumeroCarta ? 'pay-input-error' : ''}"
-                                       type="text" id="numeroCarta" name="numeroCarta" class="js-card-number"
+                                <input class="pay-input js-card-number ${not empty erroreNumeroCarta ? 'pay-input-error' : ''}"
+                                       type="text" id="numeroCarta" name="numeroCarta"
                                        placeholder="1234 5678 9012 3456" maxlength="19"
                                        value="${fn:escapeXml(param.numeroCarta)}"
                                        autocomplete="cc-number" required>
@@ -248,8 +231,8 @@
                             </div>
                             <div class="pay-group">
                                 <label class="pay-label" for="scadenza">Scadenza</label>
-                                <input class="pay-input ${not empty erroreScadenza ? 'pay-input-error' : ''}"
-                                       type="text" id="scadenza" name="scadenza" class="js-card-expiry"
+                                <input class="pay-input js-card-expiry ${not empty erroreScadenza ? 'pay-input-error' : ''}"
+                                       type="text" id="scadenza" name="scadenza"
                                        placeholder="MM/AA" maxlength="5"
                                        value="${fn:escapeXml(param.scadenza)}"
                                        autocomplete="cc-exp" required>

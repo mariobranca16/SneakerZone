@@ -1,27 +1,12 @@
-/* ============================================================
-   admin-ordini.css – Lista ordini · SneakerZone Admin
-   ============================================================
-
-   Caricato solo da gestione_ordini.jsp.
-   Richiede admin-base.css (già incluso via layout_admin.jsp).
-
-   Indice
-   ──────
-   1.  Badge stato
-   2.  Select inline (celle tabella)
-   ============================================================ */
-
-
-/* ── 1. Badge stato ──────────────────────────────────────────── */
 
 .badge {
     display: inline-flex;
     align-items: center;
     gap: 4px;
     padding: 3px 10px;
-    border-radius: 999px;
+    border-radius: 20px;
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 700;
     white-space: nowrap;
 }
 
@@ -50,11 +35,52 @@
 }
 
 
-/* ── 2. Select inline (celle tabella) ────────────────────────── */
+.ordini-table-wrap {
+    overflow-x: auto;
+    margin-bottom: 0;
+}
+
+.ordini-table {
+    min-width: 580px;
+}
+
+
+.col-id {
+    width: 64px;
+}
+
+.col-utente {
+    min-width: 160px;
+}
+
+.col-data {
+    width: 120px;
+}
+
+.col-totale {
+    width: 110px;
+}
+
+.col-stato {
+    width: 150px;
+}
+
+.col-aggiorna {
+    width: 260px;
+}
+
+
+.ordine-totale-val {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+}
+
 
 .select-inline {
     height: 36px;
-    border: 1.5px solid var(--border);
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 0 10px;
     background: var(--input-bg);
@@ -62,11 +88,38 @@
     font-size: 13px;
     font-family: inherit;
     outline: none;
-    transition: border-color 140ms ease, box-shadow 140ms ease;
+    transition: border-color 0.2s;
 }
 
 .select-inline:focus {
-    border-color: rgba(255, 69, 0, 0.55);
-    box-shadow: 0 0 0 3px rgba(255, 69, 0, 0.14);
-    background: #fff;
+    border-color: #FF4500;
+}
+
+
+@media (max-width: 860px) {
+    .select-inline {
+        max-width: 130px;
+    }
+}
+
+@media (max-width: 640px) {
+    .select-inline {
+        max-width: none;
+        width: 100%;
+    }
+
+    .admin-table-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-table-actions .inline-form {
+        width: 100%;
+        display: flex;
+        gap: 6px;
+    }
+
+    .admin-table-actions .inline-form .btn {
+        flex: 1;
+    }
 }
