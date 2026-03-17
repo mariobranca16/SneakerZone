@@ -1,4 +1,4 @@
-package model.bean;
+package model.Bean;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -12,7 +12,8 @@ public class ProdottoTaglia implements Serializable {
     private int taglia;
     private int quantita;
 
-    public ProdottoTaglia() {}
+    public ProdottoTaglia() {
+    }
 
     public ProdottoTaglia(long idProdotto, int taglia, int quantita) {
         this.idProdotto = idProdotto;
@@ -42,14 +43,6 @@ public class ProdottoTaglia implements Serializable {
 
     public void setQuantita(int quantita) {
         this.quantita = quantita;
-    }
-
-    public int getDisponibilita() {
-        return quantita;
-    }
-
-    public void setDisponibilita(int disponibilita) {
-        this.quantita = disponibilita;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package controller.admin;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,8 +20,7 @@ public class GestioneUtentiAdminServlet extends HttpServlet {
         request.setAttribute("utenti", utenti);
         request.setAttribute("titoloPagina", "Gestione utenti");
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin/gestione_utenti.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/admin/gestione_utenti.jsp").forward(request, response);
     }
 
     @Override
@@ -57,6 +55,7 @@ public class GestioneUtentiAdminServlet extends HttpServlet {
 
         if (utenteConnesso != null && utenteConnesso.getId() == idUtente) {
             if ("retrocedi".equalsIgnoreCase(azione) || "elimina".equalsIgnoreCase(azione)) {
+                request.getSession().setAttribute("flashErrore", "Non puoi eseguire questa operazione sul tuo account");
                 response.sendRedirect(request.getContextPath() + "/admin/utenti");
                 return;
             }
@@ -65,6 +64,7 @@ public class GestioneUtentiAdminServlet extends HttpServlet {
         UtenteDAO utenteDAO = new UtenteDAO();
         Utente target = utenteDAO.doRetrieveByKey(idUtente);
         if (target == null) {
+            request.getSession().setAttribute("flashErrore", "Utente non trovato");
             response.sendRedirect(request.getContextPath() + "/admin/utenti");
             return;
         }

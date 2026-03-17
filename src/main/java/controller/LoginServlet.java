@@ -1,14 +1,13 @@
 package controller;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.bean.Utente;
-import model.dao.UtenteDAO;
+import model.Bean.Utente;
+import model.DAO.UtenteDAO;
 
 import java.io.IOException;
 
@@ -16,8 +15,19 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/login.jsp");
-        dispatcher.forward(request, response);
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            if (session.getAttribute("utenteConnesso") != null) {
+                response.sendRedirect(request.getContextPath() + "/home");
+                return;
+            }
+            String erroreLogin = (String) session.getAttribute("erroreLogin");
+            if (erroreLogin != null) {
+                request.setAttribute("messaggio", erroreLogin);
+                session.removeAttribute("erroreLogin");
+            }
+        }
+        request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
     }
 
     @Override

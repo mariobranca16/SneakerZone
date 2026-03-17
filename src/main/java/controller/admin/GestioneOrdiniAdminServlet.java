@@ -1,6 +1,5 @@
 package controller.admin;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -29,10 +28,10 @@ public class GestioneOrdiniAdminServlet extends HttpServlet {
         UtenteDAO utenteDAO = new UtenteDAO();
         Map<Long, String> emailUtenti = new HashMap<>();
         for (Ordine o : ordini) {
-            emailUtenti.computeIfAbsent(o.getIdUtente(), uid -> {
-                Utente u = utenteDAO.doRetrieveByKey(uid);
-                return u != null ? u.getEmail() : "#" + uid;
-            });
+            if (!emailUtenti.containsKey(o.getIdUtente())) {
+                Utente u = utenteDAO.doRetrieveByKey(o.getIdUtente());
+                emailUtenti.put(o.getIdUtente(), u != null ? u.getEmail() : "#" + o.getIdUtente());
+            }
         }
 
         request.setAttribute("ordini", ordini);
@@ -40,8 +39,7 @@ public class GestioneOrdiniAdminServlet extends HttpServlet {
         request.setAttribute("stati", StatoOrdine.values());
         request.setAttribute("titoloPagina", "Gestione ordini");
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin/gestione_ordini.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/admin/gestione_ordini.jsp").forward(request, response);
     }
 
     @Override
@@ -64,10 +62,9 @@ public class GestioneOrdiniAdminServlet extends HttpServlet {
             return;
         }
 
-        StatoOrdine nuovoStato;
-        try {
-            nuovoStato = StatoOrdine.fromString(statoParam);
-        } catch (IllegalArgumentException e) {
+        StatoOrdine nuovoStato = StatoOrdine.fromString(statoParam);
+        if (nuovoStato == null) {
+            request.getSession().setAttribute("flashErrore", "Stato ordine non valido");
             response.sendRedirect(request.getContextPath() + "/admin/ordini");
             return;
         }
@@ -75,11 +72,18 @@ public class GestioneOrdiniAdminServlet extends HttpServlet {
         OrdineDAO ordineDAO = new OrdineDAO();
         Ordine ordine = ordineDAO.doRetrieveByKey(idOrdine);
         if (ordine == null) {
+            request.getSession().setAttribute("flashErrore", "Ordine non trovato");
             response.sendRedirect(request.getContextPath() + "/admin/ordini");
             return;
         }
 
-        ordineDAO.doUpdateStato(idOrdine, nuovoStato);
+        try {
+            ordineDAO.doUpdateStato(idOrdine, nuovoStato);
+        } catch (RuntimeException e) {
+            request.getSession().setAttribute("flashErrore", "Impossibile aggiornare lo stato: stock non coerente con la transizione richiesta.");
+            response.sendRedirect(request.getContextPath() + "/admin/ordini");
+            return;
+        }
 
         response.sendRedirect(request.getContextPath() + "/admin/ordini");
     }

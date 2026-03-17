@@ -1,4 +1,4 @@
-package model.bean;
+package model.Bean;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -17,9 +17,10 @@ public class IndirizzoSpedizione implements Serializable {
     private String cap;
     private String paese;
 
-    public IndirizzoSpedizione(){}
+    public IndirizzoSpedizione() {
+    }
 
-    public IndirizzoSpedizione(long id, long idUtente, String destinatario, String via, String citta, String provincia, String cap, String paese ) {
+    public IndirizzoSpedizione(long id, long idUtente, String destinatario, String via, String citta, String provincia, String cap, String paese) {
         this.id = id;
         this.idUtente = idUtente;
         this.destinatario = destinatario;
@@ -33,6 +34,7 @@ public class IndirizzoSpedizione implements Serializable {
     public long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -40,6 +42,7 @@ public class IndirizzoSpedizione implements Serializable {
     public long getIdUtente() {
         return idUtente;
     }
+
     public void setIdUtente(long idUtente) {
         this.idUtente = idUtente;
     }
@@ -47,6 +50,7 @@ public class IndirizzoSpedizione implements Serializable {
     public String getDestinatario() {
         return destinatario;
     }
+
     public void setDestinatario(String destinatario) {
         this.destinatario = destinatario;
     }
@@ -54,6 +58,7 @@ public class IndirizzoSpedizione implements Serializable {
     public String getVia() {
         return via;
     }
+
     public void setVia(String via) {
         this.via = via;
     }
@@ -61,6 +66,7 @@ public class IndirizzoSpedizione implements Serializable {
     public String getCitta() {
         return citta;
     }
+
     public void setCitta(String citta) {
         this.citta = citta;
     }
@@ -68,6 +74,7 @@ public class IndirizzoSpedizione implements Serializable {
     public String getProvincia() {
         return provincia;
     }
+
     public void setProvincia(String provincia) {
         this.provincia = provincia;
     }
@@ -75,13 +82,15 @@ public class IndirizzoSpedizione implements Serializable {
     public String getCap() {
         return cap;
     }
-    public void setCap(String cap){
+
+    public void setCap(String cap) {
         this.cap = cap;
     }
 
     public String getPaese() {
         return paese;
     }
+
     public void setPaese(String paese) {
         this.paese = paese;
     }
@@ -104,12 +113,12 @@ public class IndirizzoSpedizione implements Serializable {
     @Override
     public String toString() {
         return "IndirizzoSpedizione [ID: " + id +
-               ", IdUtente: " + idUtente +
-               ", Destinatario: " + destinatario +
-               ", Via: " + via +
-               ", Città: " + citta +
-               ", Provincia: " + provincia +
-               ", CAP: " + cap +
-               ", Paese: " + paese + "]";
+                ", IdUtente: " + idUtente +
+                ", Destinatario: " + destinatario +
+                ", Via: " + via +
+                ", Città: " + citta +
+                ", Provincia: " + provincia +
+                ", CAP: " + cap +
+                ", Paese: " + paese + "]";
     }
 }

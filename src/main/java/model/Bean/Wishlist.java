@@ -1,4 +1,4 @@
-package model.bean;
+package model.Bean;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -10,7 +10,8 @@ public class Wishlist implements Serializable {
     private long idUtente;
     private long idProdotto;
 
-    public Wishlist() {}
+    public Wishlist() {
+    }
 
     public Wishlist(long idUtente, long idProdotto) {
         this.idUtente = idUtente;
@@ -35,7 +36,7 @@ public class Wishlist implements Serializable {
 
     @Override
     public String toString() {
-        return "Wishlist [IdUtente : " +  idUtente +
-               ", IdProdotto : " + idProdotto + "]";
+        return "Wishlist [IdUtente : " + idUtente +
+                ", IdProdotto : " + idProdotto + "]";
     }
 }

@@ -1,16 +1,17 @@
 package controller;
 
+import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.bean.Prodotto;
-import model.bean.Recensione;
-import model.bean.Utente;
-import model.dao.ProdottoDAO;
-import model.dao.RecensioneDAO;
+import model.Bean.Prodotto;
+import model.Bean.Recensione;
+import model.Bean.Utente;
+import model.DAO.ProdottoDAO;
+import model.DAO.RecensioneDAO;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -96,7 +97,10 @@ public class AggiungiRecensioneServlet extends HttpServlet {
 
         if (hasError) {
             request.setAttribute("erroreRecensione", "Verifica i campi della recensione e riprova.");
-            mostraPaginaProdotto(request, response, prodotto, recensioneDAO, utente);
+            request.setAttribute("prodotto", prodotto);
+            request.setAttribute("recensioni", recensioneDAO.doRetrieveByProdotto(prodotto.getId()));
+            request.setAttribute("puoRecensire", true);
+            request.getRequestDispatcher("/WEB-INF/jsp/prodotto.jsp").forward(request, response);
             return;
         }
 
@@ -112,22 +116,5 @@ public class AggiungiRecensioneServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/prodotto?id=" + idProdotto + "&successoRecensione=1");
     }
 
-    private void mostraPaginaProdotto(HttpServletRequest request, HttpServletResponse response,
-                                      Prodotto prodotto, RecensioneDAO recensioneDAO, Utente utente)
-            throws ServletException, IOException {
-        request.setAttribute("prodotto", prodotto);
-        request.setAttribute("recensioni", recensioneDAO.doRetrieveByProdotto(prodotto.getId()));
 
-        if (utente != null && !utente.isAdmin()) {
-            if (recensioneDAO.haAcquistato(utente.getId(), prodotto.getId())) {
-                if (recensioneDAO.haGiaRecensito(utente.getId(), prodotto.getId())) {
-                    request.setAttribute("haGiaRecensito", true);
-                } else {
-                    request.setAttribute("puoRecensire", true);
-                }
-            }
-        }
-
-        request.getRequestDispatcher("/WEB-INF/jsp/prodotto.jsp").forward(request, response);
-    }
 }

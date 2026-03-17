@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.bean.Recensione;
-import model.bean.Utente;
-import model.dao.RecensioneDAO;
+import model.Bean.Recensione;
+import model.Bean.Utente;
+import model.DAO.RecensioneDAO;
 
 import java.io.IOException;
 

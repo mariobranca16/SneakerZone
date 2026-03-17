@@ -1,4 +1,4 @@
-package model.bean;
+package model.Bean;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -20,7 +20,8 @@ public class Ordine implements Serializable {
     private List<DettaglioOrdine> dettagliOrdine;
     private IndirizzoSpedizione indirizzo;
 
-    public Ordine() {}
+    public Ordine() {
+    }
 
     public Ordine(long id, long idUtente, long idIndirizzoSpedizione, LocalDate dataOrdine, StatoOrdine stato) {
         this.id = id;
@@ -33,6 +34,7 @@ public class Ordine implements Serializable {
     public long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -40,6 +42,7 @@ public class Ordine implements Serializable {
     public long getIdUtente() {
         return idUtente;
     }
+
     public void setIdUtente(long idUtente) {
         this.idUtente = idUtente;
     }
@@ -47,11 +50,15 @@ public class Ordine implements Serializable {
     public long getIdIndirizzoSpedizione() {
         return idIndirizzoSpedizione;
     }
-    public void setIdIndirizzoSpedizione(long idIndirizzoSpedizione) { this.idIndirizzoSpedizione = idIndirizzoSpedizione; }
+
+    public void setIdIndirizzoSpedizione(long idIndirizzoSpedizione) {
+        this.idIndirizzoSpedizione = idIndirizzoSpedizione;
+    }
 
     public LocalDate getDataOrdine() {
         return dataOrdine;
     }
+
     public void setDataOrdine(LocalDate dataOrdine) {
         this.dataOrdine = dataOrdine;
     }
@@ -60,23 +67,74 @@ public class Ordine implements Serializable {
         return dataOrdine != null ? dataOrdine.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
     }
 
-    public StatoOrdine getStato() { return stato; }
-    public void setStato(StatoOrdine stato) { this.stato = stato; }
+    public StatoOrdine getStato() {
+        return stato;
+    }
 
-    public List<DettaglioOrdine> getDettagliOrdine() { return dettagliOrdine; }
-    public void setDettagliOrdine(List<DettaglioOrdine> dettagli) { this.dettagliOrdine = dettagli; }
+    public void setStato(StatoOrdine stato) {
+        this.stato = stato;
+    }
 
-    public IndirizzoSpedizione getIndirizzo() { return indirizzo; }
-    public void setIndirizzo(IndirizzoSpedizione indirizzo) { this.indirizzo = indirizzo; }
+    public List<DettaglioOrdine> getDettagliOrdine() {
+        return dettagliOrdine;
+    }
+
+    public void setDettagliOrdine(List<DettaglioOrdine> dettagli) {
+        this.dettagliOrdine = dettagli;
+    }
+
+    public IndirizzoSpedizione getIndirizzo() {
+        return indirizzo;
+    }
+
+    public void setIndirizzo(IndirizzoSpedizione indirizzo) {
+        this.indirizzo = indirizzo;
+    }
 
     public double calcolaTotaleOrdine() {
         if (dettagliOrdine == null || dettagliOrdine.isEmpty())
             return 0.0;
         double totale = 0.0;
         for (DettaglioOrdine d : dettagliOrdine) {
-            totale += d.getCosto() * d.getQuantita();
+            totale += d.getSubtotale();
         }
         return totale;
+    }
+
+    public double getTotaleOrdine() {
+        return calcolaTotaleOrdine();
+    }
+
+    public int getNumeroArticoli() {
+        return dettagliOrdine != null ? dettagliOrdine.size() : 0;
+    }
+
+    public boolean isAnnullato() {
+        return stato == StatoOrdine.ANNULLATO;
+    }
+
+    public boolean isSpedito() {
+        return stato == StatoOrdine.SPEDITO || stato == StatoOrdine.CONSEGNATO;
+    }
+
+    public boolean isConsegnato() {
+        return stato == StatoOrdine.CONSEGNATO;
+    }
+
+    public boolean isInElaborazione() {
+        return stato == StatoOrdine.IN_ELABORAZIONE;
+    }
+
+    public String getStatoCssClass() {
+        if (stato == null) {
+            return "";
+        }
+        return switch (stato) {
+            case CONSEGNATO -> "ordine-consegnato";
+            case SPEDITO -> "ordine-spedito";
+            case IN_ELABORAZIONE -> "ordine-elaborazione";
+            case ANNULLATO -> "ordine-annullato";
+        };
     }
 
     @Override
@@ -97,10 +155,10 @@ public class Ordine implements Serializable {
     @Override
     public String toString() {
         return "Ordine [ID: " + id +
-               ", IdUtente: " + idUtente +
-               ", IdIndirizzoSpedizione: " + idIndirizzoSpedizione +
-               ", DataOrdine: " + dataOrdine +
-               ", Stato: " + stato +
-               ", Totale: " + calcolaTotaleOrdine() + "]";
+                ", IdUtente: " + idUtente +
+                ", IdIndirizzoSpedizione: " + idIndirizzoSpedizione +
+                ", DataOrdine: " + dataOrdine +
+                ", Stato: " + stato +
+                ", Totale: " + calcolaTotaleOrdine() + "]";
     }
 }

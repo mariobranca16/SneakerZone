@@ -1,4 +1,4 @@
-package model.bean;
+package model.Bean;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -15,6 +15,7 @@ public class Prodotto implements Serializable {
     private String brand;
     private double costo;
     private String colore;
+    private String genere;
 
     private List<ImmagineProdotto> immagini;
     private List<ProdottoTaglia> taglie;
@@ -22,7 +23,8 @@ public class Prodotto implements Serializable {
 
     private String imgPath;
 
-    public Prodotto() {}
+    public Prodotto() {
+    }
 
     public Prodotto(long id, String nome, String descrizione, String brand, double costo, String colore) {
         this.id = id;
@@ -36,6 +38,7 @@ public class Prodotto implements Serializable {
     public long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -43,6 +46,7 @@ public class Prodotto implements Serializable {
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -50,6 +54,7 @@ public class Prodotto implements Serializable {
     public String getDescrizione() {
         return descrizione;
     }
+
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
@@ -57,6 +62,7 @@ public class Prodotto implements Serializable {
     public String getBrand() {
         return brand;
     }
+
     public void setBrand(String brand) {
         this.brand = brand;
     }
@@ -64,6 +70,7 @@ public class Prodotto implements Serializable {
     public double getCosto() {
         return costo;
     }
+
     public void setCosto(double costo) {
         this.costo = costo;
     }
@@ -71,25 +78,39 @@ public class Prodotto implements Serializable {
     public String getColore() {
         return colore;
     }
+
     public void setColore(String colore) {
         this.colore = colore;
+    }
+
+    public String getGenere() {
+        return genere;
+    }
+
+    public void setGenere(String genere) {
+        this.genere = genere;
     }
 
     public List<ImmagineProdotto> getImmagini() {
         return immagini;
     }
+
     public void setImmagini(List<ImmagineProdotto> immagini) {
         this.immagini = immagini;
     }
+
     public List<ProdottoTaglia> getTaglie() {
         return taglie;
     }
+
     public void setTaglie(List<ProdottoTaglia> taglie) {
         this.taglie = taglie;
     }
+
     public List<Categoria> getCategorie() {
         return categorie;
     }
+
     public void setCategorie(List<Categoria> categorie) {
         this.categorie = categorie;
     }
@@ -97,8 +118,22 @@ public class Prodotto implements Serializable {
     public String getImgPath() {
         return imgPath;
     }
+
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    public String primaTagliaDisp() {
+        if (taglie != null) {
+            for (ProdottoTaglia pt : taglie) {
+                if (pt.getQuantita() > 0) return String.valueOf(pt.getTaglia());
+            }
+        }
+        return null;
+    }
+
+    public String getPrimaTagliaDisponibile() {
+        return primaTagliaDisp();
     }
 
     @Override

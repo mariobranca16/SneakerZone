@@ -1,8 +1,7 @@
-package model.dao;
+package model.DAO;
 
-import model.bean.Recensione;
-import model.bean.StatoOrdine;
-import model.ConPool;
+import model.Bean.Recensione;
+import model.Bean.StatoOrdine;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.bean.Ordine;
-import model.bean.Utente;
-import model.dao.IndirizzoSpedizioneDAO;
-import model.dao.OrdineDAO;
+import model.Bean.Ordine;
+import model.Bean.Utente;
+import model.DAO.IndirizzoSpedizioneDAO;
+import model.DAO.OrdineDAO;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,12 +29,12 @@ public class StoricoOrdiniServlet extends HttpServlet {
         List<Ordine> ordini = new OrdineDAO().doRetrieveByUtente(utente.getId());
         IndirizzoSpedizioneDAO isDAO = new IndirizzoSpedizioneDAO();
 
-        for(Ordine ordine : ordini){
+        for (Ordine ordine : ordini) {
             ordine.setIndirizzo(isDAO.doRetrieveByKey(ordine.getIdIndirizzoSpedizione()));
         }
 
-        request.setAttribute("ordini",ordini);
-        request.getRequestDispatcher("/WEB-INF/jsp/ordini.jsp").forward(request,response);
+        request.setAttribute("ordini", ordini);
+        request.getRequestDispatcher("/WEB-INF/jsp/ordini.jsp").forward(request, response);
 
     }
 }

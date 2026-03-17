@@ -1,7 +1,6 @@
-package model.dao;
+package model.DAO;
 
-import model.bean.ProdottoTaglia;
-import model.ConPool;
+import model.Bean.ProdottoTaglia;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,41 +8,55 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProdottoTagliaDAO {
 
-    public void doSaveOrUpdate(ProdottoTaglia pt) {
+    public static final int[] TAGLIE_DISPONIBILI = {35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46};
+
+    public static List<ProdottoTaglia> buildFromParams(Map<String, String[]> params, long idProdotto) {
+        List<ProdottoTaglia> taglie = new ArrayList<>();
+        for (int taglia : TAGLIE_DISPONIBILI) {
+            String[] values = params.get("q_" + taglia);
+            if (values == null || values.length == 0 || values[0].isBlank()) continue;
+            int quantita;
+            try {
+                quantita = Integer.parseInt(values[0]);
+            } catch (NumberFormatException e) {
+                continue;
+            }
+            if (quantita < 0) continue;
+            ProdottoTaglia pt = new ProdottoTaglia();
+            pt.setIdProdotto(idProdotto);
+            pt.setTaglia(taglia);
+            pt.setQuantita(quantita);
+            taglie.add(pt);
+        }
+        return taglie;
+    }
+
+    public void doDeleteByProdotto(Connection connection, long idProdotto) throws SQLException {
+        try (PreparedStatement ps = connection.prepareStatement(
+                "DELETE FROM Prodotto_Taglia WHERE prodotto_id = ?"
+        )) {
+            ps.setLong(1, idProdotto);
+            ps.executeUpdate();
+        }
+    }
+
+    public void doSaveOrUpdate(Connection connection, ProdottoTaglia pt) throws SQLException {
         if (pt.getQuantita() < 0)
             throw new IllegalArgumentException("La quantità non può essere negativa");
 
-        try (Connection connection = ConPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(
-                     "INSERT INTO Prodotto_Taglia (prodotto_id, taglia, quantita) VALUES (?, ?, ?) " +
-                             "ON DUPLICATE KEY UPDATE quantita = ?"
-             )) {
-
+        try (PreparedStatement ps = connection.prepareStatement(
+                "INSERT INTO Prodotto_Taglia (prodotto_id, taglia, quantita) VALUES (?, ?, ?) " +
+                        "ON DUPLICATE KEY UPDATE quantita = ?"
+        )) {
             ps.setLong(1, pt.getIdProdotto());
             ps.setInt(2, pt.getTaglia());
             ps.setInt(3, pt.getQuantita());
             ps.setInt(4, pt.getQuantita());
             ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Errore durante il salvataggio/aggiornamento delle taglie", e);
-        }
-    }
-
-    public void doDeleteByProdotto(long idProdotto) {
-        try (Connection connection = ConPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(
-                     "DELETE FROM Prodotto_Taglia WHERE prodotto_id = ?"
-             )) {
-
-            ps.setLong(1, idProdotto);
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Errore nella cancellazione delle taglie per prodotto", e);
         }
     }
 

@@ -1,4 +1,4 @@
-package model.bean;
+package model.Bean;
 
 import java.util.Objects;
 
@@ -10,7 +10,8 @@ public class DettaglioOrdine {
     private double costo;
     private Prodotto prodotto;
 
-    public DettaglioOrdine() {}
+    public DettaglioOrdine() {
+    }
 
     public DettaglioOrdine(long idOrdine, long idProdotto, int taglia, int quantita, double costo) {
         this.idOrdine = idOrdine;
@@ -72,7 +73,7 @@ public class DettaglioOrdine {
         return costo * quantita;
     }
 
-@Override
+    @Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
@@ -80,8 +81,8 @@ public class DettaglioOrdine {
             return false;
         DettaglioOrdine d = (DettaglioOrdine) o;
         return idOrdine == d.idOrdine &&
-               idProdotto == d.idProdotto &&
-               this.taglia == d.taglia;
+                idProdotto == d.idProdotto &&
+                this.taglia == d.taglia;
     }
 
     @Override
@@ -92,10 +93,10 @@ public class DettaglioOrdine {
     @Override
     public String toString() {
         return "DettaglioOrdine [IdOrdine: " + idOrdine +
-               ", IdProdotto: " + idProdotto +
-               ", Taglia: " + taglia +
-               ", Quantità: " + quantita +
-               ", Costo: " + costo +
-               ", Prodotto: " + (prodotto != null ? prodotto.getNome() : null) + "]";
+                ", IdProdotto: " + idProdotto +
+                ", Taglia: " + taglia +
+                ", Quantità: " + quantita +
+                ", Costo: " + costo +
+                ", Prodotto: " + (prodotto != null ? prodotto.getNome() : null) + "]";
     }
 }

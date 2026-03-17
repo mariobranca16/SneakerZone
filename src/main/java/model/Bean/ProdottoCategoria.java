@@ -1,4 +1,4 @@
-package model.bean;
+package model.Bean;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -10,7 +10,8 @@ public class ProdottoCategoria implements Serializable {
     private long idProdotto;
     private long idCategoria;
 
-    public ProdottoCategoria() {}
+    public ProdottoCategoria() {
+    }
 
     public ProdottoCategoria(long idProdotto, long idCategoria) {
         this.idProdotto = idProdotto;
@@ -20,6 +21,7 @@ public class ProdottoCategoria implements Serializable {
     public long getIdProdotto() {
         return idProdotto;
     }
+
     public void setIdProdotto(long idProdotto) {
         this.idProdotto = idProdotto;
     }
@@ -27,6 +29,7 @@ public class ProdottoCategoria implements Serializable {
     public long getIdCategoria() {
         return idCategoria;
     }
+
     public void setIdCategoria(long idCategoria) {
         this.idCategoria = idCategoria;
     }
@@ -34,6 +37,6 @@ public class ProdottoCategoria implements Serializable {
     @Override
     public String toString() {
         return "ProdottoCategoria [IdProdotto: " + idProdotto +
-               ", IdCategoria: " + idCategoria + "]";
+                ", IdCategoria: " + idCategoria + "]";
     }
 }

@@ -6,26 +6,17 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.bean.IndirizzoSpedizione;
-import model.bean.MetodoPagamento;
-import model.bean.Utente;
-import model.dao.IndirizzoSpedizioneDAO;
-import model.dao.MetodoPagamentoDAO;
+import model.Bean.IndirizzoSpedizione;
+import model.Bean.MetodoPagamento;
+import model.Bean.Utente;
+import model.DAO.IndirizzoSpedizioneDAO;
+import model.DAO.MetodoPagamentoDAO;
 
 import java.io.IOException;
 import java.util.List;
 
 @WebServlet(name = "myAccount", urlPatterns = "/myAccount")
 public class AccountServlet extends HttpServlet {
-    private void caricaDatiPagina(HttpServletRequest request, Utente utente) {
-        request.setAttribute("utente", utente);
-        List<IndirizzoSpedizione> indirizzi =
-                new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId());
-        request.setAttribute("indirizzi", indirizzi);
-        MetodoPagamento mp = new MetodoPagamentoDAO().doRetrieveByUtente(utente.getId());
-        request.setAttribute("metodoPagamento", mp);
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -50,7 +41,11 @@ public class AccountServlet extends HttpServlet {
             session.removeAttribute("tabAttiva");
         }
 
-        caricaDatiPagina(request, utente);
+        request.setAttribute("utente", utente);
+        List<IndirizzoSpedizione> indirizzi = new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId());
+        request.setAttribute("indirizzi", indirizzi);
+        MetodoPagamento mp = new MetodoPagamentoDAO().doRetrieveByUtente(utente.getId());
+        request.setAttribute("metodoPagamento", mp);
         request.getRequestDispatcher("/WEB-INF/jsp/account.jsp").forward(request, response);
     }
 }

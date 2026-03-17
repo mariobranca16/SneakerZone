@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.bean.IndirizzoSpedizione;
-import model.bean.Utente;
-import model.dao.IndirizzoSpedizioneDAO;
+import model.Bean.IndirizzoSpedizione;
+import model.Bean.Utente;
+import model.DAO.IndirizzoSpedizioneDAO;
 
 import java.io.IOException;
 

@@ -1,13 +1,13 @@
 package controller.admin;
 
-import controller.ValidatoreInput;
+import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.bean.*;
-import model.dao.*;
+import model.Bean.*;
+import model.DAO.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -44,7 +44,7 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
             }
         }
 
-        prepareFormView(request, prodotto, titoloPagina, idCategorieSelezionate, null);
+        caricaDatiForm(request, prodotto, titoloPagina, idCategorieSelezionate, null);
         request.getRequestDispatcher("/WEB-INF/jsp/admin/gestione_prodotto.jsp").forward(request, response);
     }
 
@@ -142,20 +142,67 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
         }
 
         CategoriaDAO categoriaDAO = new CategoriaDAO();
-        CategoriaParseResult categoriaResult = parseIdCategorie(request);
-        if (categoriaResult.ids.isEmpty()) {
+        Set<Long> idCategorie = new HashSet<>();
+        boolean hasInvalidCategorie = false;
+        String[] categorieValues = request.getParameterValues("categoria_id");
+        if (categorieValues != null) {
+            for (String v : categorieValues) {
+                try {
+                    idCategorie.add(Long.parseLong(v.trim()));
+                } catch (Exception e) {
+                    hasInvalidCategorie = true;
+                }
+            }
+        }
+        if (idCategorie.isEmpty()) {
             request.setAttribute("erroreCategorie", "Seleziona almeno una categoria.");
             hasError = true;
-        } else if (categoriaResult.hasInvalidValues || !categoriaDAO.doExistsAllByIds(categoriaResult.ids)) {
+        } else if (hasInvalidCategorie || !categoriaDAO.doExistsAllByIds(idCategorie)) {
             request.setAttribute("erroreCategorie", "Le categorie selezionate non sono valide.");
             hasError = true;
         }
 
-        TaglieParseResult taglieResult = parseTaglie(request, prodotto.getId());
-        if (taglieResult.hasInvalidValues) {
+        List<ProdottoTaglia> taglie = new ArrayList<>();
+        Map<Integer, String> valoriFormTaglie = new LinkedHashMap<>();
+        boolean hasInvalidTaglie = false;
+        boolean hasPositiveQuantity = false;
+
+        for (int taglia : ProdottoTagliaDAO.TAGLIE_DISPONIBILI) {
+            String raw = request.getParameter("q_" + taglia);
+            String valore = raw == null ? "" : raw.trim();
+            if (valore.isEmpty()) {
+                valore = "0";
+            }
+            valoriFormTaglie.put(taglia, valore);
+
+            int quantita;
+            try {
+                quantita = Integer.parseInt(valore);
+            } catch (NumberFormatException e) {
+                hasInvalidTaglie = true;
+                continue;
+            }
+
+            if (quantita < 0) {
+                hasInvalidTaglie = true;
+                continue;
+            }
+
+            if (quantita > 0) {
+                hasPositiveQuantity = true;
+            }
+
+            ProdottoTaglia pt = new ProdottoTaglia();
+            pt.setIdProdotto(prodotto.getId());
+            pt.setTaglia(taglia);
+            pt.setQuantita(quantita);
+            taglie.add(pt);
+        }
+
+        if (hasInvalidTaglie) {
             request.setAttribute("erroreTaglie", "Le quantita devono essere numeri interi maggiori o uguali a zero.");
             hasError = true;
-        } else if (!taglieResult.hasPositiveQuantity) {
+        } else if (!hasPositiveQuantity) {
             request.setAttribute("erroreTaglie", "Inserisci almeno una taglia con quantita disponibile maggiore di zero.");
             hasError = true;
         }
@@ -165,7 +212,7 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
         prodotto.setBrand(brand);
         prodotto.setColore(colore);
         prodotto.setGenere(genere);
-        prodotto.setTaglie(taglieResult.taglie);
+        prodotto.setTaglie(taglie);
 
         if (costoValido) {
             prodotto.setCosto(costo);
@@ -173,7 +220,7 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
 
         if (hasError) {
             request.setAttribute("formCosto", costoParam);
-            prepareFormView(request, prodotto, titoloPagina, categoriaResult.ids, taglieResult.valoriForm);
+            caricaDatiForm(request, prodotto, titoloPagina, idCategorie, valoriFormTaglie);
             request.getRequestDispatcher("/WEB-INF/jsp/admin/gestione_prodotto.jsp").forward(request, response);
             return;
         }
@@ -182,97 +229,39 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
 
         if (prodotto.getId() > 0) {
             prodottoDAO.doUpdate(prodotto);
-            new ProdottoCategoriaDAO().doReplace(prodotto.getId(), categoriaResult.ids);
+            new ProdottoCategoriaDAO().doReplace(prodotto.getId(), idCategorie);
             response.sendRedirect(request.getContextPath() + "/admin/prodotti");
             return;
         }
 
         prodottoDAO.doSave(prodotto);
-        new ProdottoCategoriaDAO().doReplace(prodotto.getId(), categoriaResult.ids);
+        new ProdottoCategoriaDAO().doReplace(prodotto.getId(), idCategorie);
         response.sendRedirect(request.getContextPath() + "/admin/prodotto?id=" + prodotto.getId());
     }
 
-    private Map<Integer, String> buildQuantitaPerTaglia(Prodotto prodotto) {
-        Map<Integer, String> mappa = new LinkedHashMap<>();
-        for (int t : ProdottoTagliaDAO.TAGLIE_DISPONIBILI) {
-            mappa.put(t, "0");
-        }
-
-        if (prodotto != null && prodotto.getTaglie() != null) {
-            for (ProdottoTaglia pt : prodotto.getTaglie()) {
-                if (pt != null) {
-                    mappa.put(pt.getTaglia(), String.valueOf(pt.getQuantita()));
-                }
-            }
-        }
-
-        return mappa;
-    }
-
-    private CategoriaParseResult parseIdCategorie(HttpServletRequest request) {
-        Set<Long> ids = new HashSet<>();
-        boolean hasInvalidValues = false;
-        String[] values = request.getParameterValues("categoria_id");
-        if (values != null) {
-            for (String v : values) {
-                try {
-                    ids.add(Long.parseLong(v.trim()));
-                } catch (Exception e) {
-                    hasInvalidValues = true;
-                }
-            }
-        }
-        return new CategoriaParseResult(ids, hasInvalidValues);
-    }
-
-    private TaglieParseResult parseTaglie(HttpServletRequest request, long idProdotto) {
-        List<ProdottoTaglia> taglie = new ArrayList<>();
-        Map<Integer, String> valoriForm = new LinkedHashMap<>();
-        boolean hasInvalidValues = false;
-        boolean hasPositiveQuantity = false;
-
-        for (int taglia : ProdottoTagliaDAO.TAGLIE_DISPONIBILI) {
-            String raw = request.getParameter("q_" + taglia);
-            String valore = raw == null ? "" : raw.trim();
-            if (valore.isEmpty()) {
-                valore = "0";
-            }
-            valoriForm.put(taglia, valore);
-
-            int quantita;
-            try {
-                quantita = Integer.parseInt(valore);
-            } catch (NumberFormatException e) {
-                hasInvalidValues = true;
-                continue;
-            }
-
-            if (quantita < 0) {
-                hasInvalidValues = true;
-                continue;
-            }
-
-            if (quantita > 0) {
-                hasPositiveQuantity = true;
-            }
-
-            ProdottoTaglia pt = new ProdottoTaglia();
-            pt.setIdProdotto(idProdotto);
-            pt.setTaglia(taglia);
-            pt.setQuantita(quantita);
-            taglie.add(pt);
-        }
-
-        return new TaglieParseResult(taglie, valoriForm, hasInvalidValues, hasPositiveQuantity);
-    }
-
-    private void prepareFormView(HttpServletRequest request, Prodotto prodotto, String titoloPagina,
+    // carica tutti i dati necessari alla pagina form prodotto (categorie, taglie, immagini, recensioni)
+    private void caricaDatiForm(HttpServletRequest request, Prodotto prodotto, String titoloPagina,
                                  Set<Long> idCategorieSelezionate, Map<Integer, String> quantitaPerTaglia) {
         request.setAttribute("prodotto", prodotto);
         request.setAttribute("titoloPagina", titoloPagina);
         request.setAttribute("taglieDisponibili", ProdottoTagliaDAO.TAGLIE_DISPONIBILI);
-        request.setAttribute("quantitaPerTaglia",
-                quantitaPerTaglia != null ? quantitaPerTaglia : buildQuantitaPerTaglia(prodotto));
+
+        if (quantitaPerTaglia == null) {
+            Map<Integer, String> mappa = new LinkedHashMap<>();
+            for (int t : ProdottoTagliaDAO.TAGLIE_DISPONIBILI) {
+                mappa.put(t, "0");
+            }
+            if (prodotto != null && prodotto.getTaglie() != null) {
+                for (ProdottoTaglia pt : prodotto.getTaglie()) {
+                    if (pt != null) {
+                        mappa.put(pt.getTaglia(), String.valueOf(pt.getQuantita()));
+                    }
+                }
+            }
+            quantitaPerTaglia = mappa;
+        }
+        request.setAttribute("quantitaPerTaglia", quantitaPerTaglia);
+
         request.setAttribute("tutteCategorie", new CategoriaDAO().doRetrieveAll());
         request.setAttribute("idCategorieSelezionate",
                 idCategorieSelezionate != null ? idCategorieSelezionate : Collections.emptySet());
@@ -281,44 +270,17 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
             request.setAttribute("immagini", new ImmagineProdottoDAO().doRetrieveByProdotto(prodotto.getId()));
             List<Recensione> recensioni = new RecensioneDAO().doRetrieveByProdotto(prodotto.getId());
             request.setAttribute("recensioni", recensioni);
-            request.setAttribute("emailUtenti", buildEmailUtenti(recensioni));
-        }
-    }
 
-    private Map<Long, String> buildEmailUtenti(List<Recensione> recensioni) {
-        UtenteDAO utenteDAO = new UtenteDAO();
-        Map<Long, String> emailUtenti = new HashMap<>();
-        for (Recensione rec : recensioni) {
-            if (!emailUtenti.containsKey(rec.getIdUtente())) {
-                Utente u = utenteDAO.doRetrieveByKey(rec.getIdUtente());
-                emailUtenti.put(rec.getIdUtente(), u != null ? u.getEmail() : "-");
+            UtenteDAO utenteDAO = new UtenteDAO();
+            Map<Long, String> emailUtenti = new HashMap<>();
+            for (Recensione rec : recensioni) {
+                if (!emailUtenti.containsKey(rec.getIdUtente())) {
+                    Utente u = utenteDAO.doRetrieveByKey(rec.getIdUtente());
+                    emailUtenti.put(rec.getIdUtente(), u != null ? u.getEmail() : "-");
+                }
             }
-        }
-        return emailUtenti;
-    }
-
-    private static final class CategoriaParseResult {
-        private final Set<Long> ids;
-        private final boolean hasInvalidValues;
-
-        private CategoriaParseResult(Set<Long> ids, boolean hasInvalidValues) {
-            this.ids = ids;
-            this.hasInvalidValues = hasInvalidValues;
+            request.setAttribute("emailUtenti", emailUtenti);
         }
     }
 
-    private static final class TaglieParseResult {
-        private final List<ProdottoTaglia> taglie;
-        private final Map<Integer, String> valoriForm;
-        private final boolean hasInvalidValues;
-        private final boolean hasPositiveQuantity;
-
-        private TaglieParseResult(List<ProdottoTaglia> taglie, Map<Integer, String> valoriForm,
-                                  boolean hasInvalidValues, boolean hasPositiveQuantity) {
-            this.taglie = taglie;
-            this.valoriForm = valoriForm;
-            this.hasInvalidValues = hasInvalidValues;
-            this.hasPositiveQuantity = hasPositiveQuantity;
-        }
-    }
 }

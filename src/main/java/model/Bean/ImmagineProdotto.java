@@ -1,4 +1,4 @@
-package model.bean;
+package model.Bean;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,7 +13,8 @@ public class ImmagineProdotto implements Serializable {
     private String descrizione;
     private int posizione;
 
-    public ImmagineProdotto() {}
+    public ImmagineProdotto() {
+    }
 
     public ImmagineProdotto(long id, long idProdotto, String imgPath, String descrizione, int posizione) {
         this.id = id;
@@ -26,6 +27,7 @@ public class ImmagineProdotto implements Serializable {
     public long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -33,6 +35,7 @@ public class ImmagineProdotto implements Serializable {
     public long getIdProdotto() {
         return idProdotto;
     }
+
     public void setIdProdotto(long idProdotto) {
         this.idProdotto = idProdotto;
     }
@@ -40,6 +43,7 @@ public class ImmagineProdotto implements Serializable {
     public String getImgPath() {
         return imgPath;
     }
+
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
     }
@@ -47,6 +51,7 @@ public class ImmagineProdotto implements Serializable {
     public String getDescrizione() {
         return descrizione;
     }
+
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
@@ -54,6 +59,7 @@ public class ImmagineProdotto implements Serializable {
     public int getPosizione() {
         return posizione;
     }
+
     public void setPosizione(int posizione) {
         this.posizione = posizione;
     }
@@ -61,9 +67,9 @@ public class ImmagineProdotto implements Serializable {
     @Override
     public String toString() {
         return "ImmagineProdotto [ID: " + id +
-               ", IdProdotto: " + idProdotto +
-               ", ImgPath: " + imgPath +
-               ", Descrizione: " + descrizione +
-               ", Posizione: " + posizione + "]";
+                ", IdProdotto: " + idProdotto +
+                ", ImgPath: " + imgPath +
+                ", Descrizione: " + descrizione +
+                ", Posizione: " + posizione + "]";
     }
 }

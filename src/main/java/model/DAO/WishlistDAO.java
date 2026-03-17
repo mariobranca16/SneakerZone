@@ -1,8 +1,7 @@
-package model.dao;
+package model.DAO;
 
 import model.Bean.Prodotto;
 import model.Bean.Wishlist;
-import model.ConPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +15,6 @@ public class WishlistDAO {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
                      "INSERT IGNORE INTO Wishlist (utente_id, prodotto_id) VALUES (?, ?)"
-                     // IGNORE permette di effettuare l'inserimento anche se la combinazione è gia presente, ignorando l'errore
              )) {
             ps.setLong(1, wishlist.getIdUtente());
             ps.setLong(2, wishlist.getIdProdotto());
@@ -37,6 +35,21 @@ public class WishlistDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Errore nella rimozione dalla wishlist del prodotto con ID: " + wishlist.getIdProdotto(), e);
         }
+    }
+
+    public int countByUtente(long idUtente) {
+        try (Connection connection = ConPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(
+                     "SELECT COUNT(*) FROM Wishlist WHERE utente_id = ?"
+             )) {
+            ps.setLong(1, idUtente);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nel conteggio della wishlist", e);
+        }
+        return 0;
     }
 
     public List<Prodotto> doRetrieveProdottiByUtente(long idUtente) {

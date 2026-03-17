@@ -1,5 +1,6 @@
 package controller;
 
+import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,7 +23,7 @@ public class AggiungiAllaWishlistServlet extends HttpServlet {
 
         if (utente == null) {
             if (isAjax) {
-                sendJson(response, 401, "{\"success\":false,\"redirect\":\"" + request.getContextPath() + "/login\"}");
+                ValidatoreInput.sendJson(response, 401, "{\"success\":false,\"redirect\":\"" + request.getContextPath() + "/login\"}");
                 return;
             }
             session.setAttribute("erroreLogin", "Effettua il login per salvare prodotti nella wishlist");
@@ -33,7 +34,7 @@ public class AggiungiAllaWishlistServlet extends HttpServlet {
         String idProdottoParam = request.getParameter("idProdotto");
         if (idProdottoParam == null || idProdottoParam.isBlank()) {
             if (isAjax) {
-                sendJson(response, 400, "{\"success\":false,\"errore\":\"ID prodotto mancante\"}");
+                ValidatoreInput.sendJson(response, 400, "{\"success\":false,\"errore\":\"ID prodotto mancante\"}");
                 return;
             }
             response.sendRedirect(request.getContextPath() + "/catalogo");
@@ -45,7 +46,7 @@ public class AggiungiAllaWishlistServlet extends HttpServlet {
             idProdotto = Long.parseLong(idProdottoParam);
         } catch (NumberFormatException e) {
             if (isAjax) {
-                sendJson(response, 400, "{\"success\":false,\"errore\":\"ID prodotto non valido\"}");
+                ValidatoreInput.sendJson(response, 400, "{\"success\":false,\"errore\":\"ID prodotto non valido\"}");
                 return;
             }
             response.sendRedirect(request.getContextPath() + "/catalogo");
@@ -59,17 +60,15 @@ public class AggiungiAllaWishlistServlet extends HttpServlet {
         WishlistDAO wishlistDAO = new WishlistDAO();
         wishlistDAO.addToWishlist(wishlist);
 
+        int nuovoConteggio = wishlistDAO.countByUtente(utente.getId());
+        session.setAttribute("wishlistCount", nuovoConteggio);
+
         if (isAjax) {
-            sendJson(response, 200, "{\"success\":true,\"aggiunto\":true}");
+            ValidatoreInput.sendJson(response, 200, "{\"success\":true,\"aggiunto\":true,\"count\":" + nuovoConteggio + "}");
             return;
         }
 
         response.sendRedirect(request.getContextPath() + "/catalogo?successoWishlist=1");
     }
 
-    private void sendJson(HttpServletResponse response, int status, String json) throws IOException {
-        response.setStatus(status);
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(json);
-    }
 }

@@ -1,15 +1,16 @@
 package controller;
 
+import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.bean.Utente;
-import model.dao.IndirizzoSpedizioneDAO;
-import model.dao.MetodoPagamentoDAO;
-import model.dao.UtenteDAO;
+import model.Bean.Utente;
+import model.DAO.IndirizzoSpedizioneDAO;
+import model.DAO.MetodoPagamentoDAO;
+import model.DAO.UtenteDAO;
 
 import java.io.IOException;
 import java.time.LocalDate;

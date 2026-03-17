@@ -1,10 +1,13 @@
-package controller;
+package controller.util;
 
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.regex.Pattern;
 
-public final class ValidatoreInput {
+public class ValidatoreInput {
     public static final int LUNGHEZZA_MAX_NOME = 50;
     public static final int LUNGHEZZA_MAX_EMAIL = 100;
     public static final int LUNGHEZZA_MIN_PASSWORD = 8;
@@ -21,32 +24,6 @@ public final class ValidatoreInput {
     public static final int LUNGHEZZA_MIN_TITOLO_RECENSIONE = 3;
     public static final int LUNGHEZZA_MAX_TITOLO_RECENSIONE = 255;
     public static final int LUNGHEZZA_MAX_COMMENTO_RECENSIONE = 2000;
-
-    private static final Pattern PATTERN_EMAIL = Pattern.compile(
-            "^[A-Za-z0-9](?:[A-Za-z0-9._%+\\-]{0,62}[A-Za-z0-9])?@"
-                    + "(?:[A-Za-z0-9](?:[A-Za-z0-9\\-]{0,61}[A-Za-z0-9])?\\.)+[A-Za-z]{2,63}$");
-    private static final Pattern PATTERN_TELEFONO = Pattern.compile("^\\+?\\d{8,13}$");
-    private static final Pattern PATTERN_MAIUSCOLA = Pattern.compile("[A-Z]");
-    private static final Pattern PATTERN_MINUSCOLA = Pattern.compile("[a-z]");
-    private static final Pattern PATTERN_CIFRA = Pattern.compile("\\d");
-    private static final Pattern PATTERN_CARATTERE_SPECIALE = Pattern.compile("[^A-Za-z0-9]");
-    private static final Pattern PATTERN_SPAZIO = Pattern.compile("\\s");
-    private static final Pattern PATTERN_NOME =
-            Pattern.compile("^(?=.{2,50}$)\\p{L}+(?:[ '\\-]\\p{L}+)*$");
-    private static final Pattern PATTERN_VIA =
-            Pattern.compile("^(?=.{5,100}$)(?=.*\\p{L})(?=.*\\d)[\\p{L}\\d'.,/\\- ]+$");
-    private static final Pattern PATTERN_CAP = Pattern.compile("^\\d{5}$");
-    private static final Pattern PATTERN_PROVINCIA = Pattern.compile("^\\p{L}{2,5}$");
-    private static final Pattern PATTERN_LOCALITA =
-            Pattern.compile("^(?=.{2,100}$)\\p{L}+(?:[ '\\-]\\p{L}+)*$");
-    private static final Pattern PATTERN_NOME_COGNOME =
-            Pattern.compile("^(?=.{4,100}$)\\p{L}+(?:['\\-]\\p{L}+)*(?:\\s+\\p{L}+(?:['\\-]\\p{L}+)*)+$");
-    private static final Pattern PATTERN_NUMERO_CARTA = Pattern.compile("^\\d{16}$");
-    private static final Pattern PATTERN_SCADENZA_CARTA = Pattern.compile("^(0[1-9]|1[0-2])/\\d{2}$");
-    private static final Pattern PATTERN_CVV = Pattern.compile("^\\d{3,4}$");
-
-    private ValidatoreInput() {
-    }
 
     public static String normalizzaTesto(String valore) {
         return valore == null ? null : valore.trim();
@@ -72,28 +49,36 @@ public final class ValidatoreInput {
 
     public static boolean isEmailValida(String email) {
         String t = normalizzaTesto(email);
-        return contieneTesto(t)
-                && t.length() <= LUNGHEZZA_MAX_EMAIL
-                && !t.contains("..")
-                && PATTERN_EMAIL.matcher(t).matches();
+        if (!contieneTesto(t) || t.length() > LUNGHEZZA_MAX_EMAIL)
+            return false;
+        if (t.contains(".."))
+            return false;
+        return Pattern.matches("^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,}$", t);
     }
 
     public static boolean isTelefonoValido(String telefono) {
         String t = normalizzaTelefono(telefono);
-        return contieneTesto(t)
-                && t.length() <= 13
-                && PATTERN_TELEFONO.matcher(t).matches();
+        if (!contieneTesto(t) || t.length() > 13)
+            return false;
+        return Pattern.matches("^\\+?\\d{8,13}$", t);
     }
 
     public static boolean isPasswordForte(String password) {
-        return password != null
-                && password.length() >= LUNGHEZZA_MIN_PASSWORD
-                && password.length() <= LUNGHEZZA_MAX_PASSWORD
-                && !PATTERN_SPAZIO.matcher(password).find()
-                && PATTERN_MAIUSCOLA.matcher(password).find()
-                && PATTERN_MINUSCOLA.matcher(password).find()
-                && PATTERN_CIFRA.matcher(password).find()
-                && PATTERN_CARATTERE_SPECIALE.matcher(password).find();
+        if (password == null || password.length() < LUNGHEZZA_MIN_PASSWORD || password.length() > LUNGHEZZA_MAX_PASSWORD)
+            return false;
+        if (password.contains(" "))
+            return false;
+        boolean hasMaiuscola = false;
+        boolean hasMinuscola = false;
+        boolean hasCifra = false;
+        boolean hasSpeciale = false;
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) hasMaiuscola = true;
+            else if (Character.isLowerCase(c)) hasMinuscola = true;
+            else if (Character.isDigit(c)) hasCifra = true;
+            else hasSpeciale = true;
+        }
+        return hasMaiuscola && hasMinuscola && hasCifra && hasSpeciale;
     }
 
     public static boolean isMinorenne(LocalDate dataNascita) {
@@ -102,57 +87,65 @@ public final class ValidatoreInput {
 
     public static boolean isNomeValido(String nome) {
         String t = normalizzaTesto(nome);
-        return contieneTesto(t) && PATTERN_NOME.matcher(t).matches();
+        if (!contieneTesto(t) || t.length() < 2 || t.length() > 50)
+            return false;
+        return Pattern.matches("^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$", t);
     }
 
     public static boolean isViaValida(String via) {
         String t = normalizzaTesto(via);
-        return contieneTesto(t)
-                && t.length() <= LUNGHEZZA_MAX_VIA
-                && PATTERN_VIA.matcher(t).matches();
+        if (!contieneTesto(t) || t.length() < 5 || t.length() > LUNGHEZZA_MAX_VIA)
+            return false;
+        if (!Pattern.matches("^[A-Za-zÀ-ÿ0-9 .,'/\\-]+$", t))
+            return false;
+        boolean hasLettera = false;
+        boolean hasNumero = false;
+        for (char c : t.toCharArray()) {
+            if (Character.isLetter(c)) hasLettera = true;
+            if (Character.isDigit(c)) hasNumero = true;
+        }
+        return hasLettera && hasNumero;
     }
 
     public static boolean isCapValido(String cap) {
         String t = normalizzaTesto(cap);
-        return contieneTesto(t) && PATTERN_CAP.matcher(t).matches();
+        return contieneTesto(t) && Pattern.matches("^\\d{5}$", t);
     }
 
     public static boolean isProvinciaValida(String provincia) {
         String t = normalizzaTesto(provincia);
-        return contieneTesto(t) && PATTERN_PROVINCIA.matcher(t).matches();
+        return contieneTesto(t) && Pattern.matches("^[A-Za-z]{2,5}$", t);
     }
 
     public static boolean isLocalitaValida(String localita) {
         String t = normalizzaTesto(localita);
-        return contieneTesto(t)
-                && t.length() <= LUNGHEZZA_MAX_LOCALITA
-                && PATTERN_LOCALITA.matcher(t).matches();
+        if (!contieneTesto(t) || t.length() < 2 || t.length() > LUNGHEZZA_MAX_LOCALITA)
+            return false;
+        return Pattern.matches("^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$", t);
     }
 
     public static boolean isNomeCartaValido(String nome) {
         String t = normalizzaTesto(nome);
-        return contieneTesto(t)
-                && t.length() >= 3
-                && t.length() <= LUNGHEZZA_MAX_NOME_CARTA
-                && PATTERN_NOME_COGNOME.matcher(t).matches();
+        if (!contieneTesto(t) || t.length() < 3 || t.length() > LUNGHEZZA_MAX_NOME_CARTA)
+            return false;
+        return Pattern.matches("^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*\\s+[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$", t);
     }
 
     public static boolean isDestinatarioValido(String dest) {
         String t = normalizzaTesto(dest);
-        return contieneTesto(t)
-                && t.length() >= 4
-                && t.length() <= LUNGHEZZA_MAX_LOCALITA
-                && PATTERN_NOME_COGNOME.matcher(t).matches();
+        if (!contieneTesto(t) || t.length() < 4 || t.length() > LUNGHEZZA_MAX_LOCALITA)
+            return false;
+        return Pattern.matches("^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*\\s+[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$", t);
     }
 
     public static boolean isNumeroCartaValido(String numeroCarta) {
         String t = normalizzaNumeroCarta(numeroCarta);
-        return contieneTesto(t) && PATTERN_NUMERO_CARTA.matcher(t).matches();
+        return contieneTesto(t) && Pattern.matches("^\\d{16}$", t);
     }
 
     public static boolean isCvvValido(String cvv) {
         String t = normalizzaTesto(cvv);
-        return contieneTesto(t) && PATTERN_CVV.matcher(t).matches();
+        return contieneTesto(t) && Pattern.matches("^\\d{3,4}$", t);
     }
 
     public static boolean isTitoloRecensioneValido(String titolo) {
@@ -193,12 +186,17 @@ public final class ValidatoreInput {
 
     public static String getErroreScadenzaCarta(String scadenza) {
         String t = normalizzaTesto(scadenza);
-        if (!contieneTesto(t) || !PATTERN_SCADENZA_CARTA.matcher(t).matches()) {
+        if (!contieneTesto(t) || !Pattern.matches("^\\d{2}/\\d{2}$", t)) {
             return "Formato non valido. Usa MM/AA.";
         }
 
         String[] parti = t.split("/");
-        YearMonth scad = YearMonth.of(2000 + Integer.parseInt(parti[1]), Integer.parseInt(parti[0]));
+        YearMonth scad;
+        try {
+            scad = YearMonth.of(2000 + Integer.parseInt(parti[1]), Integer.parseInt(parti[0]));
+        } catch (Exception e) {
+            return "Formato non valido. Usa MM/AA.";
+        }
         YearMonth oggi = YearMonth.now();
         if (scad.isBefore(oggi)) {
             return "La carta è scaduta.";
@@ -207,5 +205,11 @@ public final class ValidatoreInput {
             return "Data di scadenza non realistica.";
         }
         return null;
+    }
+
+    public static void sendJson(HttpServletResponse response, int status, String json) throws IOException {
+        response.setStatus(status);
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(json);
     }
 }

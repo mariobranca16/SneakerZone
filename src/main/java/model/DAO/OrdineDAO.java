@@ -1,9 +1,8 @@
-package model.dao;
+package model.DAO;
 
 import model.Bean.DettaglioOrdine;
 import model.Bean.Ordine;
 import model.Bean.StatoOrdine;
-import model.ConPool;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,12 +20,12 @@ public class OrdineDAO {
                     ps.setLong(1, ordine.getIdUtente());
                     ps.setLong(2, ordine.getIdIndirizzoSpedizione());
 
-                    if(ordine.getDataOrdine() != null)
+                    if (ordine.getDataOrdine() != null)
                         ps.setDate(3, Date.valueOf(ordine.getDataOrdine()));
                     else
                         ps.setNull(3, Types.DATE);
 
-                    if(ordine.getStato() != null)
+                    if (ordine.getStato() != null)
                         ps.setString(4, ordine.getStato().name());
                     else
                         ps.setNull(4, Types.VARCHAR);
@@ -65,11 +64,11 @@ public class OrdineDAO {
         }
     }
 
-    public Ordine doRetrieveByKey(long id){
-        try(Connection connection = ConPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(
-                    "SELECT * FROM Ordine WHERE id = ?"
-            )){
+    public Ordine doRetrieveByKey(long id) {
+        try (Connection connection = ConPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(
+                     "SELECT * FROM Ordine WHERE id = ?"
+             )) {
             ps.setLong(1, id);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -83,33 +82,32 @@ public class OrdineDAO {
         return null;
     }
 
-    //Per uso Admin
-    public List<Ordine> doRetrieveAll(){
+    public List<Ordine> doRetrieveAll() {
         List<Ordine> ordini = new ArrayList<>();
 
         try (Connection connection = ConPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(
-                    "SELECT * FROM Ordine ORDER BY data_ordine DESC"
-            )){
+             PreparedStatement ps = connection.prepareStatement(
+                     "SELECT * FROM Ordine ORDER BY data_ordine DESC"
+             )) {
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     ordini.add(buildOrdine(rs));
                 }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException("Errore nel recupero di tutti gli ordini", e);
         }
         return ordini;
     }
 
-    public List<Ordine> doRetrieveByUtente(long idUtente){
+    public List<Ordine> doRetrieveByUtente(long idUtente) {
         List<Ordine> ordini = new ArrayList<>();
 
         try (Connection connection = ConPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(
-                    "SELECT * FROM Ordine WHERE utente_id = ? ORDER BY data_ordine DESC"
-            )){
+             PreparedStatement ps = connection.prepareStatement(
+                     "SELECT * FROM Ordine WHERE utente_id = ? ORDER BY data_ordine DESC"
+             )) {
             ps.setLong(1, idUtente);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -125,21 +123,19 @@ public class OrdineDAO {
 
     public void doUpdateStato(long idOrdine, StatoOrdine nuovoStato) {
         try (Connection connection = ConPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(
-                    "UPDATE Ordine SET stato_ordine = ? WHERE id = ?"
-            )){
+             PreparedStatement ps = connection.prepareStatement(
+                     "UPDATE Ordine SET stato_ordine = ? WHERE id = ?")) {
 
-            if(nuovoStato != null)
+            if (nuovoStato != null)
                 ps.setString(1, nuovoStato.name());
             else
                 ps.setNull(1, Types.VARCHAR);
 
             ps.setLong(2, idOrdine);
+            ps.executeUpdate();
 
-            if(ps.executeUpdate() != 1)
-                throw new  RuntimeException("Errore nell'aggiornamento dello stato dell'ordine");
-        } catch (SQLException e){
-            throw new RuntimeException("Errore durante la modifica dello stato dell'ordine con ID: " + idOrdine, e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore aggiornamento stato ordine", e);
         }
     }
 

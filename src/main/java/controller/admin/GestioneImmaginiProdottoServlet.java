@@ -1,6 +1,6 @@
 package controller.admin;
 
-import controller.ValidatoreInput;
+import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,8 +8,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import model.dao.ImmagineProdottoDAO;
-import model.dao.ProdottoDAO;
+import model.DAO.ImmagineProdottoDAO;
+import model.DAO.ProdottoDAO;
 
 import java.io.IOException;
 
@@ -85,7 +85,8 @@ public class GestioneImmaginiProdottoServlet extends HttpServlet {
                         if (uploadDir == null || uploadDir.isBlank()) {
                             request.getSession().setAttribute("flashErrore", "Impossibile determinare la cartella di upload.");
                         } else {
-                            String nomeFile = idProdotto + "_" + System.currentTimeMillis() + estensione(contentType);
+                            String ext = "image/png".equals(contentType) ? ".png" : "image/webp".equals(contentType) ? ".webp" : ".jpg";
+                            String nomeFile = idProdotto + "_" + System.currentTimeMillis() + ext;
                             String imgPath = IMG_DIR + nomeFile;
                             byte[] fileContent;
                             try (var inputStream = filePart.getInputStream()) {
@@ -113,9 +114,4 @@ public class GestioneImmaginiProdottoServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin/prodotto?id=" + idProdotto);
     }
 
-    private String estensione(String contentType) {
-        if ("image/png".equals(contentType)) return ".png";
-        if ("image/webp".equals(contentType)) return ".webp";
-        return ".jpg";
-    }
 }

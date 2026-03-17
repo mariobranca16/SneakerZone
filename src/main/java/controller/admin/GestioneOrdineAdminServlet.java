@@ -1,6 +1,5 @@
 package controller.admin;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -55,7 +54,6 @@ public class GestioneOrdineAdminServlet extends HttpServlet {
         request.setAttribute("stati", StatoOrdine.values());
         request.setAttribute("titoloPagina", "Dettaglio ordine");
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin/gestione_ordine.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/admin/gestione_ordine.jsp").forward(request, response);
     }
 }

@@ -1,7 +1,6 @@
-package model.dao;
+package model.DAO;
 
-import model.bean.Utente;
-import model.ConPool;
+import model.Bean.Utente;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -119,6 +118,26 @@ public class UtenteDAO {
         }
     }
 
+    public boolean doExistsByEmailExcludingId(String email, long excludedId) {
+        if (email == null || email.isBlank())
+            return false;
+
+        try (Connection connection = ConPool.getConnection();
+             PreparedStatement ps = connection.prepareStatement(
+                     "SELECT 1 FROM Utente WHERE email = ? AND id <> ? LIMIT 1")) {
+
+            ps.setString(1, email);
+            ps.setLong(2, excludedId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Errore nel controllo esistenza email: " + email, e);
+        }
+    }
+
     public List<Utente> doRetrieveAll() {
         List<Utente> utenti = new ArrayList<>();
 
@@ -193,7 +212,6 @@ public class UtenteDAO {
         try (Connection connection = ConPool.getConnection()) {
             connection.setAutoCommit(false);
 
-            // Elimina prima le tabelle collegate
             try (PreparedStatement ps = connection.prepareStatement("DELETE FROM Recensione WHERE utente_id = ?")) {
                 ps.setLong(1, id);
                 ps.executeUpdate();
@@ -238,7 +256,6 @@ public class UtenteDAO {
         Utente u = new Utente();
         u.setId(rs.getLong("id"));
         u.setEmail(rs.getString("email"));
-        u.setPassword(rs.getString("passwordHash"));
         u.setAdmin(rs.getBoolean("isAdmin"));
         u.setNome(rs.getString("nome"));
         u.setCognome(rs.getString("cognome"));

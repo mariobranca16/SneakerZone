@@ -1,4 +1,4 @@
-package model.bean;
+package model.Bean;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -10,7 +10,8 @@ public class Categoria implements Serializable {
     private long id;
     private String nome;
 
-    public Categoria() {}
+    public Categoria() {
+    }
 
     public Categoria(long id, String nome) {
         this.id = id;
@@ -20,6 +21,7 @@ public class Categoria implements Serializable {
     public long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -27,6 +29,7 @@ public class Categoria implements Serializable {
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -34,6 +37,6 @@ public class Categoria implements Serializable {
     @Override
     public String toString() {
         return "Categoria [ID: " + id +
-               ", Nome: " + nome + "]";
+                ", Nome: " + nome + "]";
     }
 }

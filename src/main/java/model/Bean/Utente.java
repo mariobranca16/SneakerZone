@@ -1,4 +1,4 @@
-package model.bean;
+package model.Bean;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -19,7 +19,8 @@ public class Utente implements Serializable {
     private LocalDate dataDiNascita;
     private LocalDate dataRegistrazione;
 
-    public Utente() {}
+    public Utente() {
+    }
 
     public Utente(long id, String email, String password, boolean isAdmin, String nome, String cognome, String telefono, LocalDate dataDiNascita, LocalDate dataRegistrazione) {
         this.id = id;
@@ -36,6 +37,7 @@ public class Utente implements Serializable {
     public long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
@@ -43,6 +45,7 @@ public class Utente implements Serializable {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -50,6 +53,7 @@ public class Utente implements Serializable {
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -57,6 +61,7 @@ public class Utente implements Serializable {
     public boolean isAdmin() {
         return isAdmin;
     }
+
     public void setAdmin(boolean admin) {
         this.isAdmin = admin;
     }
@@ -64,6 +69,7 @@ public class Utente implements Serializable {
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -71,6 +77,7 @@ public class Utente implements Serializable {
     public String getCognome() {
         return cognome;
     }
+
     public void setCognome(String cognome) {
         this.cognome = cognome;
     }
@@ -78,6 +85,7 @@ public class Utente implements Serializable {
     public String getTelefono() {
         return telefono;
     }
+
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
@@ -85,6 +93,7 @@ public class Utente implements Serializable {
     public LocalDate getDataDiNascita() {
         return dataDiNascita;
     }
+
     public void setDataDiNascita(LocalDate dataDiNascita) {
         this.dataDiNascita = dataDiNascita;
     }
@@ -92,6 +101,7 @@ public class Utente implements Serializable {
     public LocalDate getDataRegistrazione() {
         return dataRegistrazione;
     }
+
     public void setDataRegistrazione(LocalDate dataRegistrazione) {
         this.dataRegistrazione = dataRegistrazione;
     }

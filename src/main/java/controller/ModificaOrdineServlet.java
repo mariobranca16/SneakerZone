@@ -6,10 +6,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.bean.Ordine;
-import model.bean.StatoOrdine;
-import model.bean.Utente;
-import model.dao.OrdineDAO;
+import model.Bean.Ordine;
+import model.Bean.StatoOrdine;
+import model.Bean.Utente;
+import model.DAO.OrdineDAO;
 
 import java.io.IOException;
 
@@ -54,7 +54,7 @@ public class ModificaOrdineServlet extends HttpServlet {
             return;
         }
 
-        if (!isAnnullabile(ordine.getStato())) {
+        if (ordine.getStato() == null || !ordine.getStato().isAnnullabile()) {
             response.sendRedirect(request.getContextPath() + "/ordini");
             return;
         }
@@ -68,12 +68,4 @@ public class ModificaOrdineServlet extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/ordini");
     }
 
-    private boolean isAnnullabile(StatoOrdine stato) {
-        if (stato == null) {
-            return false;
-        }
-        return stato != StatoOrdine.ANNULLATO
-                && stato != StatoOrdine.SPEDITO
-                && stato != StatoOrdine.CONSEGNATO;
-    }
 }

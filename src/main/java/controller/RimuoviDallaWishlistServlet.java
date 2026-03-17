@@ -17,10 +17,10 @@ public class RimuoviDallaWishlistServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Utente utente = (Utente)session.getAttribute("utenteConnesso");
+        Utente utente = (Utente) session.getAttribute("utenteConnesso");
 
-        if(utente == null){
-            response.sendRedirect(request.getContextPath()+"/login?redirect=wishlist");
+        if (utente == null) {
+            response.sendRedirect(request.getContextPath() + "/login?redirect=wishlist");
             return;
         }
 
@@ -44,6 +44,9 @@ public class RimuoviDallaWishlistServlet extends HttpServlet {
         WishlistDAO wishlistDAO = new WishlistDAO();
         wishlistDAO.removeFromWishlist(wishlist);
 
-        response.sendRedirect("wishlist");
+        int nuovoConteggio = wishlistDAO.countByUtente(utente.getId());
+        session.setAttribute("wishlistCount", nuovoConteggio);
+
+        response.sendRedirect(request.getContextPath() + "/wishlist");
     }
 }

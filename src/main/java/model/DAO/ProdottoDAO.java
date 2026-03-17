@@ -1,38 +1,51 @@
-package model.dao;
+package model.DAO;
 
-import model.bean.*;
-import model.ConPool;
+import model.Bean.ImmagineProdotto;
+import model.Bean.Prodotto;
+import model.Bean.ProdottoTaglia;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class ProdottoDAO {
     public void doSave(Prodotto prodotto) {
         try (Connection connection = ConPool.getConnection()) {
             connection.setAutoCommit(false);
+            try {
+                try (PreparedStatement ps = connection.prepareStatement(
+                        "INSERT INTO Prodotto (nome, descrizione, brand, costo, colore, genere) VALUES (?, ?, ?, ?, ?, ?)",
+                        Statement.RETURN_GENERATED_KEYS)) {
 
-            try (PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO Prodotto (nome, descrizione, brand, costo, colore) VALUES (?, ?, ?, ?, ?)",
-                    Statement.RETURN_GENERATED_KEYS)) {
+                    ps.setString(1, prodotto.getNome());
+                    ps.setString(2, prodotto.getDescrizione());
+                    ps.setString(3, prodotto.getBrand());
+                    ps.setDouble(4, prodotto.getCosto());
+                    ps.setString(5, prodotto.getColore());
+                    ps.setString(6, prodotto.getGenere() != null ? prodotto.getGenere() : "Unisex");
 
-                ps.setString(1, prodotto.getNome());
-                ps.setString(2, prodotto.getDescrizione());
-                ps.setString(3, prodotto.getBrand());
-                ps.setDouble(4, prodotto.getCosto());
-                ps.setString(5, prodotto.getColore());
+                    if (ps.executeUpdate() != 1)
+                        throw new RuntimeException("Errore nell'inserimento del prodotto");
 
-                if (ps.executeUpdate() != 1)
-                    throw new RuntimeException("Errore nell'inserimento del prodotto");
-
-                try (ResultSet rs = ps.getGeneratedKeys()) {
-                    if (rs.next())
-                        prodotto.setId(rs.getLong(1));
+                    try (ResultSet rs = ps.getGeneratedKeys()) {
+                        if (rs.next())
+                            prodotto.setId(rs.getLong(1));
+                    }
                 }
-            }
 
-            connection.commit();
+                if (prodotto.getTaglie() != null && !prodotto.getTaglie().isEmpty()) {
+                    ProdottoTagliaDAO ptDAO = new ProdottoTagliaDAO();
+                    for (ProdottoTaglia pt : prodotto.getTaglie()) {
+                        pt.setIdProdotto(prodotto.getId());
+                        ptDAO.doSaveOrUpdate(connection, pt);
+                    }
+                }
+
+                connection.commit();
+            } catch (Exception e) {
+                connection.rollback();
+                throw e;
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Errore durante il salvataggio del prodotto", e);
         }
@@ -57,26 +70,40 @@ public class ProdottoDAO {
         return null;
     }
 
-    public List<Prodotto> doRetrieveByFiltri(String categoria, String q, Double prezzoMin, Double prezzoMax) {
+    public List<Prodotto> doRetrieveByFiltri(String categoria, String q, Double prezzoMin, Double prezzoMax, String genere) {
+        return doRetrieveByFiltri(categoria, q, prezzoMin, prezzoMax, genere, "p.nome");
+    }
+
+    public List<Prodotto> doRetrieveByFiltriRandom() {
+        return doRetrieveByFiltri(null, null, null, null, null, "RAND()");
+    }
+
+    public List<Prodotto> doRetrieveByFiltriRandom(String categoria, String q, Double prezzoMin, Double prezzoMax, String genere) {
+        return doRetrieveByFiltri(categoria, q, prezzoMin, prezzoMax, genere, "RAND()");
+    }
+
+    private List<Prodotto> doRetrieveByFiltri(String categoria, String q, Double prezzoMin, Double prezzoMax,
+                                              String genere, String orderBy) {
         List<Prodotto> prodotti = new ArrayList<>();
 
         boolean hasCategoria = categoria != null && !categoria.isBlank();
-        boolean hasQ         = q != null && !q.isBlank();
+        boolean hasQ = q != null && !q.isBlank();
+        boolean hasGenere = genere != null && !genere.isBlank();
 
         StringBuilder sql = new StringBuilder("SELECT DISTINCT p.* FROM Prodotto p ");
         if (hasCategoria)
             sql.append("JOIN Prodotto_Categoria pc ON p.id = pc.prodotto_id ")
-               .append("JOIN Categoria c ON pc.categoria_id = c.id ");
+                    .append("JOIN Categoria c ON pc.categoria_id = c.id ");
 
-        StringJoiner where = new StringJoiner(" AND ");
-        if (hasCategoria)  where.add("c.nome = ?");
-        if (hasQ)          where.add("(p.nome LIKE ? OR p.brand LIKE ?)");
-        if (prezzoMin != null) where.add("p.costo >= ?");
-        if (prezzoMax != null) where.add("p.costo <= ?");
+        StringBuilder where = new StringBuilder();
+        if (hasCategoria) where.append(where.length() == 0 ? "WHERE " : " AND ").append("c.nome = ?");
+        if (hasQ) where.append(where.length() == 0 ? "WHERE " : " AND ").append("(p.nome LIKE ? OR p.brand LIKE ?)");
+        if (prezzoMin != null) where.append(where.length() == 0 ? "WHERE " : " AND ").append("p.costo >= ?");
+        if (prezzoMax != null) where.append(where.length() == 0 ? "WHERE " : " AND ").append("p.costo <= ?");
+        if (hasGenere) where.append(where.length() == 0 ? "WHERE " : " AND ").append("p.genere = ?");
 
-        if (where.length() > 0)
-            sql.append("WHERE ").append(where);
-        sql.append(" ORDER BY p.nome");
+        sql.append(where);
+        sql.append(" ORDER BY ").append(orderBy);
 
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql.toString())) {
@@ -90,6 +117,7 @@ public class ProdottoDAO {
             }
             if (prezzoMin != null) ps.setDouble(idx++, prezzoMin);
             if (prezzoMax != null) ps.setDouble(idx++, prezzoMax);
+            if (hasGenere) ps.setString(idx++, genere.trim());
 
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next())
@@ -129,11 +157,19 @@ public class ProdottoDAO {
     }
 
     public List<Prodotto> doRetrieveAll() {
+        return doRetrieveAll("nome");
+    }
+
+    public List<Prodotto> doRetrieveAllRandom() {
+        return doRetrieveAll("RAND()");
+    }
+
+    private List<Prodotto> doRetrieveAll(String orderBy) {
         List<Prodotto> prodotti = new ArrayList<>();
 
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
-                     "SELECT * FROM Prodotto ORDER BY nome"
+                     "SELECT * FROM Prodotto ORDER BY " + orderBy
              )) {
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -149,38 +185,47 @@ public class ProdottoDAO {
     }
 
     public void doUpdate(Prodotto prodotto) {
-        new ImmagineProdottoDAO().deleteByProdotto(prodotto.getId());
-        if (prodotto.getImmagini() != null) {
-            ImmagineProdottoDAO ipDAO = new ImmagineProdottoDAO();
-            for (ImmagineProdotto ip : prodotto.getImmagini()) {
-                ip.setIdProdotto(prodotto.getId());
-                ipDAO.doSave(ip);
+        try (Connection connection = ConPool.getConnection()) {
+            connection.setAutoCommit(false);
+            try {
+                ImmagineProdottoDAO ipDAO = new ImmagineProdottoDAO();
+                ipDAO.deleteByProdotto(connection, prodotto.getId());
+                if (prodotto.getImmagini() != null) {
+                    for (ImmagineProdotto ip : prodotto.getImmagini()) {
+                        ip.setIdProdotto(prodotto.getId());
+                        ipDAO.doSave(connection, ip);
+                    }
+                }
+
+                ProdottoTagliaDAO ptDAO = new ProdottoTagliaDAO();
+                ptDAO.doDeleteByProdotto(connection, prodotto.getId());
+                if (prodotto.getTaglie() != null) {
+                    for (ProdottoTaglia pt : prodotto.getTaglie()) {
+                        pt.setIdProdotto(prodotto.getId());
+                        ptDAO.doSaveOrUpdate(connection, pt);
+                    }
+                }
+
+                try (PreparedStatement ps = connection.prepareStatement(
+                        "UPDATE Prodotto SET nome = ?, descrizione = ?, brand = ?, costo = ?, colore = ?, genere = ? WHERE id = ?")) {
+
+                    ps.setString(1, prodotto.getNome());
+                    ps.setString(2, prodotto.getDescrizione());
+                    ps.setString(3, prodotto.getBrand());
+                    ps.setDouble(4, prodotto.getCosto());
+                    ps.setString(5, prodotto.getColore());
+                    ps.setString(6, prodotto.getGenere() != null ? prodotto.getGenere() : "Unisex");
+                    ps.setLong(7, prodotto.getId());
+
+                    if (ps.executeUpdate() != 1)
+                        throw new RuntimeException("Errore nella modifica del prodotto con ID: " + prodotto.getId());
+                }
+
+                connection.commit();
+            } catch (Exception e) {
+                connection.rollback();
+                throw e;
             }
-        }
-
-        new ProdottoTagliaDAO().doDeleteByProdotto(prodotto.getId());
-        if (prodotto.getTaglie() != null) {
-            ProdottoTagliaDAO ptDAO = new ProdottoTagliaDAO();
-            for (ProdottoTaglia pt : prodotto.getTaglie()) {
-                pt.setIdProdotto(prodotto.getId());
-                ptDAO.doSaveOrUpdate(pt);
-            }
-        }
-
-        try (Connection connection = ConPool.getConnection();
-             PreparedStatement ps = connection.prepareStatement(
-                     "UPDATE Prodotto SET nome = ?, descrizione = ?, brand = ?, costo = ?, colore = ? WHERE id = ?")) {
-
-            ps.setString(1, prodotto.getNome());
-            ps.setString(2, prodotto.getDescrizione());
-            ps.setString(3, prodotto.getBrand());
-            ps.setDouble(4, prodotto.getCosto());
-            ps.setString(5, prodotto.getColore());
-            ps.setLong(6, prodotto.getId());
-
-            if (ps.executeUpdate() != 1)
-                throw new RuntimeException("Errore nella modifica del prodotto con ID: " + prodotto.getId());
-
         } catch (SQLException e) {
             throw new RuntimeException("Errore nell'aggiornamento del prodotto con ID: " + prodotto.getId(), e);
         }
@@ -190,7 +235,6 @@ public class ProdottoDAO {
         try (Connection connection = ConPool.getConnection()) {
             connection.setAutoCommit(false);
 
-            // Elimina prima le tabelle collegate
             try (PreparedStatement ps = connection.prepareStatement("DELETE FROM Dettaglio_Ordine WHERE prodotto_id = ?")) {
                 ps.setLong(1, id);
                 ps.executeUpdate();
@@ -242,6 +286,7 @@ public class ProdottoDAO {
         p.setBrand(rs.getString("brand"));
         p.setCosto(rs.getDouble("costo"));
         p.setColore(rs.getString("colore"));
+        p.setGenere(rs.getString("genere"));
 
         long id = p.getId();
 
