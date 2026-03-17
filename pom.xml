@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>branca_pj</artifactId>
+    <artifactId>branca_pascarella_pj</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>branca_pj</name>
+    <name>branca_pascarella_pj</name>
     <packaging>war</packaging>
 
     <properties>
@@ -34,7 +34,6 @@
             <artifactId>tomcat-jdbc</artifactId>
             <version>11.0.5</version>
         </dependency>
-
         <dependency>
             <groupId>org.glassfish.web</groupId>
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>

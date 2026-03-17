@@ -3,6 +3,7 @@ package model.DAO;
 import model.Bean.DettaglioOrdine;
 import model.Bean.Ordine;
 import model.Bean.StatoOrdine;
+import model.ConPool;
 
 import java.sql.*;
 import java.util.ArrayList;

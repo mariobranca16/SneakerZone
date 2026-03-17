@@ -1,6 +1,7 @@
 package model.DAO;
 
 import model.Bean.MetodoPagamento;
+import model.ConPool;
 
 import java.sql.*;
 

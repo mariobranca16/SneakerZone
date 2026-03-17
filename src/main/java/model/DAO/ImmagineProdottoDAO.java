@@ -1,6 +1,7 @@
 package model.DAO;
 
 import model.Bean.ImmagineProdotto;
+import model.ConPool;
 
 import java.io.File;
 import java.io.FileOutputStream;

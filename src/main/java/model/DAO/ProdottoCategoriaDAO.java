@@ -1,5 +1,7 @@
 package model.DAO;
 
+import model.ConPool;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

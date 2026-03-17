@@ -1,6 +1,7 @@
 package model.DAO;
 
 import model.Bean.IndirizzoSpedizione;
+import model.ConPool;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -2,6 +2,7 @@ package model.DAO;
 
 import model.Bean.Prodotto;
 import model.Bean.Wishlist;
+import model.ConPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

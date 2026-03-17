@@ -3,6 +3,7 @@ package model.DAO;
 import model.Bean.ImmagineProdotto;
 import model.Bean.Prodotto;
 import model.Bean.ProdottoTaglia;
+import model.ConPool;
 
 import java.sql.*;
 import java.util.ArrayList;
