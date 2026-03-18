@@ -17,34 +17,19 @@
     min-width: 180px;
 }
 
-.col-admin {
-    width: 90px;
-}
-
 .col-actions {
-    width: 220px;
+    width: 100px;
 }
 
-
-.utente-badge {
-    display: inline-block;
-    border-radius: 6px;
-    padding: 3px 10px;
-    font-size: 12px;
-    font-weight: 700;
-    white-space: nowrap;
+.utenti-table .btn--danger {
+    background: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
 }
 
-.utente-badge--admin {
-    background: rgba(255, 69, 0, 0.10);
-    color: #8B1A00;
-    border: 1px solid rgba(255, 69, 0, 0.28);
-}
-
-.utente-badge--user {
-    background: #F0ECE8;
-    border: 1px solid var(--border);
-    color: var(--text);
+.utenti-table .btn--danger:hover {
+    background: #bb2d3b;
+    border-color: #bb2d3b;
 }
 
 

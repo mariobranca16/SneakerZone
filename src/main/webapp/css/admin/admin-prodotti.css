@@ -32,6 +32,17 @@
     width: 190px;
 }
 
+.prod-table .btn--danger {
+    background: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
+}
+
+.prod-table .btn--danger:hover {
+    background: #bb2d3b;
+    border-color: #bb2d3b;
+}
+
 
 .prod-thumb {
     width: 62px;

@@ -41,9 +41,7 @@ public class GestioneUtentiAdminServlet extends HttpServlet {
             return;
         }
 
-        boolean azioneValida = "promuovi".equalsIgnoreCase(azione)
-                || "retrocedi".equalsIgnoreCase(azione)
-                || "elimina".equalsIgnoreCase(azione);
+        boolean azioneValida = "elimina".equalsIgnoreCase(azione);
 
         if (!azioneValida) {
             response.sendRedirect(request.getContextPath() + "/admin/utenti");
@@ -54,11 +52,9 @@ public class GestioneUtentiAdminServlet extends HttpServlet {
         Utente utenteConnesso = (sessione != null) ? (Utente) sessione.getAttribute("utenteConnesso") : null;
 
         if (utenteConnesso != null && utenteConnesso.getId() == idUtente) {
-            if ("retrocedi".equalsIgnoreCase(azione) || "elimina".equalsIgnoreCase(azione)) {
-                request.getSession().setAttribute("flashErrore", "Non puoi eseguire questa operazione sul tuo account");
-                response.sendRedirect(request.getContextPath() + "/admin/utenti");
-                return;
-            }
+            request.getSession().setAttribute("flashErrore", "Non puoi eseguire questa operazione sul tuo account");
+            response.sendRedirect(request.getContextPath() + "/admin/utenti");
+            return;
         }
 
         UtenteDAO utenteDAO = new UtenteDAO();
@@ -69,11 +65,7 @@ public class GestioneUtentiAdminServlet extends HttpServlet {
             return;
         }
 
-        if ("promuovi".equalsIgnoreCase(azione)) {
-            utenteDAO.doUpdateAdmin(idUtente, true);
-        } else if ("retrocedi".equalsIgnoreCase(azione)) {
-            utenteDAO.doUpdateAdmin(idUtente, false);
-        } else if ("elimina".equalsIgnoreCase(azione)) {
+        if ("elimina".equalsIgnoreCase(azione)) {
             utenteDAO.doDelete(idUtente);
         }
 

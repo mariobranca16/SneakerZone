@@ -108,8 +108,7 @@
                                         <input type="hidden" name="id" value="${p.id}">
                                         <input type="hidden" name="azione" value="elimina">
                                         <button class="btn btn--small btn--danger" type="submit"
-                                                onclick="return confirm('Eliminare il prodotto &quot;${p.nome}&quot;?')">
-                                            <i class="ti ti-trash"></i> Elimina
+                                                onclick="return confirm('Eliminare il prodotto &quot;${p.nome}&quot;?')">Elimina
                                         </button>
                                     </form>
                                 </div>

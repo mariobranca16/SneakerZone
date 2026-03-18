@@ -53,7 +53,6 @@
                         <th class="col-email">Email</th>
                         <th class="col-hide-sm">Nome</th>
                         <th class="col-hide-sm">Cognome</th>
-                        <th class="col-admin col-center">Ruolo</th>
                         <th class="col-actions col-center">Azioni</th>
                     </tr>
                     </thead>
@@ -68,41 +67,8 @@
                             <td class="col-email td-email">${u.email}</td>
                             <td class="col-hide-sm">${u.nome}</td>
                             <td class="col-hide-sm">${u.cognome}</td>
-                            <td class="col-admin col-center">
-                                <c:choose>
-                                    <c:when test="${u.admin}">
-                                        <span class="utente-badge utente-badge--admin">Admin</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span class="utente-badge utente-badge--user">Utente</span>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
                             <td class="col-actions col-center">
                                 <div class="admin-table-actions">
-                                    <c:choose>
-                                        <c:when test="${u.admin}">
-                                            <form class="inline-form" method="post"
-                                                  action="${pageContext.request.contextPath}/admin/utenti">
-                                                <input type="hidden" name="id" value="${u.id}">
-                                                <input type="hidden" name="azione" value="retrocedi">
-                                                <button class="btn btn--small" type="submit"
-                                                        <c:if test="${isMe}">disabled</c:if>>
-                                                    Rimuovi admin
-                                                </button>
-                                            </form>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <form class="inline-form" method="post"
-                                                  action="${pageContext.request.contextPath}/admin/utenti">
-                                                <input type="hidden" name="id" value="${u.id}">
-                                                <input type="hidden" name="azione" value="promuovi">
-                                                <button class="btn btn--small btn--primary" type="submit">
-                                                    Rendi admin
-                                                </button>
-                                            </form>
-                                        </c:otherwise>
-                                    </c:choose>
                                     <form class="inline-form" method="post"
                                           action="${pageContext.request.contextPath}/admin/utenti">
                                         <input type="hidden" name="id" value="${u.id}">
