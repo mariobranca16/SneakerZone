@@ -19,7 +19,7 @@
 
 
 <c:if test="${modificaEffettuata}">
-    <div class="alert alert-success" id="successAlert">
+    <div class="alert alert-success">
         <i class="ti ti-circle-check"></i>&nbsp; Modifiche salvate con successo.
     </div>
 </c:if>
@@ -31,27 +31,23 @@
         <h1 class="account-page-title">Profilo</h1>
 
 
-        <div class="account-tabs" role="tablist" aria-label="Sezioni account">
-            <button class="tab-btn active" type="button" id="tab-dati-personali" data-section="dati-personali"
-                    role="tab" aria-controls="section-dati-personali" aria-selected="true" tabindex="0">
+        <div class="account-tabs">
+            <button class="tab-btn active" type="button" data-section="dati-personali">
                 <i class="ti ti-user-circle"></i>
                 <span>Dati personali</span>
             </button>
-            <button class="tab-btn" type="button" id="tab-password" data-section="password"
-                    role="tab" aria-controls="section-password" aria-selected="false" tabindex="-1">
+            <button class="tab-btn" type="button" data-section="password">
                 <i class="ti ti-lock"></i>
                 <span>Sicurezza</span>
             </button>
-            <button class="tab-btn" type="button" id="tab-indirizzo" data-section="indirizzo"
-                    role="tab" aria-controls="section-indirizzo" aria-selected="false" tabindex="-1">
+            <button class="tab-btn" type="button" data-section="indirizzo">
                 <i class="ti ti-map-pin"></i>
                 <span>Indirizzi</span>
             </button>
         </div>
 
 
-        <div class="account-section active" id="section-dati-personali" role="tabpanel"
-             aria-labelledby="tab-dati-personali">
+        <div class="account-section active" id="section-dati-personali">
             <div class="section-header">
                 <h1 class="section-title">Dati personali</h1>
                 <p class="section-subtitle">Gestisci le informazioni del tuo profilo</p>
@@ -114,8 +110,7 @@
         </div>
 
 
-        <div class="account-section" id="section-password" role="tabpanel"
-             aria-labelledby="tab-password" hidden>
+        <div class="account-section" id="section-password" hidden>
             <div class="section-header">
                 <h1 class="section-title">Sicurezza</h1>
                 <p class="section-subtitle">Modifica la tua password di accesso</p>
@@ -161,8 +156,7 @@
         </div>
 
 
-        <div class="account-section" id="section-indirizzo" role="tabpanel"
-             aria-labelledby="tab-indirizzo" hidden>
+        <div class="account-section" id="section-indirizzo" hidden>
             <div class="section-header">
                 <h1 class="section-title">Indirizzo di spedizione</h1>
                 <p class="section-subtitle">Gestisci i tuoi indirizzi di consegna</p>

@@ -1,115 +1,74 @@
-var patterns = {
-    email: /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/,
-    phone: /^\+?\d{8,13}$/,
-    upper: /[A-Z]/,
-    lower: /[a-z]/,
-    digit: /\d/,
-    special: /[^A-Za-z0-9]/,
-    whitespace: /\s/,
-    name: /^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$/,
-    street: /^[A-Za-zÀ-ÿ0-9 .,'/\-]+$/,
-    cap: /^\d{5}$/,
-    province: /^[A-Za-z]{2,5}$/,
-    locality: /^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$/,
-    fullName: /^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*\s+[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$/,
-    cardNumber: /^\d{16}$/,
-    cardExpiry: /^\d{2}\/\d{2}$/,
-    cvv: /^\d{3,4}$/
-};
-
 function normalizeText(value) {
     return value == null ? '' : value.trim();
 }
 
-function normalizePhone(value) {
-    return normalizeText(value).replace(/[\s-]+/g, '');
-}
-
-function normalizeCardNumber(value) {
-    return normalizeText(value).replace(/[\s-]+/g, '');
-}
-
-function hasText(value) {
-    return normalizeText(value) !== '';
-}
-
 function isEmailValida(value) {
     var email = normalizeText(value);
-    return email.length <= 100 && email.indexOf('..') === -1 && patterns.email.test(email);
+    return email.length <= 100 && /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(email);
 }
 
 function isTelefonoValido(value) {
-    var telefono = normalizePhone(value);
-    return telefono.length <= 13 && patterns.phone.test(telefono);
+    var telefono = normalizeText(value).replace(/[\s-]+/g, '');
+    return /^\+?\d{8,13}$/.test(telefono);
 }
 
 function isPasswordForte(value) {
-    var password = value || '';
-    if (password.length < 8 || password.length > 64) return false;
-    if (patterns.whitespace.test(password)) return false;
-    return patterns.upper.test(password) &&
-        patterns.lower.test(password) &&
-        patterns.digit.test(password) &&
-        patterns.special.test(password);
+    var p = value || '';
+    if (p.length < 8 || p.length > 64) return false;
+    if (/\s/.test(p)) return false;
+    return /[A-Z]/.test(p) && /[a-z]/.test(p) && /\d/.test(p) && /[^A-Za-z0-9]/.test(p);
 }
 
 function isNomeValido(value) {
     var nome = normalizeText(value);
-    return nome.length >= 2 && nome.length <= 50 && patterns.name.test(nome);
+    return nome.length >= 2 && nome.length <= 50 && /^[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*$/.test(nome);
 }
 
 function isViaValida(value) {
     var via = normalizeText(value);
     if (via.length < 5 || via.length > 100) return false;
-    if (!patterns.street.test(via)) return false;
     return /[A-Za-zÀ-ÿ]/.test(via) && /\d/.test(via);
 }
 
 function isCapValido(value) {
-    return patterns.cap.test(normalizeText(value));
+    return /^\d{5}$/.test(normalizeText(value));
 }
 
 function isProvinciaValida(value) {
-    return patterns.province.test(normalizeText(value));
+    return /^[A-Za-z]{2,5}$/.test(normalizeText(value));
 }
 
 function isLocalitaValida(value) {
     var localita = normalizeText(value);
-    return localita.length >= 2 && localita.length <= 100 && patterns.locality.test(localita);
+    return localita.length >= 2 && localita.length <= 100 && /^[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*$/.test(localita);
+}
+
+function isDestinatarioValido(value) {
+    var dest = normalizeText(value);
+    return dest.length >= 4 && dest.length <= 100 && /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ '\-]* [A-Za-zÀ-ÿ][A-Za-zÀ-ÿ '\-]*$/.test(dest);
 }
 
 function isNomeCartaValido(value) {
     var nome = normalizeText(value);
-    return nome.length >= 3 && nome.length <= 26 && patterns.fullName.test(nome);
-}
-
-function isDestinatarioValido(value) {
-    var destinatario = normalizeText(value);
-    return destinatario.length >= 4 && destinatario.length <= 100 && patterns.fullName.test(destinatario);
+    return nome.length >= 3 && nome.length <= 26 && /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ '\-]* [A-Za-zÀ-ÿ][A-Za-zÀ-ÿ '\-]*$/.test(nome);
 }
 
 function isNumeroCartaValido(value) {
-    return patterns.cardNumber.test(normalizeCardNumber(value));
+    return /^\d{16}$/.test(normalizeText(value).replace(/[\s-]+/g, ''));
 }
 
 function isCvvValido(value) {
-    return patterns.cvv.test(normalizeText(value));
+    return /^\d{3,4}$/.test(normalizeText(value));
 }
 
 function getErroreScadenzaCarta(value) {
     var scadenza = normalizeText(value);
-    var oggi;
-    var mese;
-    var anno;
-
-    if (!patterns.cardExpiry.test(scadenza)) {
+    if (!/^\d{2}\/\d{2}$/.test(scadenza)) {
         return 'Formato non valido. Usa MM/AA.';
     }
-
-    mese = parseInt(scadenza.slice(0, 2), 10);
-    anno = 2000 + parseInt(scadenza.slice(3), 10);
-    oggi = new Date();
-
+    var mese = parseInt(scadenza.slice(0, 2), 10);
+    var anno = 2000 + parseInt(scadenza.slice(3), 10);
+    var oggi = new Date();
     if (anno < oggi.getFullYear() || (anno === oggi.getFullYear() && mese < oggi.getMonth() + 1)) {
         return 'La carta e scaduta.';
     }
@@ -121,23 +80,12 @@ function getErroreScadenzaCarta(value) {
 
 function isMaggiorenneData(value) {
     var testo = normalizeText(value);
-    var oggi;
-    var nascita;
-    var eta;
-    var mesi;
-
-    if (!testo) {
-        return false;
-    }
-
-    oggi = new Date();
-    nascita = new Date(testo);
-    if (Number.isNaN(nascita.getTime())) {
-        return false;
-    }
-
-    eta = oggi.getFullYear() - nascita.getFullYear();
-    mesi = oggi.getMonth() - nascita.getMonth();
+    if (!testo) return false;
+    var nascita = new Date(testo);
+    if (isNaN(nascita.getTime())) return false;
+    var oggi = new Date();
+    var eta = oggi.getFullYear() - nascita.getFullYear();
+    var mesi = oggi.getMonth() - nascita.getMonth();
     if (mesi < 0 || (mesi === 0 && oggi.getDate() < nascita.getDate())) {
         eta--;
     }
@@ -145,11 +93,7 @@ function isMaggiorenneData(value) {
 }
 
 window.ValidazioneInput = {
-    patterns: patterns,
     normalizeText: normalizeText,
-    normalizePhone: normalizePhone,
-    normalizeCardNumber: normalizeCardNumber,
-    hasText: hasText,
     isEmailValida: isEmailValida,
     isTelefonoValido: isTelefonoValido,
     isPasswordForte: isPasswordForte,
@@ -166,23 +110,25 @@ window.ValidazioneInput = {
     isMaggiorenneData: isMaggiorenneData
 };
 
+function aggiungiErrore(input, messaggio) {
+    var gruppo = input.closest('.form-group') || input.parentNode;
+    var span = document.createElement('span');
+    span.className = 'field-error';
+    span.textContent = messaggio;
+    gruppo.appendChild(span);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     var regForm = document.getElementById('formRegistrazione');
     if (regForm) {
         regForm.addEventListener('submit', function (e) {
-            regForm.querySelectorAll('.field-error').forEach(function (el) {
-                el.remove();
-            });
+            regForm.querySelectorAll('.field-error').forEach(function (el) { el.remove(); });
             var valido = true;
 
             function mostraErrore(nomeCampo, messaggio) {
                 var input = regForm.querySelector('[name="' + nomeCampo + '"]');
                 if (!input) return;
-                var gruppo = input.closest('.form-group') || input.parentNode;
-                var span = document.createElement('span');
-                span.className = 'field-error';
-                span.textContent = messaggio;
-                gruppo.appendChild(span);
+                aggiungiErrore(input, messaggio);
                 valido = false;
             }
 
@@ -205,25 +151,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 mostraErrore('cognome', 'Il cognome deve avere 2-50 caratteri e contenere lettere reali.');
             }
 
-            if (email === '') {
+            if (!email) {
                 mostraErrore('email', 'Campo obbligatorio');
             } else if (!isEmailValida(email)) {
                 mostraErrore('email', 'Formato email non valido');
             }
 
-            if (password.trim() === '') {
+            if (!password.trim()) {
                 mostraErrore('password', 'Campo obbligatorio');
             } else if (!isPasswordForte(password)) {
                 mostraErrore('password', 'Usa 8-64 caratteri con maiuscola, minuscola, numero e simbolo');
             }
 
-            if (normalizeText(telefono) === '') {
+            if (!normalizeText(telefono)) {
                 mostraErrore('telefono', 'Campo obbligatorio');
             } else if (!isTelefonoValido(telefono)) {
                 mostraErrore('telefono', 'Numero di telefono non valido');
             }
 
-            if (dataNascita === '') {
+            if (!dataNascita) {
                 mostraErrore('dataNascita', 'Campo obbligatorio');
             } else if (!isMaggiorenneData(dataNascita)) {
                 mostraErrore('dataNascita', 'Devi avere almeno 18 anni');
@@ -236,19 +182,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var addrForm = document.getElementById('formIndirizzo');
     if (addrForm) {
         addrForm.addEventListener('submit', function (e) {
-            addrForm.querySelectorAll('.field-error').forEach(function (el) {
-                el.remove();
-            });
+            addrForm.querySelectorAll('.field-error').forEach(function (el) { el.remove(); });
             var valido = true;
 
             function mostraErrore(nomeCampo, messaggio) {
                 var input = addrForm.querySelector('[name="' + nomeCampo + '"]');
                 if (!input) return;
-                var gruppo = input.closest('.form-group') || input.parentNode;
-                var span = document.createElement('span');
-                span.className = 'field-error';
-                span.textContent = messaggio;
-                gruppo.appendChild(span);
+                aggiungiErrore(input, messaggio);
                 valido = false;
             }
 
@@ -271,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 mostraErrore('via', 'Inserisci un indirizzo completo di numero civico (es. Via Roma 1)');
             }
 
-            if (cap === '') {
+            if (!cap) {
                 mostraErrore('cap', 'Campo obbligatorio');
             } else if (!isCapValido(cap)) {
                 mostraErrore('cap', 'Il CAP deve essere di 5 cifre');

@@ -9,91 +9,90 @@ function aggiornaTotale(totale) {
     if (el) el.textContent = parseFloat(totale).toFixed(2).replace('.', ',');
 }
 
-function initRimuovi() {
-    document.querySelectorAll('.inline-form').forEach(function (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
+function inviaRimozione(form) {
+    var id = form.querySelector('[name="id"]').value;
+    var taglia = form.querySelector('[name="taglia"]').value;
+    var body = 'azione=rimuovi&id=' + encodeURIComponent(id) + '&taglia=' + encodeURIComponent(taglia) + '&ajax=1';
 
-            var params = new URLSearchParams();
-            new FormData(form).forEach(function (value, key) {
-                params.append(key, value);
-            });
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', form.getAttribute('action'), true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-            params.append('ajax', '1');
-            fetch(form.getAttribute('action'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: params.toString()
-            })
-                .then(function (res) {
-                    if (!res.ok) throw new Error();
-                    return res.json();
-                })
-                .then(function (data) {
-                    if (!data.success) return;
-                    var row = form.closest('tr');
-                    if (row) row.remove();
-                    if (data.vuoto) {
-                        window.location.reload();
-                    } else {
-                        aggiornaTotale(data.totale);
-                    }
-                })
-                .catch(function () {
-                    form.submit();
-                });
-        });
-    });
+    xhr.onload = function () {
+        if (xhr.status !== 200) {
+            form.submit();
+            return;
+        }
+        var data;
+        try {
+            data = JSON.parse(xhr.responseText);
+        } catch (e) {
+            form.submit();
+            return;
+        }
+        if (!data.success) return;
+        var row = form.closest('tr');
+        if (row) row.remove();
+        if (data.vuoto) {
+            window.location.reload();
+        } else {
+            aggiornaTotale(data.totale);
+        }
+    };
+
+    xhr.onerror = function () {
+        form.submit();
+    };
+
+    xhr.send(body);
 }
 
-function initAggiorna() {
-    document.querySelectorAll('.qty-form').forEach(function (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
+function inviaAggiornamento(form) {
+    var id = form.querySelector('[name="id"]').value;
+    var taglia = form.querySelector('[name="taglia"]').value;
+    var quantita = form.querySelector('[name="quantita"]').value;
+    var body = 'azione=aggiorna&id=' + encodeURIComponent(id) + '&taglia=' + encodeURIComponent(taglia) + '&quantita=' + encodeURIComponent(quantita) + '&ajax=1';
+    var row = form.closest('tr');
 
-            var params = new URLSearchParams();
-            new FormData(form).forEach(function (value, key) {
-                params.append(key, value);
-            });
-            var row = form.closest('tr');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', form.getAttribute('action'), true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
-            params.append('ajax', '1');
-            fetch(form.getAttribute('action'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: params.toString()
-            })
-                .then(function (res) {
-                    if (!res.ok) throw new Error();
-                    return res.json();
-                })
-                .then(function (data) {
-                    if (!data.success) return;
-                    if (data.rimosso) {
-                        if (row) row.remove();
-                        if (data.vuoto) {
-                            window.location.reload();
-                            return;
-                        }
-                    } else {
-                        var priceCell = row && row.querySelector('.cart-price');
-                        if (priceCell) {
-                            priceCell.textContent = parseFloat(data.subtotale).toFixed(2).replace('.', ',') + ' €';
-                        }
-                        var qtyInput = form.querySelector('.qty-input');
-                        if (qtyInput) qtyInput.value = data.nuovaQuantita;
-                    }
-                    aggiornaTotale(data.totale);
-                })
-                .catch(function () {
-                    form.submit();
-                });
-        });
-    });
+    xhr.onload = function () {
+        if (xhr.status !== 200) {
+            form.submit();
+            return;
+        }
+        var data;
+        try {
+            data = JSON.parse(xhr.responseText);
+        } catch (e) {
+            form.submit();
+            return;
+        }
+        if (!data.success) return;
+        if (data.rimosso) {
+            if (row) row.remove();
+            if (data.vuoto) {
+                window.location.reload();
+                return;
+            }
+        } else {
+            var priceCell = row && row.querySelector('.cart-price');
+            if (priceCell) {
+                priceCell.textContent = parseFloat(data.subtotale).toFixed(2).replace('.', ',') + ' \u20ac';
+            }
+            var qtyInput = form.querySelector('.qty-input');
+            if (qtyInput) qtyInput.value = data.nuovaQuantita;
+        }
+        aggiornaTotale(data.totale);
+    };
+
+    xhr.onerror = function () {
+        form.submit();
+    };
+
+    xhr.send(body);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -101,9 +100,21 @@ document.addEventListener('DOMContentLoaded', function () {
         input.addEventListener('change', function () {
             enforceQtyBounds(this);
             var form = this.closest('.qty-form');
-            if (form) form.requestSubmit();
+            if (form) inviaAggiornamento(form);
         });
     });
-    initRimuovi();
-    initAggiorna();
+
+    document.querySelectorAll('.qty-form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            inviaAggiornamento(form);
+        });
+    });
+
+    document.querySelectorAll('.inline-form').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            inviaRimozione(form);
+        });
+    });
 });

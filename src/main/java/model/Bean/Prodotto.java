@@ -114,17 +114,13 @@ public class Prodotto implements Serializable {
         this.imgPath = imgPath;
     }
 
-    public String primaTagliaDisp() {
+    public String getPrimaTagliaDisponibile() {
         if (taglie != null) {
             for (ProdottoTaglia pt : taglie) {
                 if (pt.getQuantita() > 0) return String.valueOf(pt.getTaglia());
             }
         }
         return null;
-    }
-
-    public String getPrimaTagliaDisponibile() {
-        return primaTagliaDisp();
     }
 
     @Override

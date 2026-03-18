@@ -5,47 +5,20 @@
     var tabBtns = document.querySelectorAll('.tab-btn');
     var sections = document.querySelectorAll('.account-section');
 
-    function attivaSections(sectionId) {
+    function mostraSezione(sectionId) {
         tabBtns.forEach(function (b) {
-            var isActive = b.dataset.section === sectionId;
-            b.classList.toggle('active', isActive);
-            b.setAttribute('aria-selected', isActive ? 'true' : 'false');
-            b.setAttribute('tabindex', isActive ? '0' : '-1');
+            b.classList.toggle('active', b.dataset.section === sectionId);
         });
         sections.forEach(function (s) {
-            var isActive = s.id === 'section-' + sectionId;
-            s.classList.toggle('active', isActive);
-            s.hidden = !isActive;
+            var attiva = s.id === 'section-' + sectionId;
+            s.classList.toggle('active', attiva);
+            s.hidden = !attiva;
         });
     }
 
     tabBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
-            attivaSections(btn.dataset.section);
-            chiudiEditIndirizzo();
-        });
-
-        btn.addEventListener('keydown', function (e) {
-            if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(e.key)) {
-                return;
-            }
-
-            e.preventDefault();
-            var currentIndex = Array.prototype.indexOf.call(tabBtns, btn);
-            var nextIndex = currentIndex;
-
-            if (e.key === 'ArrowRight') {
-                nextIndex = (currentIndex + 1) % tabBtns.length;
-            } else if (e.key === 'ArrowLeft') {
-                nextIndex = (currentIndex - 1 + tabBtns.length) % tabBtns.length;
-            } else if (e.key === 'Home') {
-                nextIndex = 0;
-            } else if (e.key === 'End') {
-                nextIndex = tabBtns.length - 1;
-            }
-
-            tabBtns[nextIndex].focus();
-            attivaSections(tabBtns[nextIndex].dataset.section);
+            mostraSezione(btn.dataset.section);
             chiudiEditIndirizzo();
         });
     });
@@ -54,7 +27,7 @@
     var tabAttiva = wrap ? wrap.dataset.tab : '';
     var urlParams = new URLSearchParams(window.location.search);
     var sectionParam = urlParams.get('section') || tabAttiva;
-    if (sectionParam) attivaSections(sectionParam);
+    if (sectionParam) mostraSezione(sectionParam);
 
     var editWrap = document.getElementById('editIndirizzoWrap');
     if (editWrap && editWrap.dataset.apriEdit === 'true') {

@@ -26,8 +26,7 @@
 
 
             <aside class="catalogo-sidebar">
-                <form method="get" action="${pageContext.request.contextPath}/catalogo" id="filtriForm"
-                      data-ctx="${pageContext.request.contextPath}">
+                <form method="get" action="${pageContext.request.contextPath}/catalogo" id="filtriForm">
 
 
                     <div class="sidebar-section">
