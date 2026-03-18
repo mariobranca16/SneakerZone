@@ -34,6 +34,7 @@ public class LoginFilter extends HttpFilter {
         Utente utente = session != null ? (Utente) session.getAttribute("utenteConnesso") : null;
 
         if (utente == null) {
+            request.getSession().setAttribute("redirectDopoLogin", request.getRequestURI());
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }

@@ -54,7 +54,6 @@
                         <th class="col-utente">Utente</th>
                         <th class="col-data col-hide-sm">Data</th>
                         <th class="col-totale col-center col-hide-xs">Totale</th>
-                        <th class="col-stato col-center">Stato</th>
                         <th class="col-aggiorna col-center">Aggiorna stato</th>
                     </tr>
                     </thead>
@@ -72,31 +71,6 @@
                                     <fmt:formatNumber value="${o.totaleOrdine}" type="number"
                                                       minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                                 </span>
-                            </td>
-                            <td class="col-stato col-center">
-                                <c:choose>
-                                    <c:when test="${o.stato.name() == 'IN_ELABORAZIONE'}">
-                                        <span class="badge badge--elaborazione">
-                                            <i class="ti ti-clock"></i> ${o.stato.label}
-                                        </span>
-                                    </c:when>
-                                    <c:when test="${o.stato.name() == 'SPEDITO'}">
-                                        <span class="badge badge--spedito">
-                                            <i class="ti ti-truck"></i> ${o.stato.label}
-                                        </span>
-                                    </c:when>
-                                    <c:when test="${o.stato.name() == 'CONSEGNATO'}">
-                                        <span class="badge badge--consegnato">
-                                            <i class="ti ti-circle-check"></i> ${o.stato.label}
-                                        </span>
-                                    </c:when>
-                                    <c:when test="${o.stato.name() == 'ANNULLATO'}">
-                                        <span class="badge badge--annullato">
-                                            <i class="ti ti-circle-off"></i> ${o.stato.label}
-                                        </span>
-                                    </c:when>
-                                    <c:otherwise>-</c:otherwise>
-                                </c:choose>
                             </td>
                             <td class="col-aggiorna col-center">
                                 <div class="admin-table-actions">

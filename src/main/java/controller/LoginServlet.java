@@ -52,7 +52,13 @@ public class LoginServlet extends HttpServlet {
         if (utente != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("utenteConnesso", utente);
-            response.sendRedirect(request.getContextPath() + "/home");
+            String redirect = (String) session.getAttribute("redirectDopoLogin");
+            session.removeAttribute("redirectDopoLogin");
+            if (redirect != null && !redirect.isBlank()) {
+                response.sendRedirect(redirect);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/home");
+            }
             return;
         }
 

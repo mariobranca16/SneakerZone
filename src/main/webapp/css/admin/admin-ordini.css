@@ -1,40 +1,4 @@
 
-.badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.badge--elaborazione {
-    background: #fef3c7;
-    color: #92400E;
-    border: 1px solid #fcd34d;
-}
-
-.badge--spedito {
-    background: #dbeafe;
-    color: #1E3A5F;
-    border: 1px solid #93c5fd;
-}
-
-.badge--consegnato {
-    background: #d1fae5;
-    color: #065F46;
-    border: 1px solid #6ee7b7;
-}
-
-.badge--annullato {
-    background: #fef2f2;
-    color: #7F1D1D;
-    border: 1px solid #fca5a5;
-}
-
-
 .ordini-table-wrap {
     overflow-x: auto;
     margin-bottom: 0;
@@ -59,10 +23,6 @@
 
 .col-totale {
     width: 110px;
-}
-
-.col-stato {
-    width: 150px;
 }
 
 .col-aggiorna {
