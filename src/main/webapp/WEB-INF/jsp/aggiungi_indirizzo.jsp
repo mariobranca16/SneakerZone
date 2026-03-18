@@ -90,8 +90,9 @@
                     <div class="form-group">
                         <label class="form-label" for="provincia">Provincia</label>
                         <input class="form-input" type="text" id="provincia" name="provincia"
-                               placeholder="Es. MI" maxlength="5"
+                               placeholder="Es. MI" maxlength="5" list="list-province"
                                value="${fn:escapeXml(not empty formProvincia ? formProvincia : '')}" required>
+                        <datalist id="list-province"></datalist>
                         <c:if test="${not empty erroreProvincia}">
                             <span class="field-error"><c:out value="${erroreProvincia}"/></span>
                         </c:if>
@@ -99,8 +100,9 @@
                     <div class="form-group form-group-grow">
                         <label class="form-label" for="paese">Paese</label>
                         <input class="form-input" type="text" id="paese" name="paese"
-                               placeholder="Es. Italia"
+                               placeholder="Es. Italia" list="list-nazioni"
                                value="${fn:escapeXml(not empty formPaese ? formPaese : '')}" required>
+                        <datalist id="list-nazioni"></datalist>
                         <c:if test="${not empty errorePaese}">
                             <span class="field-error"><c:out value="${errorePaese}"/></span>
                         </c:if>

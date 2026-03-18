@@ -137,93 +137,9 @@
                     <div class="alert alert-error">${erroreCarrello}</div>
                 </c:if>
 
-                <div class="catalogo-risultati-header">
-                    <span class="catalogo-count">${fn:length(prodotti)} prodott${fn:length(prodotti) == 1 ? 'o' : 'i'} trovat${fn:length(prodotti) == 1 ? 'o' : 'i'}</span>
+                <div id="risultatiProdotti">
+                    <jsp:include page="/WEB-INF/jsp/catalogo_risultati.jsp"/>
                 </div>
-
-                <c:choose>
-                    <c:when test="${empty prodotti}">
-                        <div class="catalogo-empty">
-                            <i class="ti ti-package catalogo-empty-icon" aria-hidden="true"></i>
-                            <p>Nessun prodotto trovato con i filtri selezionati.</p>
-                            <a href="${pageContext.request.contextPath}/catalogo">Mostra tutti i prodotti</a>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="catalogo-grid">
-                            <c:forEach var="prodotto" items="${prodotti}">
-                                <div class="prodotto-card">
-
-                                    <a class="prodotto-thumb-link"
-                                       href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}"
-                                       aria-hidden="true" tabindex="-1">
-                                        <div class="prodotto-thumb">
-                                            <c:if test="${not empty prodotto.imgPath}">
-                                                <img src="${pageContext.request.contextPath}${prodotto.imgPath}"
-                                                     alt="${prodotto.nome}" loading="lazy">
-                                            </c:if>
-                                        </div>
-                                    </a>
-
-                                    <div class="prodotto-body">
-                                        <h2 class="prodotto-nome">
-                                            <a class="prodotto-nome-link"
-                                               href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}">
-                                                <c:out value="${prodotto.nome}"/>
-                                            </a>
-                                        </h2>
-
-                                        <div class="prodotto-meta">
-                                            <span><b>Brand:</b> <c:out value="${prodotto.brand}"/></span>
-                                            <span><b>Colore:</b> <c:out value="${prodotto.colore}"/></span>
-                                        </div>
-
-                                        <c:if test="${not empty prodotto.descrizione}">
-                                            <div class="prodotto-descrizione">
-                                                <c:out value="${prodotto.descrizione}"/>
-                                            </div>
-                                        </c:if>
-                                    </div>
-
-                                    <div class="prodotto-footer">
-                                        <div class="prodotto-prezzo">
-                                            <fmt:formatNumber value="${prodotto.costo}" minFractionDigits="2"
-                                                              maxFractionDigits="2"/><span
-                                                class="currency">&euro;</span>
-                                        </div>
-
-                                        <div class="prodotto-azioni">
-                                            <form method="post" action="${pageContext.request.contextPath}/carrello">
-                                                <input type="hidden" name="azione" value="aggiungi"/>
-                                                <input type="hidden" name="id" value="${prodotto.id}"/>
-                                                <input type="hidden" name="origine" value="catalogo"/>
-                                                <input type="hidden" name="taglia"
-                                                       value="${prodotto.primaTagliaDisponibile}"/>
-                                                <input type="hidden" name="quantita" value="1"/>
-                                                <button class="btn-primary" type="submit"
-                                                        aria-label="Aggiungi ${prodotto.nome} al carrello">Aggiungi al
-                                                    carrello
-                                                </button>
-                                            </form>
-
-                                            <c:if test="${not empty sessionScope.utenteConnesso}">
-                                                <form class="form-wishlist" method="post"
-                                                      action="${pageContext.request.contextPath}/add-to-wishlist">
-                                                    <input type="hidden" name="idProdotto" value="${prodotto.id}"/>
-                                                    <button class="btn-primary" type="submit"
-                                                            aria-label="Aggiungi ${prodotto.nome} alla wishlist">
-                                                        <i class="ti ti-heart"></i>
-                                                    </button>
-                                                </form>
-                                            </c:if>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </c:forEach>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
 
             </div>
 
@@ -238,7 +154,6 @@
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 
 
-<script>var isLoggedIn = ${not empty sessionScope.utenteConnesso};</script>
 <script src="${pageContext.request.contextPath}/js/catalogo.js"></script>
 
 </body>

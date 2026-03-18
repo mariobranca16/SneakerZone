@@ -1,6 +1,5 @@
 package controller;
 
-import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -77,24 +76,7 @@ public class CatalogoServlet extends HttpServlet {
             request.setAttribute("messaggio", "Prodotto aggiunto alla wishlist");
 
         if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("{\"count\":").append(prodotti.size()).append(",\"prodotti\":[");
-            for (int i = 0; i < prodotti.size(); i++) {
-                Prodotto p = prodotti.get(i);
-                sb.append("{")
-                        .append("\"id\":").append(p.getId()).append(",")
-                        .append("\"nome\":\"").append(escJson(p.getNome())).append("\",")
-                        .append("\"brand\":\"").append(escJson(p.getBrand())).append("\",")
-                        .append("\"colore\":\"").append(escJson(p.getColore())).append("\",")
-                        .append("\"costo\":").append(p.getCosto()).append(",")
-                        .append("\"descrizione\":\"").append(escJson(p.getDescrizione())).append("\",")
-                        .append("\"imgPath\":\"").append(escJson(p.getImgPath())).append("\",")
-                        .append("\"primaTagliaDisp\":").append(p.primaTagliaDisp())
-                        .append("}");
-                if (i < prodotti.size() - 1) sb.append(",");
-            }
-            sb.append("]}");
-            ValidatoreInput.sendJson(response, 200, sb.toString());
+            request.getRequestDispatcher("/WEB-INF/jsp/catalogo_risultati.jsp").forward(request, response);
             return;
         }
 
@@ -122,12 +104,6 @@ public class CatalogoServlet extends HttpServlet {
         Map<Long, Integer> pos = new HashMap<>();
         for (int i = 0; i < ordine.size(); i++) pos.put(ordine.get(i), i);
         prodotti.sort(Comparator.comparingInt(p -> pos.getOrDefault(p.getId(), Integer.MAX_VALUE)));
-    }
-
-    private static String escJson(String s) {
-        if (s == null) return "";
-        return s.replace("\\", "\\\\").replace("\"", "\\\"")
-                .replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t");
     }
 
 }

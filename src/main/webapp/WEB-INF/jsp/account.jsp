@@ -254,14 +254,16 @@
                     </div>
                     <div class="form-group">
                         <label for="editProvincia">Provincia</label>
-                        <input type="text" id="editProvincia" name="provincia" maxlength="5" required>
+                        <input type="text" id="editProvincia" name="provincia" maxlength="5" list="list-province" required>
+                        <datalist id="list-province"></datalist>
                         <c:if test="${not empty erroreProvincia}">
                             <span class="field-error">${erroreProvincia}</span>
                         </c:if>
                     </div>
                     <div class="form-group">
                         <label for="editPaese">Paese</label>
-                        <input type="text" id="editPaese" name="paese" required>
+                        <input type="text" id="editPaese" name="paese" list="list-nazioni" required>
+                        <datalist id="list-nazioni"></datalist>
                         <c:if test="${not empty errorePaese}">
                             <span class="field-error">${errorePaese}</span>
                         </c:if>
