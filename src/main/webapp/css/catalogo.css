@@ -359,17 +359,7 @@
     display: flex;
     gap: 8px;
     align-items: center;
-}
-
-.prodotto-azioni form:first-child {
-    flex: 1;
-}
-
-.prodotto-azioni form:first-child .btn-primary {
-    width: 100%;
-    height: 38px;
-    line-height: 38px;
-    font-size: 14px;
+    justify-content: flex-end;
 }
 
 .prodotto-prezzo {

@@ -132,9 +132,6 @@
                 <c:if test="${not empty messaggio}">
                     <div class="alert alert-success">${messaggio}</div>
                 </c:if>
-                <c:if test="${not empty erroreCarrello}">
-                    <div class="alert alert-error">${erroreCarrello}</div>
-                </c:if>
 
                 <div id="risultatiProdotti">
                     <jsp:include page="/WEB-INF/jsp/catalogo_risultati.jsp"/>

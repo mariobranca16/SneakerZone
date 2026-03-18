@@ -55,15 +55,8 @@
                                              maxFractionDigits="2"/><span class="currency">&euro;</span>
                         </div>
                         <div class="prodotto-azioni">
-                            <form method="post" action="${pageContext.request.contextPath}/carrello">
-                                <input type="hidden" name="azione" value="aggiungi"/>
-                                <input type="hidden" name="id" value="${prodotto.id}"/>
-                                <input type="hidden" name="origine" value="catalogo"/>
-                                <input type="hidden" name="taglia" value="${prodotto.primaTagliaDisponibile}"/>
-                                <input type="hidden" name="quantita" value="1"/>
-                                <button class="btn-primary" type="submit"
-                                        aria-label="Aggiungi ${prodotto.nome} al carrello">Aggiungi al carrello</button>
-                            </form>
+                            <a class="btn-primary"
+                               href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}">Scopri</a>
                             <c:if test="${not empty sessionScope.utenteConnesso}">
                                 <form class="form-wishlist" method="post"
                                       action="${pageContext.request.contextPath}/add-to-wishlist">
