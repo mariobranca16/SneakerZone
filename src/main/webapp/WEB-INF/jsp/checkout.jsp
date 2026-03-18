@@ -75,40 +75,68 @@
                     <i class="ti ti-map-pin"></i> Indirizzo di spedizione
                 </h2>
 
-                <c:choose>
-                    <c:when test="${fn:length(indirizzi) == 0}">
-                        <div class="checkout-no-address">
-                            <i class="ti ti-alert-triangle"></i>
-                            Nessun indirizzo salvato. Aggiungine uno prima di confermare l&rsquo;ordine.
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="checkout-address-list">
-                            <c:forEach var="indirizzo" items="${indirizzi}">
-                                <label class="address-card">
-                                    <input class="address-radio" type="radio"
-                                           name="idIndirizzo" value="${indirizzo.id}"
-                                        ${param.idIndirizzo == indirizzo.id ? 'checked' : ''} required/>
-                                    <div class="address-card-body">
-                                        <span class="address-destinatario">${indirizzo.destinatario}</span>
-                                        <span class="address-detail">${indirizzo.via}</span>
-                                        <span class="address-detail">
-                                            ${indirizzo.cap} ${indirizzo.citta}
-                                            (${indirizzo.provincia}), ${indirizzo.paese}
-                                        </span>
-                                    </div>
-                                    <span class="address-check-icon">
-                                        <i class="ti ti-circle-check"></i>
-                                    </span>
-                                </label>
-                            </c:forEach>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-
-                <a class="checkout-add-address" href="${pageContext.request.contextPath}/aggiungi-indirizzo">
-                    <i class="ti ti-plus"></i> Aggiungi un nuovo indirizzo
-                </a>
+                <div class="pay-grid">
+                    <div class="pay-group pay-full">
+                        <label class="pay-label" for="destinatario">Destinatario</label>
+                        <input class="pay-input ${not empty erroreDestinatario ? 'pay-input-error' : ''}"
+                               type="text" id="destinatario" name="destinatario"
+                               placeholder="Nome e cognome del destinatario"
+                               value="${fn:escapeXml(param.destinatario)}" required>
+                        <c:if test="${not empty erroreDestinatario}">
+                            <span class="pay-error">${erroreDestinatario}</span>
+                        </c:if>
+                    </div>
+                    <div class="pay-group pay-full">
+                        <label class="pay-label" for="via">Via / Indirizzo</label>
+                        <input class="pay-input ${not empty erroreVia ? 'pay-input-error' : ''}"
+                               type="text" id="via" name="via"
+                               placeholder="Es. Via Roma 12"
+                               value="${fn:escapeXml(param.via)}" required>
+                        <c:if test="${not empty erroreVia}">
+                            <span class="pay-error">${erroreVia}</span>
+                        </c:if>
+                    </div>
+                    <div class="pay-group">
+                        <label class="pay-label" for="cap">CAP</label>
+                        <input class="pay-input ${not empty erroreCap ? 'pay-input-error' : ''}"
+                               type="text" id="cap" name="cap"
+                               placeholder="Es. 20100" maxlength="10"
+                               value="${fn:escapeXml(param.cap)}" required>
+                        <c:if test="${not empty erroreCap}">
+                            <span class="pay-error">${erroreCap}</span>
+                        </c:if>
+                    </div>
+                    <div class="pay-group">
+                        <label class="pay-label" for="citta">Citt&agrave;</label>
+                        <input class="pay-input ${not empty erroreCitta ? 'pay-input-error' : ''}"
+                               type="text" id="citta" name="citta"
+                               placeholder="Es. Milano"
+                               value="${fn:escapeXml(param.citta)}" required>
+                        <c:if test="${not empty erroreCitta}">
+                            <span class="pay-error">${erroreCitta}</span>
+                        </c:if>
+                    </div>
+                    <div class="pay-group">
+                        <label class="pay-label" for="provincia">Provincia</label>
+                        <input class="pay-input ${not empty erroreProvincia ? 'pay-input-error' : ''}"
+                               type="text" id="provincia" name="provincia"
+                               placeholder="Es. MI" maxlength="5"
+                               value="${fn:escapeXml(param.provincia)}" required>
+                        <c:if test="${not empty erroreProvincia}">
+                            <span class="pay-error">${erroreProvincia}</span>
+                        </c:if>
+                    </div>
+                    <div class="pay-group">
+                        <label class="pay-label" for="paese">Paese</label>
+                        <input class="pay-input ${not empty errorePaese ? 'pay-input-error' : ''}"
+                               type="text" id="paese" name="paese"
+                               placeholder="Es. Italia"
+                               value="${fn:escapeXml(param.paese)}" required>
+                        <c:if test="${not empty errorePaese}">
+                            <span class="pay-error">${errorePaese}</span>
+                        </c:if>
+                    </div>
+                </div>
             </div>
 
 
@@ -166,11 +194,9 @@
             </div>
 
 
-            <c:if test="${fn:length(indirizzi) > 0}">
-                <button class="btn-confirm" type="submit">
-                    <i class="ti ti-lock"></i> Conferma ordine
-                </button>
-            </c:if>
+            <button class="btn-confirm" type="submit">
+                <i class="ti ti-lock"></i> Conferma ordine
+            </button>
 
         </form>
 

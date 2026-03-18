@@ -26,7 +26,6 @@ public class CheckoutServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
         Carrello carrello = (Carrello) session.getAttribute("carrello");
-        Utente utente = (Utente) session.getAttribute("utenteConnesso");
 
         if (carrello == null || carrello.getProdotti().isEmpty()) {
             request.setAttribute("erroreCarrello", "Il tuo carrello e vuoto. Aggiungi almeno un prodotto per procedere.");
@@ -34,7 +33,6 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
-        request.setAttribute("indirizzi", new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId()));
         request.setAttribute("carrello", carrello);
         request.getRequestDispatcher("/WEB-INF/jsp/checkout.jsp").forward(request, response);
     }
@@ -52,20 +50,48 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
-        IndirizzoSpedizioneDAO indirizzoDAO = new IndirizzoSpedizioneDAO();
-
         boolean hasError = false;
+
+        String destinatario = ValidatoreInput.normalizzaTesto(request.getParameter("destinatario"));
+        String via = ValidatoreInput.normalizzaTesto(request.getParameter("via"));
+        String cap = ValidatoreInput.normalizzaTesto(request.getParameter("cap"));
+        String citta = ValidatoreInput.normalizzaTesto(request.getParameter("citta"));
+        String provincia = ValidatoreInput.normalizzaTesto(request.getParameter("provincia"));
+        String paese = ValidatoreInput.normalizzaTesto(request.getParameter("paese"));
+
+        if (!ValidatoreInput.isDestinatarioValido(destinatario)) {
+            request.setAttribute("erroreDestinatario", "Inserisci nome e cognome del destinatario.");
+            hasError = true;
+        }
+        if (!ValidatoreInput.isViaValida(via)) {
+            request.setAttribute("erroreVia", "Inserisci un indirizzo completo di numero civico (es. Via Roma 1).");
+            hasError = true;
+        }
+        if (!ValidatoreInput.isCapValido(cap)) {
+            request.setAttribute("erroreCap", "Il CAP deve essere di esattamente 5 cifre.");
+            hasError = true;
+        }
+        if (!ValidatoreInput.isLocalitaValida(citta)) {
+            request.setAttribute("erroreCitta", "La citta deve avere almeno 2 caratteri e contenere solo lettere.");
+            hasError = true;
+        }
+        if (!ValidatoreInput.isProvinciaValida(provincia)) {
+            request.setAttribute("erroreProvincia", "La provincia deve avere 2-5 lettere (es. RM).");
+            hasError = true;
+        }
+        if (!ValidatoreInput.isLocalitaValida(paese)) {
+            request.setAttribute("errorePaese", "Il paese deve avere almeno 2 caratteri e contenere solo lettere.");
+            hasError = true;
+        }
 
         String nomeCarta = ValidatoreInput.normalizzaTesto(request.getParameter("nomeCarta"));
         String numeroCarta = request.getParameter("numeroCarta");
         String scadenza = ValidatoreInput.normalizzaTesto(request.getParameter("scadenza"));
-        String cifre = ValidatoreInput.normalizzaNumeroCarta(numeroCarta);
 
         if (!ValidatoreInput.isNomeCartaValido(nomeCarta)) {
             request.setAttribute("erroreNomeCarta", "Inserisci nome e cognome come appaiono sulla carta (es. Mario Rossi).");
             hasError = true;
         }
-
         if (!ValidatoreInput.isNumeroCartaValido(numeroCarta)) {
             request.setAttribute("erroreNumeroCarta", "Inserisci un numero di carta valido (16 cifre).");
             hasError = true;
@@ -84,36 +110,24 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         if (hasError) {
-            mostraCheckout(request, response, utente, carrello, indirizzoDAO);
+            request.setAttribute("carrello", carrello);
+            request.getRequestDispatcher("/WEB-INF/jsp/checkout.jsp").forward(request, response);
             return;
         }
 
-        String idIndirizzoParam = request.getParameter("idIndirizzo");
-        if (idIndirizzoParam == null || idIndirizzoParam.isBlank()) {
-            request.setAttribute("erroreIndirizzo", "Seleziona un indirizzo di spedizione.");
-            mostraCheckout(request, response, utente, carrello, indirizzoDAO);
-            return;
-        }
-
-        long idIndirizzo;
-        try {
-            idIndirizzo = Long.parseLong(idIndirizzoParam);
-        } catch (NumberFormatException e) {
-            request.setAttribute("erroreIndirizzo", "Indirizzo non valido.");
-            mostraCheckout(request, response, utente, carrello, indirizzoDAO);
-            return;
-        }
-
-        IndirizzoSpedizione indirizzoScelto = indirizzoDAO.doRetrieveByKey(idIndirizzo);
-        if (indirizzoScelto == null || indirizzoScelto.getIdUtente() != utente.getId()) {
-            request.setAttribute("erroreIndirizzo", "Indirizzo non valido.");
-            mostraCheckout(request, response, utente, carrello, indirizzoDAO);
-            return;
-        }
+        IndirizzoSpedizione indirizzo = new IndirizzoSpedizione();
+        indirizzo.setIdUtente(utente.getId());
+        indirizzo.setDestinatario(destinatario);
+        indirizzo.setVia(via);
+        indirizzo.setCap(cap);
+        indirizzo.setCitta(citta);
+        indirizzo.setProvincia(provincia);
+        indirizzo.setPaese(paese);
+        new IndirizzoSpedizioneDAO().doSave(indirizzo);
 
         Ordine ordine = new Ordine();
         ordine.setIdUtente(utente.getId());
-        ordine.setIdIndirizzoSpedizione(idIndirizzo);
+        ordine.setIdIndirizzoSpedizione(indirizzo.getId());
         ordine.setDataOrdine(LocalDate.now());
         ordine.setStato(StatoOrdine.IN_ELABORAZIONE);
 
@@ -132,7 +146,8 @@ public class CheckoutServlet extends HttpServlet {
             new OrdineDAO().doSave(ordine);
         } catch (RuntimeException e) {
             request.setAttribute("erroreStock", "Uno o piu prodotti non sono piu disponibili nella quantita richiesta. Aggiorna il carrello e riprova.");
-            mostraCheckout(request, response, utente, carrello, indirizzoDAO);
+            request.setAttribute("carrello", carrello);
+            request.getRequestDispatcher("/WEB-INF/jsp/checkout.jsp").forward(request, response);
             return;
         }
 
@@ -142,14 +157,5 @@ public class CheckoutServlet extends HttpServlet {
         request.setAttribute("dataOrdine", ordine.getDataOrdine().format(dtf));
         request.setAttribute("ordine", ordine);
         request.getRequestDispatcher("/WEB-INF/jsp/conferma_ordine.jsp").forward(request, response);
-    }
-
-    private void mostraCheckout(HttpServletRequest request, HttpServletResponse response,
-                                Utente utente, Carrello carrello,
-                                IndirizzoSpedizioneDAO indirizzoDAO)
-            throws ServletException, IOException {
-        request.setAttribute("indirizzi", indirizzoDAO.doRetrieveByUtente(utente.getId()));
-        request.setAttribute("carrello", carrello);
-        request.getRequestDispatcher("/WEB-INF/jsp/checkout.jsp").forward(request, response);
     }
 }

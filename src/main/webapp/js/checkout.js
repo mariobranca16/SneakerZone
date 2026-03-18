@@ -15,25 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    function inizializzaCardSelezionata(classeRadio, classeCard) {
-        var radios = document.querySelectorAll('.' + classeRadio);
-        radios.forEach(function (radio) {
-            if (radio.checked) {
-                var card = radio.closest('.' + classeCard);
-                if (card) card.classList.add('selected');
-            }
-            radio.addEventListener('change', function () {
-                document.querySelectorAll('.' + classeCard).forEach(function (c) {
-                    c.classList.remove('selected');
-                });
-                var card = this.closest('.' + classeCard);
-                if (card) card.classList.add('selected');
-            });
-        });
-    }
-
-    inizializzaCardSelezionata('address-radio', 'address-card');
-
     var inputValidation = window.ValidazioneInput;
     if (!inputValidation) {
         return;
