@@ -1,6 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
     'use strict';
 
+    document.querySelectorAll('.js-card-number').forEach(function (input) {
+        input.addEventListener('input', function () {
+            var v = this.value.replace(/\D/g, '').substring(0, 16);
+            this.value = v.replace(/(.{4})/g, '$1 ').trim();
+        });
+    });
+
+    document.querySelectorAll('.js-card-expiry').forEach(function (input) {
+        input.addEventListener('input', function () {
+            var v = this.value.replace(/\D/g, '').substring(0, 4);
+            this.value = v.length >= 3 ? v.substring(0, 2) + '/' + v.substring(2) : v;
+        });
+    });
+
     function inizializzaCardSelezionata(classeRadio, classeCard) {
         var radios = document.querySelectorAll('.' + classeRadio);
         radios.forEach(function (radio) {

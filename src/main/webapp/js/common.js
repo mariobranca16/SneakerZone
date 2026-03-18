@@ -12,6 +12,7 @@ function autoHideAlerts() {
 
 function togglePassword(inputId, btn) {
     var input = document.getElementById(inputId);
+    if (!input) return;
     var icon = btn.querySelector('i');
     if (input.type === 'password') {
         input.type = 'text';
@@ -51,24 +52,8 @@ function initConfirmButtons() {
     });
 }
 
-function initCardFormatting() {
-    document.querySelectorAll('.js-card-number').forEach(function (input) {
-        input.addEventListener('input', function () {
-            var v = this.value.replace(/\D/g, '').substring(0, 16);
-            this.value = v.replace(/(.{4})/g, '$1 ').trim();
-        });
-    });
-    document.querySelectorAll('.js-card-expiry').forEach(function (input) {
-        input.addEventListener('input', function () {
-            var v = this.value.replace(/\D/g, '').substring(0, 4);
-            this.value = v.length >= 3 ? v.substring(0, 2) + '/' + v.substring(2) : v;
-        });
-    });
-}
-
 document.addEventListener('DOMContentLoaded', function () {
     autoHideAlerts();
     initDropdown();
     initConfirmButtons();
-    initCardFormatting();
 });
