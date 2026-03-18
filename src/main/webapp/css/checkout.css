@@ -30,7 +30,6 @@ main {
 .checkout-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-top: 4px solid var(--brand);
     border-radius: 14px;
     padding: 28px 30px;
 }

@@ -17,7 +17,6 @@ main {
 .addr-card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-top: 3px solid var(--brand);
     border-radius: 14px;
     padding: 34px 38px;
     max-width: 560px;
