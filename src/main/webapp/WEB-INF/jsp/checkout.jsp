@@ -81,7 +81,7 @@
                         <input class="pay-input ${not empty erroreDestinatario ? 'pay-input-error' : ''}"
                                type="text" id="destinatario" name="destinatario"
                                placeholder="Nome e cognome del destinatario"
-                               value="${fn:escapeXml(param.destinatario)}" required>
+                               value="${not empty param.destinatario ? fn:escapeXml(param.destinatario) : fn:escapeXml(indirizzoPrecompilato.destinatario)}" required>
                         <c:if test="${not empty erroreDestinatario}">
                             <span class="pay-error">${erroreDestinatario}</span>
                         </c:if>
@@ -91,7 +91,7 @@
                         <input class="pay-input ${not empty erroreVia ? 'pay-input-error' : ''}"
                                type="text" id="via" name="via"
                                placeholder="Es. Via Roma 12"
-                               value="${fn:escapeXml(param.via)}" required>
+                               value="${not empty param.via ? fn:escapeXml(param.via) : fn:escapeXml(indirizzoPrecompilato.via)}" required>
                         <c:if test="${not empty erroreVia}">
                             <span class="pay-error">${erroreVia}</span>
                         </c:if>
@@ -101,7 +101,7 @@
                         <input class="pay-input ${not empty erroreCap ? 'pay-input-error' : ''}"
                                type="text" id="cap" name="cap"
                                placeholder="Es. 20100" maxlength="10"
-                               value="${fn:escapeXml(param.cap)}" required>
+                               value="${not empty param.cap ? fn:escapeXml(param.cap) : fn:escapeXml(indirizzoPrecompilato.cap)}" required>
                         <c:if test="${not empty erroreCap}">
                             <span class="pay-error">${erroreCap}</span>
                         </c:if>
@@ -111,7 +111,7 @@
                         <input class="pay-input ${not empty erroreCitta ? 'pay-input-error' : ''}"
                                type="text" id="citta" name="citta"
                                placeholder="Es. Milano"
-                               value="${fn:escapeXml(param.citta)}" required>
+                               value="${not empty param.citta ? fn:escapeXml(param.citta) : fn:escapeXml(indirizzoPrecompilato.citta)}" required>
                         <c:if test="${not empty erroreCitta}">
                             <span class="pay-error">${erroreCitta}</span>
                         </c:if>
@@ -121,7 +121,7 @@
                         <input class="pay-input ${not empty erroreProvincia ? 'pay-input-error' : ''}"
                                type="text" id="provincia" name="provincia"
                                placeholder="Es. MI" maxlength="5"
-                               value="${fn:escapeXml(param.provincia)}" required>
+                               value="${not empty param.provincia ? fn:escapeXml(param.provincia) : fn:escapeXml(indirizzoPrecompilato.provincia)}" required>
                         <c:if test="${not empty erroreProvincia}">
                             <span class="pay-error">${erroreProvincia}</span>
                         </c:if>
@@ -131,7 +131,7 @@
                         <input class="pay-input ${not empty errorePaese ? 'pay-input-error' : ''}"
                                type="text" id="paese" name="paese"
                                placeholder="Es. Italia"
-                               value="${fn:escapeXml(param.paese)}" required>
+                               value="${not empty param.paese ? fn:escapeXml(param.paese) : fn:escapeXml(indirizzoPrecompilato.paese)}" required>
                         <c:if test="${not empty errorePaese}">
                             <span class="pay-error">${errorePaese}</span>
                         </c:if>

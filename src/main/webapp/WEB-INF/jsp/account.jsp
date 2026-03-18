@@ -163,51 +163,44 @@
             </div>
 
 
-            <c:choose>
-                <c:when test="${empty indirizzi}">
-                    <p class="no-data-msg">
-                        <i class="ti ti-info-circle"></i> Nessun indirizzo salvato.
-                    </p>
-                </c:when>
-                <c:otherwise>
-                    <div class="profilo-addr-list">
-                        <c:forEach var="ind" items="${indirizzi}">
-                            <div class="profilo-addr-card"
-                                 data-id="${ind.id}"
-                                 data-destinatario="${fn:escapeXml(ind.destinatario)}"
-                                 data-via="${fn:escapeXml(ind.via)}"
-                                 data-cap="${fn:escapeXml(ind.cap)}"
-                                 data-citta="${fn:escapeXml(ind.citta)}"
-                                 data-provincia="${fn:escapeXml(ind.provincia)}"
-                                 data-paese="${fn:escapeXml(ind.paese)}">
-                                <div class="profilo-addr-info">
-                                    <span class="addr-destinatario"><c:out value="${ind.destinatario}"/></span>
-                                    <span class="addr-detail"><c:out value="${ind.via}"/></span>
-                                    <span class="addr-detail">
-                                        <c:out value="${ind.cap}"/> <c:out value="${ind.citta}"/> (<c:out
-                                            value="${ind.provincia}"/>), <c:out value="${ind.paese}"/>
-                                    </span>
-                                </div>
-                                <div class="profilo-addr-actions">
-                                    <button type="button" class="btn-addr-edit"
-                                            onclick="apriEditIndirizzo(this.closest('.profilo-addr-card'))">
-                                        <i class="ti ti-pencil"></i> Modifica
-                                    </button>
-                                    <form method="post"
-                                          action="${pageContext.request.contextPath}/myAccount/indirizzo/elimina"
-                                          class="form-inline-del">
-                                        <input type="hidden" name="idIndirizzo" value="${ind.id}">
-                                        <button type="submit" class="btn-addr-del"
-                                                data-confirm="Eliminare questo indirizzo?">
-                                            <i class="ti ti-trash"></i> Elimina
-                                        </button>
-                                    </form>
-                                </div>
+            <c:if test="${not empty indirizzi}">
+                <div class="profilo-addr-list">
+                    <c:forEach var="ind" items="${indirizzi}">
+                        <div class="profilo-addr-card"
+                             data-id="${ind.id}"
+                             data-destinatario="${fn:escapeXml(ind.destinatario)}"
+                             data-via="${fn:escapeXml(ind.via)}"
+                             data-cap="${fn:escapeXml(ind.cap)}"
+                             data-citta="${fn:escapeXml(ind.citta)}"
+                             data-provincia="${fn:escapeXml(ind.provincia)}"
+                             data-paese="${fn:escapeXml(ind.paese)}">
+                            <div class="profilo-addr-info">
+                                <span class="addr-destinatario"><c:out value="${ind.destinatario}"/></span>
+                                <span class="addr-detail"><c:out value="${ind.via}"/></span>
+                                <span class="addr-detail">
+                                    <c:out value="${ind.cap}"/> <c:out value="${ind.citta}"/> (<c:out
+                                        value="${ind.provincia}"/>), <c:out value="${ind.paese}"/>
+                                </span>
                             </div>
-                        </c:forEach>
-                    </div>
-                </c:otherwise>
-            </c:choose>
+                            <div class="profilo-addr-actions">
+                                <button type="button" class="btn-addr-edit"
+                                        onclick="apriEditIndirizzo(this.closest('.profilo-addr-card'))">
+                                    <i class="ti ti-pencil"></i> Modifica
+                                </button>
+                                <form method="post"
+                                      action="${pageContext.request.contextPath}/myAccount/indirizzo/elimina"
+                                      class="form-inline-del">
+                                    <input type="hidden" name="idIndirizzo" value="${ind.id}">
+                                    <button type="submit" class="btn-addr-del"
+                                            data-confirm="Eliminare questo indirizzo?">
+                                        Elimina
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </c:if>
 
 
             <div class="profilo-edit-section" id="editIndirizzoWrap" data-apri-edit="${not empty apriEditIndirizzo}">
@@ -273,9 +266,48 @@
                 </form>
             </div>
 
-            <a class="btn-add-addr" href="${pageContext.request.contextPath}/aggiungi-indirizzo?from=profile">
-                <i class="ti ti-plus"></i> Aggiungi un nuovo indirizzo
-            </a>
+
+            <div class="profilo-edit-section open">
+                <h3 class="edit-section-title">Nuovo indirizzo</h3>
+                <form id="formIndirizzo" class="account-form" method="post"
+                      action="${pageContext.request.contextPath}/aggiungi-indirizzo" novalidate>
+                    <input type="hidden" name="from" value="profile">
+
+                    <div class="form-group full">
+                        <label for="destinatario">Destinatario</label>
+                        <input type="text" id="destinatario" name="destinatario"
+                               placeholder="Nome e cognome del destinatario" required>
+                    </div>
+                    <div class="form-group full">
+                        <label for="via">Via / Indirizzo</label>
+                        <input type="text" id="via" name="via"
+                               placeholder="Es. Via Roma 12" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cap">CAP</label>
+                        <input type="text" id="cap" name="cap"
+                               placeholder="Es. 20100" maxlength="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="citta">Citt&agrave;</label>
+                        <input type="text" id="citta" name="citta"
+                               placeholder="Es. Milano" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="provincia">Provincia</label>
+                        <input type="text" id="provincia" name="provincia"
+                               placeholder="Es. MI" maxlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="paese">Paese</label>
+                        <input type="text" id="paese" name="paese"
+                               placeholder="Es. Italia" required>
+                    </div>
+                    <div class="account-actions">
+                        <button type="submit" class="btn-primary">Salva indirizzo</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
 

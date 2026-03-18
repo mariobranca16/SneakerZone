@@ -273,15 +273,14 @@ main {
 }
 
 .btn-addr-del {
-    border: 1px solid #fca5a5;
-    background: #fef2f2;
-    color: #DC2626;
+    background: #dc3545;
+    color: #fff;
+    border: 1px solid #dc3545;
 }
 
 .btn-addr-del:hover {
-    background: #DC2626;
-    border-color: #DC2626;
-    color: #fff;
+    background: #bb2d3b;
+    border-color: #bb2d3b;
 }
 
 .form-inline-del {
@@ -311,21 +310,6 @@ main {
     display: flex;
     align-items: center;
     gap: 7px;
-}
-
-.btn-add-addr {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    margin-top: 4px;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--brand);
-    text-decoration: none;
-}
-
-.btn-add-addr:hover {
-    text-decoration: underline;
 }
 
 

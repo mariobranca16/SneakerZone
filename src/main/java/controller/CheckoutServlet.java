@@ -33,6 +33,12 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
+        Utente utente = (Utente) session.getAttribute("utenteConnesso");
+        List<IndirizzoSpedizione> indirizziSalvati = new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId());
+        if (!indirizziSalvati.isEmpty()) {
+            request.setAttribute("indirizzoPrecompilato", indirizziSalvati.get(0));
+        }
+
         request.setAttribute("carrello", carrello);
         request.getRequestDispatcher("/WEB-INF/jsp/checkout.jsp").forward(request, response);
     }

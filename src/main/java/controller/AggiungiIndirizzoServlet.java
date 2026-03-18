@@ -19,9 +19,7 @@ public class AggiungiIndirizzoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String from = request.getParameter("from");
-        if (from != null) request.setAttribute("from", from);
-        request.getRequestDispatcher("/WEB-INF/jsp/aggiungi_indirizzo.jsp").forward(request, response);
+        response.sendRedirect(request.getContextPath() + "/myAccount");
     }
 
     @Override
@@ -70,14 +68,8 @@ public class AggiungiIndirizzoServlet extends HttpServlet {
         }
 
         if (hasError) {
-            request.setAttribute("formDestinatario", destinatario);
-            request.setAttribute("formVia", via);
-            request.setAttribute("formCap", cap);
-            request.setAttribute("formCitta", citta);
-            request.setAttribute("formProvincia", provincia);
-            request.setAttribute("formPaese", paese);
-            if (from != null) request.setAttribute("from", from);
-            request.getRequestDispatcher("/WEB-INF/jsp/aggiungi_indirizzo.jsp").forward(request, response);
+            request.getSession(true).setAttribute("tabAttiva", "indirizzo");
+            response.sendRedirect(request.getContextPath() + "/myAccount");
             return;
         }
 
