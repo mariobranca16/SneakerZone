@@ -21,16 +21,6 @@
     width: 100px;
 }
 
-.utenti-table .btn--danger {
-    background: #dc3545;
-    color: #fff;
-    border-color: #dc3545;
-}
-
-.utenti-table .btn--danger:hover {
-    background: #bb2d3b;
-    border-color: #bb2d3b;
-}
 
 
 @media (max-width: 768px) {

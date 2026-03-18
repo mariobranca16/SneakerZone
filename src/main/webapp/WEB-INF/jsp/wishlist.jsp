@@ -124,7 +124,7 @@
                                         <input type="hidden" name="idProdotto" value="${p.id}">
                                         <button class="btn-danger" type="submit"
                                                 data-confirm="Vuoi rimuovere questo prodotto dalla wishlist?">
-                                            <i class="ti ti-trash"></i> Rimuovi
+                                            Rimuovi
                                         </button>
                                     </form>
                                 </div>

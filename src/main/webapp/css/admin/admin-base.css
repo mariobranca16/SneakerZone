@@ -345,14 +345,14 @@ td.col-center > .admin-table-actions {
 }
 
 .btn--danger {
-    background: #fef2f2;
-    color: #7F1D1D;
-    border: 1px solid #fca5a5;
+    background: #dc3545;
+    color: #fff;
+    border-color: #dc3545;
 }
 
 .btn--danger:hover {
-    background: #fee2e2;
-    border-color: #f87171;
+    background: #bb2d3b;
+    border-color: #bb2d3b;
 }
 
 .btn:disabled {
