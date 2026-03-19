@@ -187,19 +187,18 @@
 .btn-wishlist {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #FFF9F5;
-    color: var(--brand);
-    border: 2px solid var(--brand);
+    background-color: var(--brand);
+    color: #fff;
+    border: none;
     border-radius: 8px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
+    transition: background-color 0.2s;
 }
 
 .btn-wishlist:hover {
-    background-color: var(--brand);
-    color: #fff;
+    background-color: var(--brand-dark);
 }
 
 .btn-wishlist i {
@@ -413,18 +412,17 @@
 
 .btn-rimuovi-recensione {
     padding: 6px 12px;
-    background: none;
-    color: #c0392b;
-    border: 1px solid #c0392b;
+    background: #c0392b;
+    color: #fff;
+    border: none;
     border-radius: 8px;
     font-size: 13px;
     cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
+    transition: background-color 0.2s;
 }
 
 .btn-rimuovi-recensione:hover {
-    background-color: #c0392b;
-    color: #fff;
+    background-color: #a93226;
 }
 
 

@@ -11,6 +11,7 @@
     <title>Checkout – SneakerZone</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/account.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/checkout.css">
 </head>
 <body>
@@ -67,77 +68,111 @@
         </div>
 
 
+        <div class="checkout-card" id="checkout-addr-section">
+            <h2 class="checkout-section-title">
+                <i class="ti ti-map-pin"></i> Indirizzo di spedizione
+            </h2>
+
+            <c:if test="${not empty erroreDestinatario or not empty erroreVia or not empty erroreCap or not empty erroreCitta or not empty erroreProvincia or not empty errorePaese}">
+                <div class="alert alert-error checkout-addr-alert">
+                    Seleziona o inserisci un indirizzo di spedizione valido.
+                </div>
+            </c:if>
+
+            <c:if test="${not empty indirizzi}">
+                <div class="profilo-addr-list">
+                    <c:forEach var="ind" items="${indirizzi}">
+                        <div class="profilo-addr-card addr-card-selectable"
+                             data-id="${ind.id}"
+                             data-destinatario="${fn:escapeXml(ind.destinatario)}"
+                             data-via="${fn:escapeXml(ind.via)}"
+                             data-cap="${fn:escapeXml(ind.cap)}"
+                             data-citta="${fn:escapeXml(ind.citta)}"
+                             data-provincia="${fn:escapeXml(ind.provincia)}"
+                             data-paese="${fn:escapeXml(ind.paese)}"
+                             onclick="selezionaIndirizzoCheckout(this)">
+                            <input class="addr-radio" type="radio" name="addr-sel" tabindex="-1">
+                            <div class="profilo-addr-info">
+                                <span class="addr-destinatario"><c:out value="${ind.destinatario}"/></span>
+                                <span class="addr-detail"><c:out value="${ind.via}"/></span>
+                                <span class="addr-detail">
+                                    <c:out value="${ind.cap}"/> <c:out value="${ind.citta}"/> (<c:out value="${ind.provincia}"/>), <c:out value="${ind.paese}"/>
+                                </span>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </c:if>
+
+            <button type="button" class="btn-aggiungi-indirizzo" onclick="apriNuovoIndirizzo()">
+                Aggiungi un nuovo indirizzo
+            </button>
+
+            <div class="profilo-edit-section" id="indirizzoFormWrap"
+                 data-action-nuovo="${pageContext.request.contextPath}/aggiungi-indirizzo"
+                 data-action-modifica="${pageContext.request.contextPath}/myAccount/indirizzo/modifica">
+                <h3 class="edit-section-title" id="indirizzoFormTitolo">Nuovo indirizzo</h3>
+                <form id="formIndirizzo" class="account-form" method="post"
+                      action="${pageContext.request.contextPath}/aggiungi-indirizzo" novalidate>
+                    <input type="hidden" name="idIndirizzo" id="indirizzoId">
+                    <input type="hidden" name="from" id="indirizzoFrom" value="">
+
+                    <div class="form-group full">
+                        <label for="destinatario">Destinatario</label>
+                        <input type="text" id="destinatario" name="destinatario"
+                               placeholder="Nome e cognome del destinatario" required>
+                    </div>
+                    <div class="form-group full">
+                        <label for="via">Via / Indirizzo</label>
+                        <input type="text" id="via" name="via"
+                               placeholder="Es. Via Roma 12" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="cap">CAP</label>
+                        <input type="text" id="cap" name="cap"
+                               placeholder="Es. 20100" maxlength="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="citta">Citt&agrave;</label>
+                        <input type="text" id="citta" name="citta"
+                               placeholder="Es. Milano" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="provincia">Provincia</label>
+                        <input type="text" id="provincia" name="provincia"
+                               placeholder="Es. MI" maxlength="5" list="list-province" required>
+                        <datalist id="list-province"></datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="paese">Paese</label>
+                        <input type="text" id="paese" name="paese"
+                               placeholder="Es. Italia" list="list-nazioni" required>
+                        <datalist id="list-nazioni"></datalist>
+                    </div>
+                    <div class="account-actions">
+                        <button type="submit" class="btn-primary" id="btnSalvaIndirizzo">Salva indirizzo</button>
+                        <button type="button" class="btn-secondary" id="btnAnnullaEdit"
+                                onclick="chiudiEditIndirizzo()" hidden>Annulla</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
         <form class="checkout-form" method="post" action="${pageContext.request.contextPath}/checkout">
 
-
-            <div class="checkout-card">
-                <h2 class="checkout-section-title">
-                    <i class="ti ti-map-pin"></i> Indirizzo di spedizione
-                </h2>
-
-                <div class="pay-grid">
-                    <div class="pay-group pay-full">
-                        <label class="pay-label" for="destinatario">Destinatario</label>
-                        <input class="pay-input ${not empty erroreDestinatario ? 'pay-input-error' : ''}"
-                               type="text" id="destinatario" name="destinatario"
-                               placeholder="Nome e cognome del destinatario"
-                               value="${not empty param.destinatario ? fn:escapeXml(param.destinatario) : fn:escapeXml(indirizzoPrecompilato.destinatario)}" required>
-                        <c:if test="${not empty erroreDestinatario}">
-                            <span class="pay-error">${erroreDestinatario}</span>
-                        </c:if>
-                    </div>
-                    <div class="pay-group pay-full">
-                        <label class="pay-label" for="via">Via / Indirizzo</label>
-                        <input class="pay-input ${not empty erroreVia ? 'pay-input-error' : ''}"
-                               type="text" id="via" name="via"
-                               placeholder="Es. Via Roma 12"
-                               value="${not empty param.via ? fn:escapeXml(param.via) : fn:escapeXml(indirizzoPrecompilato.via)}" required>
-                        <c:if test="${not empty erroreVia}">
-                            <span class="pay-error">${erroreVia}</span>
-                        </c:if>
-                    </div>
-                    <div class="pay-group">
-                        <label class="pay-label" for="cap">CAP</label>
-                        <input class="pay-input ${not empty erroreCap ? 'pay-input-error' : ''}"
-                               type="text" id="cap" name="cap"
-                               placeholder="Es. 20100" maxlength="10"
-                               value="${not empty param.cap ? fn:escapeXml(param.cap) : fn:escapeXml(indirizzoPrecompilato.cap)}" required>
-                        <c:if test="${not empty erroreCap}">
-                            <span class="pay-error">${erroreCap}</span>
-                        </c:if>
-                    </div>
-                    <div class="pay-group">
-                        <label class="pay-label" for="citta">Citt&agrave;</label>
-                        <input class="pay-input ${not empty erroreCitta ? 'pay-input-error' : ''}"
-                               type="text" id="citta" name="citta"
-                               placeholder="Es. Milano"
-                               value="${not empty param.citta ? fn:escapeXml(param.citta) : fn:escapeXml(indirizzoPrecompilato.citta)}" required>
-                        <c:if test="${not empty erroreCitta}">
-                            <span class="pay-error">${erroreCitta}</span>
-                        </c:if>
-                    </div>
-                    <div class="pay-group">
-                        <label class="pay-label" for="provincia">Provincia</label>
-                        <input class="pay-input ${not empty erroreProvincia ? 'pay-input-error' : ''}"
-                               type="text" id="provincia" name="provincia"
-                               placeholder="Es. MI" maxlength="5"
-                               value="${not empty param.provincia ? fn:escapeXml(param.provincia) : fn:escapeXml(indirizzoPrecompilato.provincia)}" required>
-                        <c:if test="${not empty erroreProvincia}">
-                            <span class="pay-error">${erroreProvincia}</span>
-                        </c:if>
-                    </div>
-                    <div class="pay-group">
-                        <label class="pay-label" for="paese">Paese</label>
-                        <input class="pay-input ${not empty errorePaese ? 'pay-input-error' : ''}"
-                               type="text" id="paese" name="paese"
-                               placeholder="Es. Italia"
-                               value="${not empty param.paese ? fn:escapeXml(param.paese) : fn:escapeXml(indirizzoPrecompilato.paese)}" required>
-                        <c:if test="${not empty errorePaese}">
-                            <span class="pay-error">${errorePaese}</span>
-                        </c:if>
-                    </div>
-                </div>
-            </div>
+            <input type="hidden" name="destinatario" id="ck-destinatario"
+                   value="${fn:escapeXml(indirizzoPrecompilato.destinatario)}">
+            <input type="hidden" name="via" id="ck-via"
+                   value="${fn:escapeXml(indirizzoPrecompilato.via)}">
+            <input type="hidden" name="cap" id="ck-cap"
+                   value="${fn:escapeXml(indirizzoPrecompilato.cap)}">
+            <input type="hidden" name="citta" id="ck-citta"
+                   value="${fn:escapeXml(indirizzoPrecompilato.citta)}">
+            <input type="hidden" name="provincia" id="ck-provincia"
+                   value="${fn:escapeXml(indirizzoPrecompilato.provincia)}">
+            <input type="hidden" name="paese" id="ck-paese"
+                   value="${fn:escapeXml(indirizzoPrecompilato.paese)}">
 
 
             <div class="checkout-card">
@@ -210,6 +245,7 @@
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 
 <script src="${pageContext.request.contextPath}/js/validazione.js"></script>
+<script src="${pageContext.request.contextPath}/js/autocomplete.js"></script>
 <script src="${pageContext.request.contextPath}/js/checkout.js"></script>
 
 </body>

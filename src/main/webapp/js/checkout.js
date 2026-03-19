@@ -1,3 +1,80 @@
+/* ---- Gestione indirizzo checkout ---- */
+(function () {
+    var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
+    var formIndirizzo = document.getElementById('formIndirizzo');
+
+    window.selezionaIndirizzoCheckout = function (card) {
+        document.querySelectorAll('.profilo-addr-card').forEach(function (c) {
+            c.classList.remove('selected');
+            var r = c.querySelector('.addr-radio');
+            if (r) r.checked = false;
+        });
+        card.classList.add('selected');
+        var radio = card.querySelector('.addr-radio');
+        if (radio) radio.checked = true;
+        document.getElementById('ck-destinatario').value = card.dataset.destinatario;
+        document.getElementById('ck-via').value = card.dataset.via;
+        document.getElementById('ck-cap').value = card.dataset.cap;
+        document.getElementById('ck-citta').value = card.dataset.citta;
+        document.getElementById('ck-provincia').value = card.dataset.provincia;
+        document.getElementById('ck-paese').value = card.dataset.paese;
+        if (indirizzoFormWrap) indirizzoFormWrap.classList.remove('open');
+    };
+
+    window.apriNuovoIndirizzo = function () {
+        if (!formIndirizzo) return;
+        formIndirizzo.reset();
+        document.getElementById('indirizzoId').value = '';
+        document.getElementById('indirizzoFrom').value = '';
+        document.getElementById('indirizzoFormTitolo').textContent = 'Nuovo indirizzo';
+        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva indirizzo';
+        document.getElementById('btnAnnullaEdit').hidden = false;
+        formIndirizzo.action = indirizzoFormWrap.dataset.actionNuovo;
+        indirizzoFormWrap.classList.add('open');
+        indirizzoFormWrap.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+    };
+
+    window.apriEditIndirizzo = function (card) {
+        document.getElementById('indirizzoId').value = card.dataset.id;
+        document.getElementById('destinatario').value = card.dataset.destinatario;
+        document.getElementById('via').value = card.dataset.via;
+        document.getElementById('cap').value = card.dataset.cap;
+        document.getElementById('citta').value = card.dataset.citta;
+        document.getElementById('provincia').value = card.dataset.provincia;
+        document.getElementById('paese').value = card.dataset.paese;
+        document.getElementById('indirizzoFrom').value = 'checkout';
+        document.getElementById('indirizzoFormTitolo').textContent = 'Modifica indirizzo';
+        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva modifiche';
+        document.getElementById('btnAnnullaEdit').hidden = false;
+        formIndirizzo.action = indirizzoFormWrap.dataset.actionModifica;
+        indirizzoFormWrap.classList.add('open');
+        indirizzoFormWrap.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+    };
+
+    window.chiudiEditIndirizzo = function () {
+        if (!formIndirizzo) return;
+        formIndirizzo.reset();
+        document.getElementById('indirizzoId').value = '';
+        document.getElementById('indirizzoFrom').value = '';
+        document.getElementById('indirizzoFormTitolo').textContent = 'Nuovo indirizzo';
+        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva indirizzo';
+        document.getElementById('btnAnnullaEdit').hidden = true;
+        formIndirizzo.action = indirizzoFormWrap.dataset.actionNuovo;
+        indirizzoFormWrap.classList.remove('open');
+    };
+
+    /* auto-seleziona il primo indirizzo (precompilato) se esiste */
+    var firstCard = document.querySelector('.profilo-addr-card');
+    if (firstCard) {
+        selezionaIndirizzoCheckout(firstCard);
+    } else if (indirizzoFormWrap) {
+        /* nessun indirizzo salvato: apri subito il form */
+        indirizzoFormWrap.classList.add('open');
+        document.getElementById('btnAnnullaEdit').hidden = true;
+    }
+}());
+
+/* ---- Checkout form ---- */
 document.addEventListener('DOMContentLoaded', function () {
     'use strict';
 
@@ -27,6 +104,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 el.remove();
             });
             var valido = true;
+
+            var ckDestinatario = document.getElementById('ck-destinatario');
+            if (!ckDestinatario || !ckDestinatario.value.trim()) {
+                var addrSection = document.getElementById('checkout-addr-section');
+                var errAddr = document.createElement('span');
+                errAddr.className = 'pay-error js-err';
+                errAddr.textContent = 'Seleziona o inserisci un indirizzo di spedizione.';
+                if (addrSection) addrSection.appendChild(errAddr);
+                valido = false;
+            }
 
             function mostraErrore(inputId, msg) {
                 var input = document.getElementById(inputId);

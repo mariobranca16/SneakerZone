@@ -261,15 +261,13 @@ main {
 }
 
 .btn-addr-edit {
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: #374151;
+    background: #D6CFC7;
+    color: #111111;
+    border: none;
 }
 
 .btn-addr-edit:hover {
     background: var(--brand);
-    border-color: var(--brand);
-    color: #fff;
 }
 
 .btn-addr-del {
@@ -302,6 +300,26 @@ main {
     display: block;
 }
 
+.btn-aggiungi-indirizzo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--brand);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 6px 0;
+    margin-bottom: 12px;
+    text-decoration: none;
+}
+
+.btn-aggiungi-indirizzo:hover {
+    opacity: 0.75;
+}
+
 .edit-section-title {
     font-size: 15px;
     font-weight: 700;
@@ -325,10 +343,10 @@ main {
 
 .btn-secondary {
     height: 44px;
-    border: 1px solid var(--border);
+    border: none;
     border-radius: 8px;
-    background: var(--surface);
-    color: var(--text);
+    background: #D6CFC7;
+    color: #111111;
     font-weight: 700;
     font-size: 15px;
     cursor: pointer;
@@ -340,7 +358,7 @@ main {
 }
 
 .btn-secondary:hover {
-    background: var(--input-bg);
+    background: #C4BCB4;
 }
 
 

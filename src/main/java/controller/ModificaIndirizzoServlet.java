@@ -88,8 +88,13 @@ public class ModificaIndirizzoServlet extends HttpServlet {
             dao.doUpdate(is);
         }
 
-        session.setAttribute("modificaEffettuata", true);
-        session.setAttribute("tabAttiva", "indirizzo");
-        response.sendRedirect(request.getContextPath() + "/myAccount");
+        String from = request.getParameter("from");
+        if ("checkout".equals(from)) {
+            response.sendRedirect(request.getContextPath() + "/checkout");
+        } else {
+            session.setAttribute("modificaEffettuata", true);
+            session.setAttribute("tabAttiva", "indirizzo");
+            response.sendRedirect(request.getContextPath() + "/myAccount");
+        }
     }
 }

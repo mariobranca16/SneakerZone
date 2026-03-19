@@ -203,108 +203,74 @@
             </c:if>
 
 
-            <div class="profilo-edit-section" id="editIndirizzoWrap" data-apri-edit="${not empty apriEditIndirizzo}">
-                <h3 class="edit-section-title">
-                    <i class="ti ti-pencil"></i> Modifica indirizzo
-                </h3>
-                <form id="formModificaIndirizzo" class="account-form" method="post"
-                      action="${pageContext.request.contextPath}/myAccount/indirizzo/modifica" novalidate>
-                    <input type="hidden" name="idIndirizzo" id="editIndirizzoId">
+            <button type="button" class="btn-aggiungi-indirizzo" onclick="apriNuovoIndirizzo()">
+                Aggiungi un nuovo indirizzo
+            </button>
 
-                    <div class="form-group full">
-                        <label for="editDestinatario">Destinatario</label>
-                        <input type="text" id="editDestinatario" name="destinatario" required>
-                        <c:if test="${not empty erroreDestinatario}">
-                            <span class="field-error">${erroreDestinatario}</span>
-                        </c:if>
-                    </div>
-                    <div class="form-group full">
-                        <label for="editVia">Via / Indirizzo</label>
-                        <input type="text" id="editVia" name="via" required>
-                        <c:if test="${not empty erroreVia}">
-                            <span class="field-error">${erroreVia}</span>
-                        </c:if>
-                    </div>
-                    <div class="form-group">
-                        <label for="editCap">CAP</label>
-                        <input type="text" id="editCap" name="cap" maxlength="10" required>
-                        <c:if test="${not empty erroreCap}">
-                            <span class="field-error">${erroreCap}</span>
-                        </c:if>
-                    </div>
-                    <div class="form-group">
-                        <label for="editCitta">Citt&agrave;</label>
-                        <input type="text" id="editCitta" name="citta" required>
-                        <c:if test="${not empty erroreCitta}">
-                            <span class="field-error">${erroreCitta}</span>
-                        </c:if>
-                    </div>
-                    <div class="form-group">
-                        <label for="editProvincia">Provincia</label>
-                        <input type="text" id="editProvincia" name="provincia" maxlength="5" list="list-province" required>
-                        <datalist id="list-province"></datalist>
-                        <c:if test="${not empty erroreProvincia}">
-                            <span class="field-error">${erroreProvincia}</span>
-                        </c:if>
-                    </div>
-                    <div class="form-group">
-                        <label for="editPaese">Paese</label>
-                        <input type="text" id="editPaese" name="paese" list="list-nazioni" required>
-                        <datalist id="list-nazioni"></datalist>
-                        <c:if test="${not empty errorePaese}">
-                            <span class="field-error">${errorePaese}</span>
-                        </c:if>
-                    </div>
-                    <div class="account-actions">
-                        <button type="submit" class="btn-primary">
-                            Salva modifiche
-                        </button>
-                        <button type="button" class="btn-secondary" onclick="chiudiEditIndirizzo()">
-                            Annulla
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-
-            <div class="profilo-edit-section open">
-                <h3 class="edit-section-title">Nuovo indirizzo</h3>
+            <div class="profilo-edit-section" id="indirizzoFormWrap"
+                 data-action-nuovo="${pageContext.request.contextPath}/aggiungi-indirizzo"
+                 data-action-modifica="${pageContext.request.contextPath}/myAccount/indirizzo/modifica"
+                 data-apri-edit="${not empty apriEditIndirizzo}">
+                <h3 class="edit-section-title" id="indirizzoFormTitolo">Nuovo indirizzo</h3>
                 <form id="formIndirizzo" class="account-form" method="post"
                       action="${pageContext.request.contextPath}/aggiungi-indirizzo" novalidate>
+                    <input type="hidden" name="idIndirizzo" id="indirizzoId">
                     <input type="hidden" name="from" value="profile">
 
                     <div class="form-group full">
                         <label for="destinatario">Destinatario</label>
                         <input type="text" id="destinatario" name="destinatario"
                                placeholder="Nome e cognome del destinatario" required>
+                        <c:if test="${not empty erroreDestinatario}">
+                            <span class="field-error">${erroreDestinatario}</span>
+                        </c:if>
                     </div>
                     <div class="form-group full">
                         <label for="via">Via / Indirizzo</label>
                         <input type="text" id="via" name="via"
                                placeholder="Es. Via Roma 12" required>
+                        <c:if test="${not empty erroreVia}">
+                            <span class="field-error">${erroreVia}</span>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="cap">CAP</label>
                         <input type="text" id="cap" name="cap"
                                placeholder="Es. 20100" maxlength="10" required>
+                        <c:if test="${not empty erroreCap}">
+                            <span class="field-error">${erroreCap}</span>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="citta">Citt&agrave;</label>
                         <input type="text" id="citta" name="citta"
                                placeholder="Es. Milano" required>
+                        <c:if test="${not empty erroreCitta}">
+                            <span class="field-error">${erroreCitta}</span>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="provincia">Provincia</label>
                         <input type="text" id="provincia" name="provincia"
-                               placeholder="Es. MI" maxlength="5" required>
+                               placeholder="Es. MI" maxlength="5" list="list-province" required>
+                        <datalist id="list-province"></datalist>
+                        <c:if test="${not empty erroreProvincia}">
+                            <span class="field-error">${erroreProvincia}</span>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label for="paese">Paese</label>
                         <input type="text" id="paese" name="paese"
-                               placeholder="Es. Italia" required>
+                               placeholder="Es. Italia" list="list-nazioni" required>
+                        <datalist id="list-nazioni"></datalist>
+                        <c:if test="${not empty errorePaese}">
+                            <span class="field-error">${errorePaese}</span>
+                        </c:if>
                     </div>
                     <div class="account-actions">
-                        <button type="submit" class="btn-primary">Salva indirizzo</button>
+                        <button type="submit" class="btn-primary" id="btnSalvaIndirizzo">Salva indirizzo</button>
+                        <button type="button" class="btn-secondary" id="btnAnnullaEdit"
+                                onclick="chiudiEditIndirizzo()" hidden>Annulla</button>
                     </div>
                 </form>
             </div>

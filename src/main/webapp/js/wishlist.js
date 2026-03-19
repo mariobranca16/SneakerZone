@@ -1,3 +1,32 @@
+function mostraNotificaWishlist(testo) {
+    var notifica = document.createElement('div');
+    notifica.className = 'alert alert-success';
+    notifica.textContent = testo;
+    document.body.appendChild(notifica);
+    setTimeout(function () {
+        notifica.style.transition = 'opacity 0.4s';
+        notifica.style.opacity = '0';
+        setTimeout(function () { notifica.remove(); }, 400);
+    }, 3000);
+}
+
+function aggiornaBadgeWishlist(count) {
+    var badge = document.getElementById('wishlist-badge');
+    var link = document.querySelector('a.topbar-icon-btn[aria-label="Wishlist"]');
+    if (!link) return;
+    if (count > 0) {
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'cart-badge';
+            badge.id = 'wishlist-badge';
+            link.appendChild(badge);
+        }
+        badge.textContent = count;
+    } else if (badge) {
+        badge.remove();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.form-wishlist').forEach(function(form) {
         form.addEventListener('submit', function(e) {
@@ -23,7 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
                 if (data.success) {
-                    btn.textContent = 'Aggiunto';
+                    mostraNotificaWishlist('Prodotto aggiunto alla wishlist');
+                    aggiornaBadgeWishlist(data.count);
+                    btn.disabled = false;
                 } else {
                     btn.disabled = false;
                 }

@@ -99,9 +99,9 @@
                             </td>
                             <td class="col-actions col-center">
                                 <div class="admin-table-actions">
-                                    <a class="btn btn--small"
+                                    <a class="btn btn--small btn--edit"
                                        href="${pageContext.request.contextPath}/admin/prodotto?id=${p.id}">
-                                        <i class="ti ti-pencil"></i> Modifica
+                                        Modifica
                                     </a>
                                     <form class="inline-form" method="post"
                                           action="${pageContext.request.contextPath}/admin/prodotti">

@@ -29,28 +29,55 @@
     var sectionParam = urlParams.get('section') || tabAttiva;
     if (sectionParam) mostraSezione(sectionParam);
 
-    var editWrap = document.getElementById('editIndirizzoWrap');
-    if (editWrap && editWrap.dataset.apriEdit === 'true') {
-        editWrap.classList.add('open');
-    }
+var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
+    var formIndirizzo = document.getElementById('formIndirizzo');
+
+    window.apriNuovoIndirizzo = function () {
+        if (!formIndirizzo) return;
+        formIndirizzo.reset();
+        document.getElementById('indirizzoId').value = '';
+        document.getElementById('indirizzoFormTitolo').textContent = 'Nuovo indirizzo';
+        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva indirizzo';
+        document.getElementById('btnAnnullaEdit').hidden = false;
+        formIndirizzo.action = indirizzoFormWrap.dataset.actionNuovo;
+        indirizzoFormWrap.classList.add('open');
+        indirizzoFormWrap.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+    };
 
     window.apriEditIndirizzo = function (card) {
-        document.getElementById('editIndirizzoId').value = card.dataset.id;
-        document.getElementById('editDestinatario').value = card.dataset.destinatario;
-        document.getElementById('editVia').value = card.dataset.via;
-        document.getElementById('editCap').value = card.dataset.cap;
-        document.getElementById('editCitta').value = card.dataset.citta;
-        document.getElementById('editProvincia').value = card.dataset.provincia;
-        document.getElementById('editPaese').value = card.dataset.paese;
-        var currentEditWrap = document.getElementById('editIndirizzoWrap');
-        currentEditWrap.classList.add('open');
-        currentEditWrap.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        document.getElementById('indirizzoId').value = card.dataset.id;
+        document.getElementById('destinatario').value = card.dataset.destinatario;
+        document.getElementById('via').value = card.dataset.via;
+        document.getElementById('cap').value = card.dataset.cap;
+        document.getElementById('citta').value = card.dataset.citta;
+        document.getElementById('provincia').value = card.dataset.provincia;
+        document.getElementById('paese').value = card.dataset.paese;
+        document.getElementById('indirizzoFormTitolo').textContent = 'Modifica indirizzo';
+        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva modifiche';
+        document.getElementById('btnAnnullaEdit').hidden = false;
+        formIndirizzo.action = indirizzoFormWrap.dataset.actionModifica;
+        indirizzoFormWrap.classList.add('open');
+        indirizzoFormWrap.scrollIntoView({behavior: 'smooth', block: 'nearest'});
     };
 
     window.chiudiEditIndirizzo = function () {
-        var currentEditWrap = document.getElementById('editIndirizzoWrap');
-        if (currentEditWrap) currentEditWrap.classList.remove('open');
+        if (!formIndirizzo) return;
+        formIndirizzo.reset();
+        document.getElementById('indirizzoId').value = '';
+        document.getElementById('indirizzoFormTitolo').textContent = 'Nuovo indirizzo';
+        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva indirizzo';
+        document.getElementById('btnAnnullaEdit').hidden = true;
+        formIndirizzo.action = indirizzoFormWrap.dataset.actionNuovo;
+        indirizzoFormWrap.classList.remove('open');
     };
+
+    if (indirizzoFormWrap && indirizzoFormWrap.dataset.apriEdit === 'true') {
+        document.getElementById('indirizzoFormTitolo').textContent = 'Modifica indirizzo';
+        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva modifiche';
+        document.getElementById('btnAnnullaEdit').hidden = false;
+        formIndirizzo.action = indirizzoFormWrap.dataset.actionModifica;
+        indirizzoFormWrap.classList.add('open');
+    }
 
     if (!inputValidation) {
         return;
@@ -144,10 +171,9 @@
         });
     }
 
-    var formModificaIndirizzo = document.getElementById('formModificaIndirizzo');
-    if (formModificaIndirizzo) {
-        formModificaIndirizzo.addEventListener('submit', function (e) {
-            formModificaIndirizzo.querySelectorAll('.field-error').forEach(function (el) {
+    if (formIndirizzo) {
+        formIndirizzo.addEventListener('submit', function (e) {
+            formIndirizzo.querySelectorAll('.field-error').forEach(function (el) {
                 el.remove();
             });
             var valido = true;
@@ -163,42 +189,42 @@
                 valido = false;
             }
 
-            var destinatario = inputValidation.normalizeText(document.getElementById('editDestinatario').value);
-            var via = inputValidation.normalizeText(document.getElementById('editVia').value);
-            var cap = inputValidation.normalizeText(document.getElementById('editCap').value);
-            var citta = inputValidation.normalizeText(document.getElementById('editCitta').value);
-            var provincia = inputValidation.normalizeText(document.getElementById('editProvincia').value);
-            var paese = inputValidation.normalizeText(document.getElementById('editPaese').value);
+            var destinatario = inputValidation.normalizeText(document.getElementById('destinatario').value);
+            var via = inputValidation.normalizeText(document.getElementById('via').value);
+            var cap = inputValidation.normalizeText(document.getElementById('cap').value);
+            var citta = inputValidation.normalizeText(document.getElementById('citta').value);
+            var provincia = inputValidation.normalizeText(document.getElementById('provincia').value);
+            var paese = inputValidation.normalizeText(document.getElementById('paese').value);
 
             if (!destinatario) {
-                mostraErroreIndirizzo('editDestinatario', 'Il destinatario e obbligatorio.');
+                mostraErroreIndirizzo('destinatario', 'Il destinatario e obbligatorio.');
             } else if (!inputValidation.isDestinatarioValido(destinatario)) {
-                mostraErroreIndirizzo('editDestinatario', 'Inserisci nome e cognome del destinatario.');
+                mostraErroreIndirizzo('destinatario', 'Inserisci nome e cognome del destinatario.');
             }
             if (!via) {
-                mostraErroreIndirizzo('editVia', "L'indirizzo e obbligatorio.");
+                mostraErroreIndirizzo('via', "L'indirizzo e obbligatorio.");
             } else if (!inputValidation.isViaValida(via)) {
-                mostraErroreIndirizzo('editVia', 'Inserisci un indirizzo completo di numero civico (es. Via Roma 1).');
+                mostraErroreIndirizzo('via', 'Inserisci un indirizzo completo di numero civico (es. Via Roma 1).');
             }
             if (!cap) {
-                mostraErroreIndirizzo('editCap', 'Il CAP e obbligatorio.');
+                mostraErroreIndirizzo('cap', 'Il CAP e obbligatorio.');
             } else if (!inputValidation.isCapValido(cap)) {
-                mostraErroreIndirizzo('editCap', 'Il CAP deve essere di 5 cifre.');
+                mostraErroreIndirizzo('cap', 'Il CAP deve essere di 5 cifre.');
             }
             if (!citta) {
-                mostraErroreIndirizzo('editCitta', 'La citta e obbligatoria.');
+                mostraErroreIndirizzo('citta', 'La citta e obbligatoria.');
             } else if (!inputValidation.isLocalitaValida(citta)) {
-                mostraErroreIndirizzo('editCitta', 'La citta deve contenere lettere reali.');
+                mostraErroreIndirizzo('citta', 'La citta deve contenere lettere reali.');
             }
             if (!provincia) {
-                mostraErroreIndirizzo('editProvincia', 'La provincia e obbligatoria.');
+                mostraErroreIndirizzo('provincia', 'La provincia e obbligatoria.');
             } else if (!inputValidation.isProvinciaValida(provincia)) {
-                mostraErroreIndirizzo('editProvincia', 'La provincia deve avere 2-5 lettere (es. RM).');
+                mostraErroreIndirizzo('provincia', 'La provincia deve avere 2-5 lettere (es. RM).');
             }
             if (!paese) {
-                mostraErroreIndirizzo('editPaese', 'Il paese e obbligatorio.');
+                mostraErroreIndirizzo('paese', 'Il paese e obbligatorio.');
             } else if (!inputValidation.isLocalitaValida(paese)) {
-                mostraErroreIndirizzo('editPaese', 'Il paese deve contenere lettere reali.');
+                mostraErroreIndirizzo('paese', 'Il paese deve contenere lettere reali.');
             }
             if (!valido) e.preventDefault();
         });

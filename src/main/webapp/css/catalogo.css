@@ -182,13 +182,12 @@
 }
 
 .sidebar-btn--reset {
-    background: #F0ECE8;
-    color: var(--text);
-    border: 1px solid var(--border);
+    background: #D6CFC7;
+    color: #111111;
 }
 
 .sidebar-btn--reset:hover {
-    background: #E5E0DB;
+    background: #C4BCB4;
 }
 
 
@@ -350,7 +349,9 @@
 .prodotto-footer {
     padding: 12px 14px 14px 14px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     gap: 8px;
     border-top: 1px solid var(--border);
 }

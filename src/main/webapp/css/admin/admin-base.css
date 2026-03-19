@@ -302,22 +302,21 @@ td.col-center > .admin-table-actions {
     display: inline-block;
     height: 38px;
     padding: 0 16px;
-    border: 1px solid var(--border);
+    border: none;
     border-radius: 8px;
-    background: var(--surface);
-    color: var(--text);
+    background: #D6CFC7;
+    color: #111111;
     font-weight: 700;
     font-size: 14px;
     cursor: pointer;
     text-decoration: none;
     white-space: nowrap;
-    line-height: 36px;
+    line-height: 38px;
     transition: background 0.2s;
 }
 
 .btn:hover {
-    background: var(--input-bg);
-    border-color: #b0b8c4;
+    background: #C4BCB4;
 }
 
 .btn:focus-visible {
@@ -329,12 +328,10 @@ td.col-center > .admin-table-actions {
 .btn--primary {
     background: var(--brand);
     color: #fff;
-    border-color: var(--brand);
 }
 
 .btn--primary:hover {
     background: #e63e00;
-    border-color: #e63e00;
 }
 
 .btn--small {
@@ -344,15 +341,24 @@ td.col-center > .admin-table-actions {
     line-height: 30px;
 }
 
+.btn--edit {
+    background: #ffffff;
+    color: #111111;
+    border: 1px solid #aaaaaa;
+}
+
+.btn--edit:hover {
+    background: #e8e8e8;
+    text-decoration: none;
+}
+
 .btn--danger {
     background: #dc3545;
     color: #fff;
-    border-color: #dc3545;
 }
 
 .btn--danger:hover {
     background: #bb2d3b;
-    border-color: #bb2d3b;
 }
 
 .btn:disabled {

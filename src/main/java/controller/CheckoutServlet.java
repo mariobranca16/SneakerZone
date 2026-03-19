@@ -38,6 +38,7 @@ public class CheckoutServlet extends HttpServlet {
         if (!indirizziSalvati.isEmpty()) {
             request.setAttribute("indirizzoPrecompilato", indirizziSalvati.get(0));
         }
+        request.setAttribute("indirizzi", indirizziSalvati);
 
         request.setAttribute("carrello", carrello);
         request.getRequestDispatcher("/WEB-INF/jsp/checkout.jsp").forward(request, response);
@@ -116,6 +117,11 @@ public class CheckoutServlet extends HttpServlet {
         }
 
         if (hasError) {
+            List<IndirizzoSpedizione> indirizziErr = new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId());
+            if (!indirizziErr.isEmpty()) {
+                request.setAttribute("indirizzoPrecompilato", indirizziErr.get(0));
+            }
+            request.setAttribute("indirizzi", indirizziErr);
             request.setAttribute("carrello", carrello);
             request.getRequestDispatcher("/WEB-INF/jsp/checkout.jsp").forward(request, response);
             return;

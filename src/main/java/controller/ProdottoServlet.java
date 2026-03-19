@@ -40,10 +40,10 @@ public class ProdottoServlet extends HttpServlet {
 
         request.setAttribute("prodotto", prodotto);
         if ("1".equals(request.getParameter("erroreCarrello"))) {
-            request.setAttribute("erroreCarrello", "Quantità richiesta superiore alla disponibilità del prodotto.");
+            request.setAttribute("erroreCarrello", "Quantità richiesta superiore alla disponibilità del prodotto");
         }
         if ("1".equals(request.getParameter("successoCarrello"))) {
-            request.setAttribute("messaggio", "Prodotto aggiunto al carrello con successo.");
+            request.setAttribute("messaggio", "Prodotto aggiunto al carrello");
         }
 
         RecensioneDAO recensioneDAO = new RecensioneDAO();

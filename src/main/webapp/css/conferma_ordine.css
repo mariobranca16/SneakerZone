@@ -225,14 +225,12 @@ main {
 }
 
 .confirm-btn-secondary {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid var(--border);
+    background: #D6CFC7;
+    color: #111111;
 }
 
 .confirm-btn-secondary:hover {
-    background: #F0EDE8;
-    color: var(--text);
+    background: #C4BCB4;
 }
 
 

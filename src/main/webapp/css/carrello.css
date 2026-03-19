@@ -247,13 +247,12 @@ main {
 }
 
 .cart-cta-secondary {
-    border: 1px solid #F0BFA9;
-    background: #FFF9F5;
-    color: #B45309;
+    background: #D6CFC7;
+    color: #111111;
 }
 
 .cart-cta-secondary:hover {
-    background: #FFF3EC;
+    background: #C4BCB4;
 }
 
 .cart-link {

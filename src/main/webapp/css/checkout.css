@@ -1,4 +1,30 @@
 
+.addr-card-selectable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.addr-radio {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--brand);
+    cursor: pointer;
+}
+
+.profilo-addr-card.selected {
+    border-color: var(--brand);
+    background: #fff5f0;
+}
+
+.checkout-addr-alert {
+    position: static;
+    transform: none;
+    margin-bottom: 14px;
+    width: auto;
+    max-width: none;
+}
+
 main {
     padding: 36px 16px 60px;
     background: var(--bg);
