@@ -76,21 +76,14 @@ main {
     overflow: hidden;
 }
 
-.ordine-consegnato,
-.ordine-spedito,
-.ordine-elaborazione,
-.ordine-annullato {
-}
 
-
+/* ── Header ── */
 .ordine-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    padding: 14px 20px;
-    background: #FFF8F5;
-    border-bottom: 1px solid #F0EDE8;
+    padding: 16px 20px 12px;
     flex-wrap: wrap;
 }
 
@@ -146,45 +139,34 @@ main {
     flex-shrink: 0;
 }
 
-
 .ordine-stato {
     font-size: 12px;
     font-weight: 700;
     padding: 4px 10px;
     border-radius: 6px;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     white-space: nowrap;
     background: #f0f0f0;
     border: 1px solid #ccc;
     color: #333;
 }
 
-.stato-consegnato {
-    color: #16a34a;
-}
-
-.stato-spedito {
-    color: #2563eb;
-}
-
-.stato-elaborazione {
-    color: #d97706;
-}
-
-.stato-annullato {
-    color: #dc2626;
-}
+.stato-consegnato { color: #16a34a; }
+.stato-spedito    { color: #2563eb; }
+.stato-elaborazione { color: #d97706; }
+.stato-annullato  { color: #dc2626; }
 
 
+/* ── Indirizzo ── */
 .ordine-indirizzo {
-    padding: 8px 20px;
+    padding: 0 20px 10px;
     font-size: 12px;
     color: var(--muted);
-    border-bottom: 1px solid #F0EDE8;
     display: flex;
     align-items: center;
-    gap: 7px;
-    background: #FDFCFB;
+    gap: 6px;
 }
 
 .ordine-indirizzo i {
@@ -194,28 +176,30 @@ main {
 }
 
 
+/* ── Items ── */
 .ordine-items {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 20px 14px;
 }
 
 .ordine-item {
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 14px 20px;
-    border-bottom: 1px solid #F0EDE8;
-}
-
-.ordine-item:last-child {
-    border-bottom: none;
+    gap: 12px;
+    padding: 10px 12px;
+    background: var(--input-bg);
+    border-radius: 10px;
+    flex: 1 1 220px;
+    min-width: 0;
 }
 
 .ordine-item-thumb-wrap {
     flex-shrink: 0;
-    width: 64px;
-    height: 64px;
-    border-radius: 10px;
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
     background: #F0ECE8;
     overflow: hidden;
     display: flex;
@@ -232,7 +216,7 @@ main {
 
 .ordine-item-thumb-placeholder {
     color: #C4BAB2;
-    font-size: 26px;
+    font-size: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -245,12 +229,12 @@ main {
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 5px;
 }
 
 .ordine-prodotto-nome {
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text);
     white-space: nowrap;
     overflow: hidden;
@@ -259,7 +243,7 @@ main {
 
 .ordine-item-tags {
     display: flex;
-    gap: 6px;
+    gap: 5px;
     flex-wrap: wrap;
 }
 
@@ -268,8 +252,8 @@ main {
     font-weight: 600;
     color: #5C5147;
     background: #EDE8E2;
-    border-radius: 6px;
-    padding: 3px 8px;
+    border-radius: 5px;
+    padding: 2px 7px;
 }
 
 .ordine-item-pricing {
@@ -277,30 +261,29 @@ main {
     text-align: right;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
 }
 
 .ordine-item-subtotale {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: var(--text);
     white-space: nowrap;
 }
 
 .ordine-item-unit {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
     white-space: nowrap;
 }
 
 
+/* ── Footer ── */
 .ordine-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 13px 20px;
-    border-top: 1px solid #EDEAE5;
-    background: #F4F1EC;
+    padding: 10px 20px 14px;
 }
 
 .ordine-totale-label {
@@ -308,6 +291,7 @@ main {
     font-weight: 700;
     color: var(--muted);
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .ordine-totale-amount {
@@ -315,7 +299,6 @@ main {
     font-weight: 700;
     color: var(--brand);
 }
-
 
 .ordine-annulla-form {
     margin: 0;
@@ -337,7 +320,7 @@ main {
     .ordine-header {
         flex-direction: column;
         align-items: flex-start;
-        padding: 12px 14px;
+        padding: 14px 14px 10px;
         gap: 8px;
     }
 
@@ -345,18 +328,25 @@ main {
         flex-wrap: wrap;
     }
 
+    .ordine-indirizzo {
+        padding: 0 14px 10px;
+    }
+
+    .ordine-items {
+        padding: 6px 14px 12px;
+    }
+
     .ordine-item {
-        padding: 12px 14px;
-        gap: 12px;
+        flex: 1 1 100%;
     }
 
     .ordine-item-thumb-wrap {
-        width: 52px;
-        height: 52px;
+        width: 48px;
+        height: 48px;
     }
 
     .ordine-footer {
-        padding: 11px 14px;
+        padding: 10px 14px 12px;
     }
 
     .ordine-totale-amount {

@@ -42,67 +42,54 @@
                 </c:when>
 
                 <c:otherwise>
-                    <div class="cart-table-wrap">
-                        <table class="cart-table">
-                            <thead>
-                            <tr>
-                                <th>Prodotto</th>
-                                <th>Taglia</th>
-                                <th>Quantit&agrave;</th>
-                                <th>Subtotale</th>
-                                <th>Azione</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:forEach var="item" items="${carrello.prodotti}">
-                                <tr>
-                                    <td>
-                                        <div class="cart-item-info">
-                                            <c:if test="${not empty item.prodotto.imgPath}">
-                                                <a href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.id}"
-                                                   aria-hidden="true" tabindex="-1">
-                                                    <img class="cart-item-thumb product-thumb"
-                                                         src="${pageContext.request.contextPath}${item.prodotto.imgPath}"
-                                                         alt="${fn:escapeXml(item.prodotto.nome)}">
-                                                </a>
-                                            </c:if>
-                                            <a class="cart-item-name"
-                                               href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.id}">
-                                                    ${item.prodotto.nome}
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td>${item.taglia}</td>
-                                    <td>
-                                        <form class="qty-form" method="post"
-                                              action="${pageContext.request.contextPath}/carrello">
-                                            <input type="hidden" name="azione" value="aggiorna"/>
-                                            <input type="hidden" name="id" value="${item.prodotto.id}"/>
-                                            <input type="hidden" name="taglia" value="${item.taglia}"/>
-                                            <input class="qty-input" type="number" name="quantita"
-                                                   value="${item.quantita}" min="1" max="99"
-                                                   aria-label="Quantità di ${item.prodotto.nome}"/>
-                                        </form>
-                                    </td>
-                                    <td class="cart-price"><fmt:formatNumber
-                                            value="${item.subtotale}" minFractionDigits="2"
-                                            maxFractionDigits="2"/> &euro;
-                                    </td>
-                                    <td class="cart-action-cell">
-                                        <form class="inline-form" method="post"
-                                              action="${pageContext.request.contextPath}/carrello">
-                                            <input type="hidden" name="azione" value="rimuovi"/>
-                                            <input type="hidden" name="id" value="${item.prodotto.id}"/>
-                                            <input type="hidden" name="taglia" value="${item.taglia}"/>
-                                            <button class="btn-danger" type="submit"
-                                                    data-confirm="Vuoi rimuovere questo articolo dal carrello?">Rimuovi
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                            </tbody>
-                        </table>
+                    <div class="cart-list">
+                        <c:forEach var="item" items="${carrello.prodotti}">
+                            <div class="cart-item">
+                                <div class="cart-item-media">
+                                    <c:if test="${not empty item.prodotto.imgPath}">
+                                        <a href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.id}"
+                                           aria-hidden="true" tabindex="-1">
+                                            <img class="cart-item-thumb product-thumb"
+                                                 src="${pageContext.request.contextPath}${item.prodotto.imgPath}"
+                                                 alt="${fn:escapeXml(item.prodotto.nome)}">
+                                        </a>
+                                    </c:if>
+                                    <a class="cart-item-name"
+                                       href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.id}">
+                                        ${item.prodotto.nome}
+                                    </a>
+                                </div>
+                                <div class="cart-item-fields">
+                                    <span class="cart-field-label">Taglia</span>
+                                    <span class="cart-field-label">Quantit&agrave;</span>
+                                    <span class="cart-field-label">Subtotale</span>
+                                    <span class="cart-field-label"></span>
+
+                                    <span class="cart-field-value">${item.taglia}</span>
+                                    <form class="qty-form" method="post"
+                                          action="${pageContext.request.contextPath}/carrello">
+                                        <input type="hidden" name="azione" value="aggiorna"/>
+                                        <input type="hidden" name="id" value="${item.prodotto.id}"/>
+                                        <input type="hidden" name="taglia" value="${item.taglia}"/>
+                                        <input class="qty-input" type="number" name="quantita"
+                                               value="${item.quantita}" min="1" max="99"
+                                               aria-label="Quantità di ${item.prodotto.nome}"/>
+                                    </form>
+                                    <span class="cart-field-value cart-price">
+                                        <fmt:formatNumber value="${item.subtotale}" minFractionDigits="2" maxFractionDigits="2"/> &euro;
+                                    </span>
+                                    <form class="inline-form" method="post"
+                                          action="${pageContext.request.contextPath}/carrello">
+                                        <input type="hidden" name="azione" value="rimuovi"/>
+                                        <input type="hidden" name="id" value="${item.prodotto.id}"/>
+                                        <input type="hidden" name="taglia" value="${item.taglia}"/>
+                                        <button class="btn-danger" type="submit"
+                                                data-confirm="Vuoi rimuovere questo articolo dal carrello?">Rimuovi
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </c:forEach>
                     </div>
 
                     <div class="cart-totale">

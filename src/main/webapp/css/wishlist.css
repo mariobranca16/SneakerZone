@@ -204,6 +204,14 @@ main {
     margin: 0;
 }
 
+.wishlist-item-actions .btn-primary,
+.wishlist-item-actions .btn-danger {
+    height: 38px;
+    padding: 0 14px;
+    font-size: 13px;
+    line-height: 38px;
+}
+
 
 @media (max-width: 768px) {
     main {

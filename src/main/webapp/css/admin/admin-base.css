@@ -232,13 +232,13 @@ td.col-center > .admin-table-actions {
     width: fit-content;
 }
 
-.admin-table a {
+.admin-table a:not(.btn) {
     color: var(--brand);
     font-weight: 700;
     text-decoration: none;
 }
 
-.admin-table a:hover {
+.admin-table a:not(.btn):hover {
     text-decoration: underline;
 }
 

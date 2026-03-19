@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Bean.Utente;
 import model.DAO.UtenteDAO;
+import model.DAO.WishlistDAO;
 
 import java.io.IOException;
 
@@ -52,6 +53,7 @@ public class LoginServlet extends HttpServlet {
         if (utente != null) {
             HttpSession session = request.getSession(true);
             session.setAttribute("utenteConnesso", utente);
+            session.setAttribute("wishlistCount", new WishlistDAO().countByUtente(utente.getId()));
             String redirect = (String) session.getAttribute("redirectDopoLogin");
             session.removeAttribute("redirectDopoLogin");
             if (redirect != null && !redirect.isBlank()) {

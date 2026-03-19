@@ -68,49 +68,26 @@
 
             <div class="confirm-section-title">Prodotti ordinati</div>
 
-            <div class="confirm-table-wrap">
-                <table class="confirm-table">
-                    <thead>
-                    <tr>
-                        <th>Prodotto</th>
-                        <th>Taglia</th>
-                        <th>Qt&agrave;</th>
-                        <th>Prezzo&nbsp;unit.</th>
-                        <th>Subtotale</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="d" items="${ordine.dettagliOrdine}">
-                        <tr>
-                            <td>
-                                <div class="confirm-item-info">
-                                    <c:if test="${not empty d.prodotto and not empty d.prodotto.imgPath}">
-                                        <img class="confirm-item-thumb"
-                                             src="${pageContext.request.contextPath}${d.prodotto.imgPath}"
-                                             alt="${d.prodotto.nome}">
-                                    </c:if>
-                                    <div class="confirm-item-text">
-                                        <span class="confirm-item-nome"><c:out value="${d.prodotto.nome}"/></span>
-                                        <c:if test="${not empty d.prodotto.brand}">
-                                            <span class="confirm-item-brand"><c:out value="${d.prodotto.brand}"/></span>
-                                        </c:if>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>${d.taglia}</td>
-                            <td>${d.quantita}</td>
-                            <td>
-                                <fmt:formatNumber value="${d.costo}" type="number"
-                                                  minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
-                            </td>
-                            <td class="confirm-item-prezzo">
-                                <fmt:formatNumber value="${d.subtotale}" type="number"
-                                                  minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
+            <div class="confirm-items">
+                <c:forEach var="d" items="${ordine.dettagliOrdine}">
+                    <div class="confirm-item">
+                        <c:if test="${not empty d.prodotto and not empty d.prodotto.imgPath}">
+                            <img class="confirm-item-thumb"
+                                 src="${pageContext.request.contextPath}${d.prodotto.imgPath}"
+                                 alt="${d.prodotto.nome}">
+                        </c:if>
+                        <div class="confirm-item-info">
+                            <span class="confirm-item-nome"><c:out value="${d.prodotto.nome}"/></span>
+                            <span class="confirm-item-meta">
+                                Taglia&nbsp;${d.taglia}&nbsp;&middot;&nbsp;Qt&agrave;&nbsp;${d.quantita}<c:if test="${not empty d.prodotto.brand}">&nbsp;&middot;&nbsp;<c:out value="${d.prodotto.brand}"/></c:if>
+                            </span>
+                        </div>
+                        <span class="confirm-item-prezzo">
+                            <fmt:formatNumber value="${d.subtotale}" type="number"
+                                              minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
+                        </span>
+                    </div>
+                </c:forEach>
             </div>
 
             <div class="confirm-total">

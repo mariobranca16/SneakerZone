@@ -127,15 +127,28 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
-        IndirizzoSpedizione indirizzo = new IndirizzoSpedizione();
-        indirizzo.setIdUtente(utente.getId());
-        indirizzo.setDestinatario(destinatario);
-        indirizzo.setVia(via);
-        indirizzo.setCap(cap);
-        indirizzo.setCitta(citta);
-        indirizzo.setProvincia(provincia);
-        indirizzo.setPaese(paese);
-        new IndirizzoSpedizioneDAO().doSave(indirizzo);
+        IndirizzoSpedizioneDAO indirizzoDAO = new IndirizzoSpedizioneDAO();
+        IndirizzoSpedizione indirizzo = indirizzoDAO.doRetrieveByUtente(utente.getId()).stream()
+                .filter(i -> i.getDestinatario().equalsIgnoreCase(destinatario)
+                          && i.getVia().equalsIgnoreCase(via)
+                          && i.getCap().equalsIgnoreCase(cap)
+                          && i.getCitta().equalsIgnoreCase(citta)
+                          && i.getProvincia().equalsIgnoreCase(provincia)
+                          && i.getPaese().equalsIgnoreCase(paese))
+                .findFirst()
+                .orElse(null);
+
+        if (indirizzo == null) {
+            indirizzo = new IndirizzoSpedizione();
+            indirizzo.setIdUtente(utente.getId());
+            indirizzo.setDestinatario(destinatario);
+            indirizzo.setVia(via);
+            indirizzo.setCap(cap);
+            indirizzo.setCitta(citta);
+            indirizzo.setProvincia(provincia);
+            indirizzo.setPaese(paese);
+            indirizzoDAO.doSave(indirizzo);
+        }
 
         Ordine ordine = new Ordine();
         ordine.setIdUtente(utente.getId());
@@ -147,6 +160,7 @@ public class CheckoutServlet extends HttpServlet {
         for (Carrello.ItemCarrello item : carrello.getProdotti()) {
             DettaglioOrdine d = new DettaglioOrdine();
             d.setIdProdotto(item.getProdotto().getId());
+            d.setProdotto(item.getProdotto());
             d.setTaglia(item.getTaglia());
             d.setQuantita(item.getQuantita());
             d.setCosto(item.getProdotto().getCosto());

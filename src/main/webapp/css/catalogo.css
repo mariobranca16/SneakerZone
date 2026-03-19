@@ -357,6 +357,13 @@
     justify-content: flex-end;
 }
 
+.prodotto-azioni .btn-primary {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    line-height: 40px;
+}
+
 .prodotto-prezzo {
     font-size: 18px;
     font-weight: 700;
