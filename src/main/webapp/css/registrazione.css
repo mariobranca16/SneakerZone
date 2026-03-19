@@ -39,38 +39,8 @@ main {
     gap: 16px 18px;
 }
 
-.form-group.full,
 .register-actions {
     grid-column: 1 / -1;
-}
-
-.password-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.password-wrapper input {
-    width: 100%;
-    padding-right: 48px;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 12px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--muted);
-    font-size: 18px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.toggle-password:hover {
-    color: var(--brand);
 }
 
 .register-actions {
@@ -84,19 +54,6 @@ main {
     width: 100%;
     height: 46px;
     line-height: 46px;
-}
-
-.register-link {
-    display: inline-block;
-    margin-bottom: 18px;
-    color: var(--brand);
-    font-weight: 700;
-    font-size: 13px;
-    text-decoration: none;
-}
-
-.register-link:hover {
-    text-decoration: underline;
 }
 
 

@@ -99,53 +99,6 @@ main {
     gap: 16px 20px;
 }
 
-.form-group.full,
-.account-actions {
-    grid-column: 1 / -1;
-}
-
-.form-group input:disabled {
-    opacity: 0.55;
-    cursor: default;
-}
-
-.input-disabled {
-    opacity: 0.55;
-    cursor: default;
-}
-
-.ac-dropdown {
-    position: absolute;
-    top: calc(100% + 2px);
-    left: 0;
-    right: 0;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    box-shadow: 0 2px 6px #ccc;
-    list-style: none;
-    margin: 0;
-    padding: 4px 0;
-    z-index: 200;
-    max-height: 220px;
-    overflow-y: auto;
-}
-
-.ac-dropdown li {
-    padding: 9px 14px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    cursor: pointer;
-}
-
-.ac-dropdown li:hover,
-.ac-dropdown li.ac-active {
-    background: #fff5f0;
-    color: var(--brand);
-}
-
-
 .no-data-msg {
     display: flex;
     align-items: center;
@@ -159,46 +112,6 @@ main {
     margin-bottom: 18px;
 }
 
-
-.profilo-addr-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 16px;
-}
-
-.profilo-addr-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 18px;
-    background: var(--input-bg);
-}
-
-.profilo-addr-card:hover {
-    border-color: #aaa;
-}
-
-.profilo-addr-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-.addr-destinatario {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-}
-
-.addr-detail {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.4;
-}
 
 .profilo-addr-actions {
     display: flex;
@@ -246,61 +159,10 @@ main {
     display: contents;
 }
 
-
-.profilo-edit-section {
-    display: none;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 22px;
-    background: #fff8f5;
-    margin-bottom: 16px;
-    margin-top: 4px;
-}
-
-.profilo-edit-section.open {
-    display: block;
-}
-
-.btn-aggiungi-indirizzo {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: none;
-    border: none;
-    color: var(--brand);
-    font-size: 14px;
-    font-weight: 600;
-    font-family: inherit;
-    cursor: pointer;
-    padding: 6px 0;
-    margin-bottom: 12px;
-    text-decoration: none;
-}
-
-.btn-aggiungi-indirizzo:hover {
-    opacity: 0.75;
-}
-
-.edit-section-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--brand);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 7px;
-}
-
-
-.account-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 4px;
-}
-
 .account-actions .btn-primary {
     padding: 0 28px;
 }
+
 
 @media (max-width: 640px) {
     main {
@@ -329,9 +191,5 @@ main {
 
     .section-title {
         font-size: 18px;
-    }
-
-    .account-actions {
-        flex-direction: column;
     }
 }

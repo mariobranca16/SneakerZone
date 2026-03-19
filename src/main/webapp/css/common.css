@@ -437,6 +437,45 @@ main {
     border-color: var(--brand);
 }
 
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 48px;
+    box-sizing: border-box;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 18px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    color: var(--brand);
+}
+
+.product-thumb {
+    object-fit: contain;
+    border-radius: 8px;
+    background: #F0ECE8;
+    padding: 6px;
+    display: block;
+}
+
 .field-hint {
     font-size: 11px;
     color: #9CA3AF;
@@ -500,4 +539,149 @@ main {
     font-size: 13px;
     font-weight: 700;
     color: #B45309;
+}
+
+
+.form-group input:disabled {
+    opacity: 0.55;
+    cursor: default;
+}
+
+.input-disabled {
+    opacity: 0.55;
+    cursor: default;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+.ac-dropdown {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px #ccc;
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    z-index: 200;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.ac-dropdown li {
+    padding: 9px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    cursor: pointer;
+}
+
+.ac-dropdown li:hover,
+.ac-dropdown li.ac-active {
+    background: #fff5f0;
+    color: var(--brand);
+}
+
+
+.profilo-addr-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.profilo-addr-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    background: var(--input-bg);
+}
+
+.profilo-addr-card:hover {
+    border-color: #aaa;
+}
+
+.profilo-addr-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.addr-destinatario {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.addr-detail {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+
+.btn-aggiungi-indirizzo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--brand);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    padding: 6px 0;
+    margin-bottom: 12px;
+    text-decoration: none;
+}
+
+.btn-aggiungi-indirizzo:hover {
+    opacity: 0.75;
+}
+
+.profilo-edit-section {
+    display: none;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    background: #fff8f5;
+    margin-bottom: 16px;
+    margin-top: 4px;
+}
+
+.profilo-edit-section.open {
+    display: block;
+}
+
+.edit-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--brand);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.account-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+    .account-actions {
+        flex-direction: column;
+    }
 }

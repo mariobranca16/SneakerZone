@@ -90,10 +90,6 @@ main {
 .checkout-item-thumb {
     width: 60px;
     height: 60px;
-    object-fit: contain;
-    border-radius: 8px;
-    background: #F0ECE8;
-    padding: 6px;
 }
 
 .checkout-item-info {
@@ -245,15 +241,5 @@ main {
 
     .pay-grid {
         grid-template-columns: 1fr;
-    }
-
-    .step-label {
-        font-size: 10px;
-    }
-}
-
-@media (max-width: 380px) {
-    .step-label {
-        display: none;
     }
 }

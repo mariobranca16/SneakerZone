@@ -95,7 +95,7 @@
             <c:if test="${not empty sessionScope.utenteConnesso}">
                 <form method="post" action="${pageContext.request.contextPath}/add-to-wishlist" class="form-wishlist">
                     <input type="hidden" name="idProdotto" value="${prodotto.id}"/>
-                    <button type="submit" class="btn-wishlist">
+                    <button type="submit" class="btn-primary">
                         <i class="ti ti-hearts" aria-hidden="true"></i> Aggiungi alla wishlist
                     </button>
                 </form>
@@ -169,7 +169,7 @@
                         </c:if>
                     </div>
 
-                    <button type="submit" class="btn-recensione">Pubblica recensione</button>
+                    <button type="submit" class="btn-primary">Pubblica recensione</button>
                 </form>
             </div>
         </c:if>

@@ -35,10 +35,8 @@
                         <p class="cart-empty">Il carrello &egrave; vuoto. Scopri le ultime sneaker e aggiungi i tuoi
                             preferiti.</p>
                         <div class="cart-empty-actions">
-                            <a class="cart-cta cart-cta-primary" href="${pageContext.request.contextPath}/catalogo">Vai
-                                al catalogo</a>
-                            <a class="cart-cta cart-cta-secondary" href="${pageContext.request.contextPath}/home">Torna
-                                alla home</a>
+                            <a class="btn-primary" href="${pageContext.request.contextPath}/catalogo">Vai al catalogo</a>
+                            <a class="btn-secondary" href="${pageContext.request.contextPath}/home">Torna alla home</a>
                         </div>
                     </div>
                 </c:when>
@@ -63,7 +61,7 @@
                                             <c:if test="${not empty item.prodotto.imgPath}">
                                                 <a href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.id}"
                                                    aria-hidden="true" tabindex="-1">
-                                                    <img class="cart-item-thumb"
+                                                    <img class="cart-item-thumb product-thumb"
                                                          src="${pageContext.request.contextPath}${item.prodotto.imgPath}"
                                                          alt="${fn:escapeXml(item.prodotto.nome)}">
                                                 </a>

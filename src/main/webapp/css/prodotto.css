@@ -126,9 +126,8 @@
     color: #333;
 }
 
-.selezione-taglia select {
-    width: auto;
-    max-width: 130px;
+.selezione-taglia select,
+.selezione-quantita input {
     padding: 10px 12px;
     font-size: 15px;
     border: 1px solid #C4CED9;
@@ -136,13 +135,13 @@
     background-color: #F7F2ED;
 }
 
+.selezione-taglia select {
+    width: auto;
+    max-width: 130px;
+}
+
 .selezione-quantita input {
     width: 80px;
-    padding: 10px 12px;
-    font-size: 15px;
-    border: 1px solid #C4CED9;
-    border-radius: 8px;
-    background-color: #F7F2ED;
 }
 
 .selezione-quantita input::-webkit-inner-spin-button,
@@ -184,26 +183,6 @@
     margin-bottom: 24px;
 }
 
-.btn-wishlist {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--brand);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-wishlist:hover {
-    background-color: var(--brand-dark);
-}
-
-.btn-wishlist i {
-    margin-right: 6px;
-}
 
 
 .prodotto-descrizione {
@@ -396,21 +375,6 @@
     margin-top: 6px;
 }
 
-.btn-recensione {
-    padding: 12px 24px;
-    background-color: var(--brand);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-recensione:hover {
-    background-color: var(--brand-dark);
-}
 
 .info-recensione {
     color: #5C5C5C;

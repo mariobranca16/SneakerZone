@@ -40,7 +40,7 @@
                 <c:forEach var="item" items="${carrello.prodotti}">
                     <div class="checkout-item">
                         <c:if test="${not empty item.prodotto.imgPath}">
-                            <img class="checkout-item-thumb"
+                            <img class="checkout-item-thumb product-thumb"
                                  src="${pageContext.request.contextPath}${item.prodotto.imgPath}"
                                  alt="${item.prodotto.nome}">
                         </c:if>

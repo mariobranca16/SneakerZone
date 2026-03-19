@@ -17,7 +17,6 @@ main {
     align-items: stretch;
 }
 
-
 .login-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -43,85 +42,8 @@ main {
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
     gap: 10px;
     margin-bottom: 18px;
-}
-
-.form-group label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-}
-
-.form-group input {
-    height: 46px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 0 16px;
-    outline: none;
-    font-size: 15px;
-    background: var(--input-bg);
-    color: var(--text);
-}
-
-.form-group input:focus {
-    border-color: var(--brand);
-}
-
-.password-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.password-wrapper input {
-    width: 100%;
-    padding-right: 48px;
-    box-sizing: border-box;
-}
-
-.toggle-password {
-    position: absolute;
-    right: 12px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--muted);
-    font-size: 18px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.toggle-password:hover {
-    color: var(--brand);
-}
-
-.login-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin: 6px 0 12px;
-}
-
-.login-link {
-    background: none;
-    border: none;
-    padding: 0;
-    color: var(--brand);
-    font-weight: 700;
-    font-size: 13px;
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.login-link:hover {
-    text-decoration: underline;
 }
 
 .login-actions {
@@ -159,10 +81,6 @@ main {
     main {
         min-height: auto;
         padding-top: 18px;
-    }
-
-    .login-info {
-        display: none;
     }
 }
 

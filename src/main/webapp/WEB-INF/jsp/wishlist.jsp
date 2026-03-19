@@ -29,10 +29,7 @@
                         <p class="wishlist-empty-text">Non hai ancora aggiunto prodotti alla tua wishlist. Esplora il
                             catalogo per trovare le scarpe che ami.</p>
                         <div class="wishlist-empty-actions">
-                            <a class="wishlist-cta wishlist-cta-primary"
-                               href="${pageContext.request.contextPath}/catalogo">
-                                Vai al catalogo
-                            </a>
+                            <a class="btn-primary" href="${pageContext.request.contextPath}/catalogo">Vai al catalogo</a>
                         </div>
                     </div>
                 </div>
@@ -61,7 +58,7 @@
                                     <div class="wishlist-item-media">
                                         <c:if test="${not empty p.imgPath}">
                                             <a href="${pageContext.request.contextPath}/prodotto?id=${p.id}">
-                                                <img class="wishlist-item-thumb"
+                                                <img class="wishlist-item-thumb product-thumb"
                                                      src="${pageContext.request.contextPath}${p.imgPath}"
                                                      alt="${p.nome}">
                                             </a>
