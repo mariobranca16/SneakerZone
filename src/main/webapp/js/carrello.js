@@ -9,42 +9,31 @@ function aggiornaTotale(totale) {
     if (el) el.textContent = parseFloat(totale).toFixed(2).replace('.', ',');
 }
 
+function inviaFormAjax(form, body, onSuccess) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', form.getAttribute('action'), true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function () {
+        if (xhr.status !== 200) { form.submit(); return; }
+        var data;
+        try { data = JSON.parse(xhr.responseText); } catch (e) { form.submit(); return; }
+        if (data.success) onSuccess(data);
+    };
+    xhr.onerror = function () { form.submit(); };
+    xhr.send(body);
+}
+
 function inviaRimozione(form) {
     var id = form.querySelector('[name="id"]').value;
     var taglia = form.querySelector('[name="taglia"]').value;
     var body = 'azione=rimuovi&id=' + encodeURIComponent(id) + '&taglia=' + encodeURIComponent(taglia) + '&ajax=1';
+    var row = form.closest('tr');
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', form.getAttribute('action'), true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    xhr.onload = function () {
-        if (xhr.status !== 200) {
-            form.submit();
-            return;
-        }
-        var data;
-        try {
-            data = JSON.parse(xhr.responseText);
-        } catch (e) {
-            form.submit();
-            return;
-        }
-        if (!data.success) return;
-        var row = form.closest('tr');
+    inviaFormAjax(form, body, function (data) {
         if (row) row.remove();
-        if (data.vuoto) {
-            window.location.reload();
-        } else {
-            aggiornaTotale(data.totale);
-        }
-    };
-
-    xhr.onerror = function () {
-        form.submit();
-    };
-
-    xhr.send(body);
+        if (data.vuoto) window.location.reload();
+        else aggiornaTotale(data.totale);
+    });
 }
 
 function inviaAggiornamento(form) {
@@ -54,45 +43,18 @@ function inviaAggiornamento(form) {
     var body = 'azione=aggiorna&id=' + encodeURIComponent(id) + '&taglia=' + encodeURIComponent(taglia) + '&quantita=' + encodeURIComponent(quantita) + '&ajax=1';
     var row = form.closest('tr');
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', form.getAttribute('action'), true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-    xhr.onload = function () {
-        if (xhr.status !== 200) {
-            form.submit();
-            return;
-        }
-        var data;
-        try {
-            data = JSON.parse(xhr.responseText);
-        } catch (e) {
-            form.submit();
-            return;
-        }
-        if (!data.success) return;
+    inviaFormAjax(form, body, function (data) {
         if (data.rimosso) {
             if (row) row.remove();
-            if (data.vuoto) {
-                window.location.reload();
-                return;
-            }
+            if (data.vuoto) { window.location.reload(); return; }
         } else {
             var priceCell = row && row.querySelector('.cart-price');
-            if (priceCell) {
-                priceCell.textContent = parseFloat(data.subtotale).toFixed(2).replace('.', ',') + ' \u20ac';
-            }
+            if (priceCell) priceCell.textContent = parseFloat(data.subtotale).toFixed(2).replace('.', ',') + ' \u20ac';
             var qtyInput = form.querySelector('.qty-input');
             if (qtyInput) qtyInput.value = data.nuovaQuantita;
         }
         aggiornaTotale(data.totale);
-    };
-
-    xhr.onerror = function () {
-        form.submit();
-    };
-
-    xhr.send(body);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -28,7 +28,7 @@
     <div class="account-wrap" data-tab="${fn:escapeXml(tabAttiva)}">
 
 
-        <h1 class="account-page-title">Profilo</h1>
+        <h1 class="account-page-title page-title">Profilo</h1>
 
 
         <div class="account-tabs">
@@ -47,7 +47,7 @@
         </div>
 
 
-        <div class="account-section active" id="section-dati-personali">
+        <div class="account-section page-card active" id="section-dati-personali">
             <div class="section-header">
                 <h1 class="section-title">Dati personali</h1>
                 <p class="section-subtitle">Gestisci le informazioni del tuo profilo</p>
@@ -110,7 +110,7 @@
         </div>
 
 
-        <div class="account-section" id="section-password" hidden>
+        <div class="account-section page-card" id="section-password" hidden>
             <div class="section-header">
                 <h1 class="section-title">Sicurezza</h1>
                 <p class="section-subtitle">Modifica la tua password di accesso</p>
@@ -156,7 +156,7 @@
         </div>
 
 
-        <div class="account-section" id="section-indirizzo" hidden>
+        <div class="account-section page-card" id="section-indirizzo" hidden>
             <div class="section-header">
                 <h1 class="section-title">Indirizzo di spedizione</h1>
                 <p class="section-subtitle">Gestisci i tuoi indirizzi di consegna</p>

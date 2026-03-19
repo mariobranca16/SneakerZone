@@ -1,15 +1,3 @@
-function mostraNotificaWishlist(testo) {
-    var notifica = document.createElement('div');
-    notifica.className = 'alert alert-success';
-    notifica.textContent = testo;
-    document.body.appendChild(notifica);
-    setTimeout(function () {
-        notifica.style.transition = 'opacity 0.4s';
-        notifica.style.opacity = '0';
-        setTimeout(function () { notifica.remove(); }, 400);
-    }, 3000);
-}
-
 function aggiornaBadgeWishlist(count) {
     var badge = document.getElementById('wishlist-badge');
     var link = document.querySelector('a.topbar-icon-btn[aria-label="Wishlist"]');
@@ -51,12 +39,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     window.location.href = data.redirect;
                     return;
                 }
+                btn.disabled = false;
                 if (data.success) {
-                    mostraNotificaWishlist('Prodotto aggiunto alla wishlist');
+                    mostraNotifica('Prodotto aggiunto alla wishlist');
                     aggiornaBadgeWishlist(data.count);
-                    btn.disabled = false;
-                } else {
-                    btn.disabled = false;
                 }
             })
             .catch(function() {

@@ -36,12 +36,7 @@ var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
         if (!formIndirizzo) return;
         formIndirizzo.reset();
         document.getElementById('indirizzoId').value = '';
-        document.getElementById('indirizzoFormTitolo').textContent = 'Nuovo indirizzo';
-        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva indirizzo';
-        document.getElementById('btnAnnullaEdit').hidden = false;
-        formIndirizzo.action = indirizzoFormWrap.dataset.actionNuovo;
-        indirizzoFormWrap.classList.add('open');
-        indirizzoFormWrap.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        apriFormIndirizzo('Nuovo indirizzo', 'Salva indirizzo', indirizzoFormWrap.dataset.actionNuovo);
     };
 
     window.apriEditIndirizzo = function (card) {
@@ -52,31 +47,13 @@ var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
         document.getElementById('citta').value = card.dataset.citta;
         document.getElementById('provincia').value = card.dataset.provincia;
         document.getElementById('paese').value = card.dataset.paese;
-        document.getElementById('indirizzoFormTitolo').textContent = 'Modifica indirizzo';
-        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva modifiche';
-        document.getElementById('btnAnnullaEdit').hidden = false;
-        formIndirizzo.action = indirizzoFormWrap.dataset.actionModifica;
-        indirizzoFormWrap.classList.add('open');
-        indirizzoFormWrap.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        apriFormIndirizzo('Modifica indirizzo', 'Salva modifiche', indirizzoFormWrap.dataset.actionModifica);
     };
 
-    window.chiudiEditIndirizzo = function () {
-        if (!formIndirizzo) return;
-        formIndirizzo.reset();
-        document.getElementById('indirizzoId').value = '';
-        document.getElementById('indirizzoFormTitolo').textContent = 'Nuovo indirizzo';
-        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva indirizzo';
-        document.getElementById('btnAnnullaEdit').hidden = true;
-        formIndirizzo.action = indirizzoFormWrap.dataset.actionNuovo;
-        indirizzoFormWrap.classList.remove('open');
-    };
+    window.chiudiEditIndirizzo = chiudiFormIndirizzo;
 
     if (indirizzoFormWrap && indirizzoFormWrap.dataset.apriEdit === 'true') {
-        document.getElementById('indirizzoFormTitolo').textContent = 'Modifica indirizzo';
-        document.getElementById('btnSalvaIndirizzo').textContent = 'Salva modifiche';
-        document.getElementById('btnAnnullaEdit').hidden = false;
-        formIndirizzo.action = indirizzoFormWrap.dataset.actionModifica;
-        indirizzoFormWrap.classList.add('open');
+        apriFormIndirizzo('Modifica indirizzo', 'Salva modifiche', indirizzoFormWrap.dataset.actionModifica);
     }
 
     if (!inputValidation) {

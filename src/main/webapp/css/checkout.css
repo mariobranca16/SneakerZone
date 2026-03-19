@@ -40,9 +40,6 @@ main {
 }
 
 .checkout-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--text);
     margin: 0;
 }
 
@@ -54,9 +51,6 @@ main {
 
 
 .checkout-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
     padding: 28px 30px;
 }
 

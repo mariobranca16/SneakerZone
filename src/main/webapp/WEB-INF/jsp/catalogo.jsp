@@ -20,7 +20,7 @@
 
 <main>
     <div class="catalogo-page">
-        <h1 class="catalogo-title">Catalogo</h1>
+        <h1 class="catalogo-title page-title">Catalogo</h1>
 
         <div class="catalogo-layout">
 

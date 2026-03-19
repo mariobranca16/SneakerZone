@@ -20,13 +20,13 @@
     <div class="ordini-page">
         <c:choose>
             <c:when test="${empty ordini}">
-                <div class="ordini-card">
-                    <h1 class="ordini-title">I tuoi ordini</h1>
-                    <div class="ordini-empty-state">
-                        <div class="ordini-empty-icon">
+                <div class="ordini-card page-card">
+                    <h1 class="ordini-title page-title">I tuoi ordini</h1>
+                    <div class="ordini-empty-state empty-state">
+                        <div class="ordini-empty-icon empty-icon">
                             <i class="ti ti-package"></i>
                         </div>
-                        <p class="ordini-empty-kicker">Nessun ordine</p>
+                        <p class="ordini-empty-kicker empty-kicker">Nessun ordine</p>
                         <p class="ordini-empty-text">Non hai ancora effettuato ordini. Esplora il catalogo per trovare
                             le scarpe perfette per te.</p>
                         <div class="ordini-empty-actions">
@@ -39,9 +39,9 @@
             </c:when>
 
             <c:otherwise>
-                <div class="ordini-card">
-                    <h1 class="ordini-title">I tuoi ordini</h1>
-                    <p class="ordini-subtitle">Consulta lo stato e i dettagli dei tuoi acquisti</p>
+                <div class="ordini-card page-card">
+                    <h1 class="ordini-title page-title">I tuoi ordini</h1>
+                    <p class="ordini-subtitle page-subtitle">Consulta lo stato e i dettagli dei tuoi acquisti</p>
                     <div class="ordini-list">
                         <c:forEach var="ordine" items="${ordini}">
                             <div class="ordine-card ${ordine.statoCssClass}">

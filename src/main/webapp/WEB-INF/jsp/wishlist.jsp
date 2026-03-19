@@ -19,13 +19,13 @@
     <div class="wishlist-page">
         <c:choose>
             <c:when test="${empty prodotti}">
-                <div class="wishlist-card">
-                    <h1 class="wishlist-title">I tuoi prodotti salvati</h1>
-                    <div class="wishlist-empty-state">
-                        <div class="wishlist-empty-icon">
+                <div class="wishlist-card page-card">
+                    <h1 class="wishlist-title page-title">I tuoi prodotti salvati</h1>
+                    <div class="wishlist-empty-state empty-state">
+                        <div class="wishlist-empty-icon empty-icon">
                             <i class="ti ti-heart"></i>
                         </div>
-                        <p class="wishlist-empty-kicker">Nessun prodotto salvato</p>
+                        <p class="wishlist-empty-kicker empty-kicker">Nessun prodotto salvato</p>
                         <p class="wishlist-empty-text">Non hai ancora aggiunto prodotti alla tua wishlist. Esplora il
                             catalogo per trovare le scarpe che ami.</p>
                         <div class="wishlist-empty-actions">
@@ -39,9 +39,9 @@
             </c:when>
 
             <c:otherwise>
-                <div class="wishlist-card">
-                    <h1 class="wishlist-title">I tuoi prodotti salvati</h1>
-                    <p class="wishlist-subtitle">Gestisci la tua lista dei desideri</p>
+                <div class="wishlist-card page-card">
+                    <h1 class="wishlist-title page-title">I tuoi prodotti salvati</h1>
+                    <p class="wishlist-subtitle page-subtitle">Gestisci la tua lista dei desideri</p>
 
                     <c:if test="${param.erroreCarrello == '1'}">
                         <div class="alert alert-error">Non puoi aggiungere piu prodotti di quanti siano disponibili.

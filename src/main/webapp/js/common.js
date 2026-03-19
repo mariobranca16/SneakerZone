@@ -10,6 +10,18 @@ function autoHideAlerts() {
     });
 }
 
+function mostraNotifica(testo) {
+    var notifica = document.createElement('div');
+    notifica.className = 'alert alert-success';
+    notifica.textContent = testo;
+    document.body.appendChild(notifica);
+    setTimeout(function () {
+        notifica.style.transition = 'opacity 0.4s';
+        notifica.style.opacity = '0';
+        setTimeout(function () { notifica.remove(); }, 400);
+    }, 3000);
+}
+
 function togglePassword(inputId, btn) {
     var input = document.getElementById(inputId);
     if (!input) return;
@@ -57,3 +69,30 @@ document.addEventListener('DOMContentLoaded', function () {
     initDropdown();
     initConfirmButtons();
 });
+
+function apriFormIndirizzo(titolo, testoPulsante, action) {
+    var wrap = document.getElementById('indirizzoFormWrap');
+    var form = document.getElementById('formIndirizzo');
+    if (!wrap || !form) return;
+    document.getElementById('indirizzoFormTitolo').textContent = titolo;
+    document.getElementById('btnSalvaIndirizzo').textContent = testoPulsante;
+    document.getElementById('btnAnnullaEdit').hidden = false;
+    form.action = action;
+    wrap.classList.add('open');
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function chiudiFormIndirizzo() {
+    var wrap = document.getElementById('indirizzoFormWrap');
+    var form = document.getElementById('formIndirizzo');
+    if (!wrap || !form) return;
+    form.reset();
+    document.getElementById('indirizzoId').value = '';
+    var from = document.getElementById('indirizzoFrom');
+    if (from) from.value = '';
+    document.getElementById('indirizzoFormTitolo').textContent = 'Nuovo indirizzo';
+    document.getElementById('btnSalvaIndirizzo').textContent = 'Salva indirizzo';
+    document.getElementById('btnAnnullaEdit').hidden = true;
+    form.action = wrap.dataset.actionNuovo;
+    wrap.classList.remove('open');
+}

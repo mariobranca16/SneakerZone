@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
     var stelleInput = document.getElementById('stelleInput');
     if (stelleInput) {
         var stelle = stelleInput.querySelectorAll('.stella-input');
@@ -34,12 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         function aggiornaStelle(valore) {
             stelle.forEach(function (s) {
-                var v = parseInt(s.getAttribute('data-valore'));
-                var attiva = v <= valore;
-                s.classList.toggle('attiva', attiva);
-                s.innerHTML = attiva
-                    ? '<span aria-hidden="true">&#9733;</span>'
-                    : '<span aria-hidden="true">&#9734;</span>';
+                s.classList.toggle('attiva', parseInt(s.getAttribute('data-valore')) <= valore);
             });
         }
 
@@ -57,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
             stella.addEventListener('click', function () {
                 valutazioneHidden.value = stella.getAttribute('data-valore');
                 aggiornaStelle(parseInt(valutazioneHidden.value));
-                if (stelleErrore) stelleErrore.style.display = 'none';
+                if (stelleErrore) stelleErrore.classList.remove('visibile');
             });
 
             stella.addEventListener('keydown', function (e) {
@@ -73,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formRecensione.addEventListener('submit', function (e) {
                 if (!valutazioneHidden.value) {
                     e.preventDefault();
-                    if (stelleErrore) stelleErrore.style.display = 'block';
+                    if (stelleErrore) stelleErrore.classList.add('visibile');
                     stelleInput.scrollIntoView({behavior: 'smooth', block: 'center'});
                 }
             });

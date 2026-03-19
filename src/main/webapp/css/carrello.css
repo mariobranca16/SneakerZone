@@ -18,18 +18,11 @@ main {
 }
 
 .cart-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
     padding: 30px 34px;
     max-width: 920px;
-    width: 100%;
 }
 
 .cart-title {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--text);
     margin-bottom: 20px;
     text-align: center;
 }
@@ -44,23 +37,15 @@ main {
 }
 
 .cart-empty-state {
-    margin: 4px auto 6px;
     padding: 24px 20px;
-    max-width: 620px;
-    text-align: center;
+    margin: 4px auto 6px;
 }
 
 .cart-empty-icon {
-    font-size: 40px;
-    color: var(--brand);
     margin-bottom: 12px;
 }
 
 .cart-empty-kicker {
-    margin: 0 0 6px;
-    font-size: 13px;
-    font-weight: 700;
-    color: #B45309;
     text-align: center;
 }
 

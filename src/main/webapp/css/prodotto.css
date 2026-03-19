@@ -358,8 +358,20 @@
     line-height: 1;
 }
 
+.stella-input span {
+    display: none;
+}
+
+.stella-input::before {
+    content: '☆';
+}
+
 .stella-input.attiva {
     color: var(--brand);
+}
+
+.stella-input.attiva::before {
+    content: '★';
 }
 
 .stella-input:focus-visible {

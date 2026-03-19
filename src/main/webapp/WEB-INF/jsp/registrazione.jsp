@@ -18,9 +18,9 @@
 
 <main>
     <div class="register-page">
-        <div class="register-card">
-            <h1 class="register-title">Crea il tuo account</h1>
-            <p class="register-subtitle">Inserisci i tuoi dati per completare la registrazione</p>
+        <div class="register-card page-card">
+            <h1 class="register-title page-title">Crea il tuo account</h1>
+            <p class="register-subtitle page-subtitle">Inserisci i tuoi dati per completare la registrazione</p>
 
             <form id="formRegistrazione" class="register-form" method="post"
                   action="${pageContext.request.contextPath}/registrazione" novalidate>

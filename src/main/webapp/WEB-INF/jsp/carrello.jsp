@@ -18,8 +18,8 @@
 
 <main>
     <div class="cart-page">
-        <div class="cart-card">
-            <h1 class="cart-title">Il tuo carrello</h1>
+        <div class="cart-card page-card">
+            <h1 class="cart-title page-title">Il tuo carrello</h1>
 
             <c:if test="${not empty erroreCarrello}">
                 <div class="alert alert-error">${erroreCarrello}</div>
@@ -27,11 +27,11 @@
 
             <c:choose>
                 <c:when test="${empty carrello.prodotti}">
-                    <div class="cart-empty-state">
-                        <div class="cart-empty-icon" aria-hidden="true">
+                    <div class="cart-empty-state empty-state">
+                        <div class="cart-empty-icon empty-icon" aria-hidden="true">
                             <i class="ti ti-shopping-bag"></i>
                         </div>
-                        <p class="cart-empty-kicker">Nessun articolo</p>
+                        <p class="cart-empty-kicker empty-kicker">Nessun articolo</p>
                         <p class="cart-empty">Il carrello &egrave; vuoto. Scopri le ultime sneaker e aggiungi i tuoi
                             preferiti.</p>
                         <div class="cart-empty-actions">

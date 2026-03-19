@@ -28,10 +28,10 @@
         </c:if>
 
 
-        <h1 class="checkout-title">Checkout</h1>
+        <h1 class="checkout-title page-title">Checkout</h1>
 
 
-        <div class="checkout-card">
+        <div class="checkout-card page-card">
             <h2 class="checkout-section-title">
                 <i class="ti ti-shopping-bag"></i> Riepilogo ordine
             </h2>
@@ -68,7 +68,7 @@
         </div>
 
 
-        <div class="checkout-card" id="checkout-addr-section">
+        <div class="checkout-card page-card" id="checkout-addr-section">
             <h2 class="checkout-section-title">
                 <i class="ti ti-map-pin"></i> Indirizzo di spedizione
             </h2>
@@ -175,7 +175,7 @@
                    value="${fn:escapeXml(indirizzoPrecompilato.paese)}">
 
 
-            <div class="checkout-card">
+            <div class="checkout-card page-card">
                 <h2 class="checkout-section-title">
                     <i class="ti ti-credit-card"></i> Dati di pagamento
                 </h2>

@@ -21,7 +21,7 @@ function isPasswordForte(value) {
 
 function isNomeValido(value) {
     var nome = normalizeText(value);
-    return nome.length >= 2 && nome.length <= 50 && /^[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*$/.test(nome);
+    return nome.length >= 2 && nome.length <= 50 && /[A-Za-zÀ-ÿ]/.test(nome);
 }
 
 function isViaValida(value) {
@@ -40,17 +40,17 @@ function isProvinciaValida(value) {
 
 function isLocalitaValida(value) {
     var localita = normalizeText(value);
-    return localita.length >= 2 && localita.length <= 100 && /^[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*$/.test(localita);
+    return localita.length >= 2 && localita.length <= 100 && /[A-Za-zÀ-ÿ]/.test(localita);
 }
 
 function isDestinatarioValido(value) {
     var dest = normalizeText(value);
-    return dest.length >= 4 && dest.length <= 100 && /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ '\-]* [A-Za-zÀ-ÿ][A-Za-zÀ-ÿ '\-]*$/.test(dest);
+    return dest.length >= 4 && dest.length <= 100 && /[A-Za-zÀ-ÿ]/.test(dest) && dest.indexOf(' ') !== -1;
 }
 
 function isNomeCartaValido(value) {
     var nome = normalizeText(value);
-    return nome.length >= 3 && nome.length <= 26 && /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ '\-]* [A-Za-zÀ-ÿ][A-Za-zÀ-ÿ '\-]*$/.test(nome);
+    return nome.length >= 3 && nome.length <= 26 && /[A-Za-zÀ-ÿ]/.test(nome) && nome.indexOf(' ') !== -1;
 }
 
 function isNumeroCartaValido(value) {
