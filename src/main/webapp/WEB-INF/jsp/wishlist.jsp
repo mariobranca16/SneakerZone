@@ -12,9 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/wishlist.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
 <main>
     <div class="wishlist-page">
         <c:choose>
@@ -35,26 +33,20 @@
                     </div>
                 </div>
             </c:when>
-
             <c:otherwise>
                 <div class="wishlist-card page-card">
                     <h1 class="wishlist-title page-title">I tuoi prodotti salvati</h1>
                     <p class="wishlist-subtitle page-subtitle">Gestisci la tua lista dei desideri</p>
-
                     <c:if test="${param.erroreCarrello == '1'}">
                         <div class="alert alert-error">Non puoi aggiungere piu prodotti di quanti siano disponibili.
                         </div>
                     </c:if>
-
                     <c:if test="${param.successo == '1'}">
                         <div class="alert alert-success">Prodotto aggiunto al carrello con successo.</div>
                     </c:if>
-
                     <div class="wishlist-grid">
                         <c:forEach var="p" items="${prodotti}">
                             <div class="wishlist-item">
-
-
                                 <div class="wishlist-item-top">
                                     <div class="wishlist-item-media">
                                         <c:if test="${not empty p.imgPath}">
@@ -78,18 +70,14 @@
                                                                                          maxFractionDigits="2"/><span
                                             class="currency">&euro;</span></span>
                                 </div>
-
-
                                 <div class="wishlist-item-actions">
                                     <c:set var="taglieDisponibili" value="${disponibilitaPerProdotto[p.id]}"/>
-
                                     <c:choose>
                                         <c:when test="${not empty taglieDisponibili}">
                                             <form class="wishlist-cart-form" method="post"
                                                   action="${pageContext.request.contextPath}/carrello">
                                                 <input type="hidden" name="id" value="${p.id}"/>
                                                 <input type="hidden" name="origine" value="wishlist"/>
-
                                                 <div class="wishlist-cart-fields">
                                                     <div class="wishlist-field">
                                                         <label for="taglia-${p.id}">Taglia</label>
@@ -99,14 +87,12 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-
                                                     <div class="wishlist-field">
                                                         <label for="qta-${p.id}">Qta</label>
                                                         <input id="qta-${p.id}" type="number" name="quantita" min="1"
                                                                value="1" required/>
                                                     </div>
                                                 </div>
-
                                                 <button class="btn-primary" type="submit">
                                                     <i class="ti ti-shopping-cart-plus"></i> Aggiungi al carrello
                                                 </button>
@@ -116,7 +102,6 @@
                                             <p class="wishlist-unavailable">Non disponibile al momento</p>
                                         </c:otherwise>
                                     </c:choose>
-
                                     <form class="wishlist-remove-form" method="post"
                                           action="${pageContext.request.contextPath}/remove-from-wishlist">
                                         <input type="hidden" name="idProdotto" value="${p.id}">
@@ -134,8 +119,6 @@
         </c:choose>
     </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-
 </body>
 </html>

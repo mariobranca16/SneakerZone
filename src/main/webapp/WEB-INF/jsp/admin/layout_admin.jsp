@@ -1,11 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page isELIgnored="false" %>
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/admin-base.css">
 <script src="${pageContext.request.contextPath}/js/common.js" defer></script>
-
 <header class="admin-header">
     <div class="admin-header-row">
         <a class="admin-logo" href="${pageContext.request.contextPath}/admin/dashboard">
@@ -29,6 +27,5 @@
         </a>
     </div>
 </header>
-
 <main>
     <div class="admin-container">

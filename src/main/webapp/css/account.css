@@ -1,10 +1,8 @@
-
 main {
     min-height: calc(100vh - 160px);
     padding: 40px 20px 56px;
     background: var(--bg);
 }
-
 .account-wrap {
     max-width: 860px;
     width: 100%;
@@ -13,13 +11,11 @@ main {
     flex-direction: column;
     gap: 16px;
 }
-
 .account-page-title {
     font-size: 32px;
     margin-bottom: 4px;
     text-align: center;
 }
-
 .account-tabs {
     display: flex;
     gap: 4px;
@@ -28,7 +24,6 @@ main {
     border-radius: 14px;
     padding: 6px;
 }
-
 .tab-btn {
     flex: 1;
     display: flex;
@@ -47,58 +42,46 @@ main {
     white-space: nowrap;
     transition: background 0.2s;
 }
-
 .tab-btn:hover {
     background: var(--input-bg);
     color: var(--text);
 }
-
 .tab-btn.active {
     background: var(--brand);
     color: #fff;
 }
-
 .tab-btn > i {
     font-size: 14px;
     flex-shrink: 0;
 }
-
-
 .account-section {
     display: none;
     border-radius: 18px;
     padding: 32px 36px 36px;
 }
-
 .account-section.active {
     display: block;
 }
-
 .section-header {
     margin-bottom: 26px;
     padding-bottom: 18px;
     border-bottom: 1px solid var(--border);
 }
-
 .section-title {
     font-size: 20px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 4px;
 }
-
 .section-subtitle {
     color: var(--muted);
     font-size: 14px;
 }
-
-
 .account-form {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px 20px;
 }
-
 .no-data-msg {
     display: flex;
     align-items: center;
@@ -111,15 +94,12 @@ main {
     padding: 14px 16px;
     margin-bottom: 18px;
 }
-
-
 .profilo-addr-actions {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-shrink: 0;
 }
-
 .btn-addr-edit,
 .btn-addr-del {
     height: 34px;
@@ -133,63 +113,49 @@ main {
     gap: 5px;
     padding: 0 12px;
 }
-
 .btn-addr-edit {
     background: #D6CFC7;
     color: #111111;
     border: none;
 }
-
 .btn-addr-edit:hover {
     background: var(--brand);
     color: #fff;
 }
-
 .btn-addr-del {
     background: #dc3545;
     color: #fff;
     border: 1px solid #dc3545;
 }
-
 .btn-addr-del:hover {
     background: #bb2d3b;
     border-color: #bb2d3b;
 }
-
 .form-inline-del {
     display: contents;
 }
-
 .account-actions .btn-primary {
     padding: 0 28px;
 }
-
-
 @media (max-width: 640px) {
     main {
         padding: 24px 14px 40px;
     }
-
     .tab-btn span {
         display: none;
     }
-
     .tab-btn {
         padding: 12px;
     }
-
     .tab-btn > i {
         font-size: 17px;
     }
-
     .account-section {
         padding: 24px 18px 28px;
     }
-
     .account-form {
         grid-template-columns: 1fr;
     }
-
     .section-title {
         font-size: 18px;
     }

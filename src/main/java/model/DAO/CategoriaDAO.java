@@ -1,8 +1,6 @@
 package model.DAO;
-
 import model.Bean.Categoria;
 import model.ConPool;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
 public class CategoriaDAO {
     public List<Categoria> doRetrieveAll() {
         List<Categoria> categorie = new ArrayList<>();
@@ -31,7 +28,6 @@ public class CategoriaDAO {
         }
         return categorie;
     }
-
     public List<Categoria> doRetrieveAllUsed() {
         List<Categoria> categorie = new ArrayList<>();
         try (Connection connection = ConPool.getConnection();
@@ -50,7 +46,6 @@ public class CategoriaDAO {
         }
         return categorie;
     }
-
     public List<Categoria> doRetrieveByProdotto(long idProdotto) {
         List<Categoria> categorie = new ArrayList<>();
         try (Connection connection = ConPool.getConnection();
@@ -71,12 +66,10 @@ public class CategoriaDAO {
         }
         return categorie;
     }
-
     public boolean doExistsAllByIds(Set<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return false;
         }
-
         String placeholders = String.join(",", Collections.nCopies(ids.size(), "?"));
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -86,7 +79,6 @@ public class CategoriaDAO {
             for (Long id : ids) {
                 ps.setLong(index++, id);
             }
-
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt(1) == ids.size();
@@ -97,5 +89,4 @@ public class CategoriaDAO {
         }
         return false;
     }
-
 }

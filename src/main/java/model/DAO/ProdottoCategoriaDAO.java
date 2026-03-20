@@ -1,12 +1,9 @@
 package model.DAO;
-
 import model.ConPool;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Set;
-
 public class ProdottoCategoriaDAO {
     public void doSave(long idProdotto, long idCategoria) {
         try (Connection connection = ConPool.getConnection();
@@ -20,13 +17,11 @@ public class ProdottoCategoriaDAO {
             throw new RuntimeException("Errore nell'associazione prodotto-categoria", e);
         }
     }
-
     public void doReplace(long idProdotto, Set<Long> idCategorie) {
         doDeleteByProdotto(idProdotto);
         for (long idCat : idCategorie)
             doSave(idProdotto, idCat);
     }
-
     public void doDeleteByProdotto(long idProdotto) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(

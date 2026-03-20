@@ -1,5 +1,4 @@
 package controller;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,15 +8,11 @@ import jakarta.servlet.http.HttpSession;
 import model.Bean.Prodotto;
 import model.DAO.CategoriaDAO;
 import model.DAO.ProdottoDAO;
-
 import java.io.IOException;
 import java.util.*;
-
 @WebServlet(name = "catalogo", urlPatterns = "/catalogo")
 public class CatalogoServlet extends HttpServlet {
-
     private static final String ORDINE_KEY = "catalogoOrdine";
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String categoria = request.getParameter("categoria");
@@ -25,7 +20,6 @@ public class CatalogoServlet extends HttpServlet {
         String prezzoMinP = request.getParameter("prezzoMin");
         String prezzoMaxP = request.getParameter("prezzoMax");
         String genere = request.getParameter("genere");
-
         Double prezzoMin = null;
         if (prezzoMinP != null && !prezzoMinP.isBlank()) {
             try {
@@ -42,27 +36,22 @@ public class CatalogoServlet extends HttpServlet {
             } catch (NumberFormatException ignored) {
             }
         }
-
         boolean anyFilter = (categoria != null && !categoria.isBlank())
                 || (q != null && !q.isBlank())
                 || prezzoMin != null || prezzoMax != null
                 || (genere != null && !genere.isBlank());
-
         ProdottoDAO prodottoDAO = new ProdottoDAO();
         List<Prodotto> prodotti = anyFilter
                 ? prodottoDAO.doRetrieveByFiltriRandom(categoria, q, prezzoMin, prezzoMax, genere)
                 : prodottoDAO.doRetrieveAllRandom();
         ordinaRandom(prodotti);
-
         request.setAttribute("prodotti", prodotti);
         request.setAttribute("tutteCategorie", new CategoriaDAO().doRetrieveAllUsed());
-
         request.setAttribute("filtroCategoria", categoria);
         request.setAttribute("filtroQ", q);
         request.setAttribute("filtroPrezzoMin", prezzoMinP);
         request.setAttribute("filtroPrezzoMax", prezzoMaxP);
         request.setAttribute("filtroGenere", genere);
-
         HttpSession session = request.getSession(false);
         if (session != null) {
             String flashErrore = (String) session.getAttribute("flash_erroreCarrello");
@@ -76,18 +65,14 @@ public class CatalogoServlet extends HttpServlet {
                 session.removeAttribute("flash_messaggio");
             }
         }
-
         if ("1".equals(request.getParameter("successoWishlist")))
             request.setAttribute("messaggio", "Prodotto aggiunto alla wishlist");
-
         if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
             request.getRequestDispatcher("/WEB-INF/jsp/catalogo_risultati.jsp").forward(request, response);
             return;
         }
-
         request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
     }
-
     private List<Long> getOrCreateOrdine() {
         @SuppressWarnings("unchecked")
         List<Long> ordine = (List<Long>) getServletContext().getAttribute(ORDINE_KEY);
@@ -101,12 +86,10 @@ public class CatalogoServlet extends HttpServlet {
         }
         return ordine;
     }
-
     private void ordinaRandom(List<Prodotto> prodotti) {
         List<Long> ordine = getOrCreateOrdine();
         Map<Long, Integer> pos = new HashMap<>();
         for (int i = 0; i < ordine.size(); i++) pos.put(ordine.get(i), i);
         prodotti.sort(Comparator.comparingInt(p -> pos.getOrDefault(p.getId(), Integer.MAX_VALUE)));
     }
-
 }

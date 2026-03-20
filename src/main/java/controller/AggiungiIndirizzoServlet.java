@@ -1,5 +1,4 @@
 package controller;
-
 import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,30 +10,24 @@ import model.Bean.Carrello;
 import model.Bean.IndirizzoSpedizione;
 import model.Bean.Utente;
 import model.DAO.IndirizzoSpedizioneDAO;
-
 import java.io.IOException;
 import java.util.List;
-
 @WebServlet(name = "aggiungi-indirizzo", urlPatterns = "/aggiungi-indirizzo")
 public class AggiungiIndirizzoServlet extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.sendRedirect(request.getContextPath() + "/myAccount");
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         Utente utente = (session != null) ? (Utente) session.getAttribute("utenteConnesso") : null;
-
         if (utente == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
-
         String destinatario = request.getParameter("destinatario");
         String via = request.getParameter("via");
         String cap = request.getParameter("cap");
@@ -42,7 +35,6 @@ public class AggiungiIndirizzoServlet extends HttpServlet {
         String provincia = request.getParameter("provincia");
         String paese = request.getParameter("paese");
         String from = request.getParameter("from");
-
         boolean hasError = false;
         if (!ValidatoreInput.isDestinatarioValido(destinatario)) {
             request.setAttribute("erroreDestinatario", "Inserisci nome e cognome del destinatario.");
@@ -68,7 +60,6 @@ public class AggiungiIndirizzoServlet extends HttpServlet {
             request.setAttribute("errorePaese", "Il paese deve avere almeno 2 caratteri e contenere solo lettere.");
             hasError = true;
         }
-
         if (hasError) {
             request.setAttribute("apriFormIndirizzo", "nuovo");
             List<IndirizzoSpedizione> indirizzi = new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId());
@@ -88,7 +79,6 @@ public class AggiungiIndirizzoServlet extends HttpServlet {
             }
             return;
         }
-
         IndirizzoSpedizione indirizzo = new IndirizzoSpedizione();
         indirizzo.setIdUtente(utente.getId());
         indirizzo.setDestinatario(destinatario);

@@ -2,11 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <div class="catalogo-risultati-header">
     <span class="catalogo-count">${fn:length(prodotti)} prodott${fn:length(prodotti) == 1 ? 'o' : 'i'} trovat${fn:length(prodotti) == 1 ? 'o' : 'i'}</span>
 </div>
-
 <c:choose>
     <c:when test="${empty prodotti}">
         <div class="catalogo-empty">
@@ -19,7 +17,6 @@
         <div class="catalogo-grid">
             <c:forEach var="prodotto" items="${prodotti}">
                 <div class="prodotto-card">
-
                     <a class="prodotto-thumb-link"
                        href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}"
                        aria-hidden="true" tabindex="-1">
@@ -30,7 +27,6 @@
                             </c:if>
                         </div>
                     </a>
-
                     <div class="prodotto-body">
                         <h2 class="prodotto-nome">
                             <a class="prodotto-nome-link"
@@ -48,7 +44,6 @@
                             </div>
                         </c:if>
                     </div>
-
                     <div class="prodotto-footer">
                         <div class="prodotto-prezzo">
                             <fmt:formatNumber value="${prodotto.costo}" minFractionDigits="2"
@@ -69,7 +64,6 @@
                             </c:if>
                         </div>
                     </div>
-
                 </div>
             </c:forEach>
         </div>

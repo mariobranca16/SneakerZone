@@ -1,5 +1,4 @@
 package controller.filter;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
@@ -8,25 +7,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Bean.Carrello;
-
 import java.io.IOException;
-
 @WebFilter("/*")
 public class SessionFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String path = request.getRequestURI().substring(request.getContextPath().length());
-
         if (!isStaticResource(path)) {
             HttpSession session = request.getSession();
             if (session.getAttribute("carrello") == null) {
                 session.setAttribute("carrello", new Carrello());
             }
         }
-
         chain.doFilter(request, response);
     }
-
     private boolean isStaticResource(String path) {
         return path.startsWith("/css/")
                 || path.startsWith("/js/")

@@ -9,7 +9,6 @@ function autoHideAlerts() {
         }, 3000);
     });
 }
-
 function mostraNotifica(testo) {
     var notifica = document.createElement('div');
     notifica.className = 'alert alert-success';
@@ -23,7 +22,6 @@ function mostraNotifica(testo) {
         }, 400);
     }, 3000);
 }
-
 function togglePassword(inputId, btn) {
     var input = document.getElementById(inputId);
     if (!input) return;
@@ -36,24 +34,20 @@ function togglePassword(inputId, btn) {
         icon.classList.replace('ti-eye-off', 'ti-eye');
     }
 }
-
 function initDropdown() {
     var toggle = document.querySelector('.user-menu-toggle');
     var dropdown = toggle && toggle.closest('.dropdown');
     if (!toggle || !dropdown) return;
-
     toggle.addEventListener('click', function (e) {
         e.stopPropagation();
         var isOpen = dropdown.classList.toggle('is-open');
         toggle.setAttribute('aria-expanded', isOpen);
     });
-
     document.addEventListener('click', function () {
         dropdown.classList.remove('is-open');
         toggle.setAttribute('aria-expanded', 'false');
     });
 }
-
 function initConfirmButtons() {
     document.addEventListener('click', function (e) {
         var btn = e.target.closest('[data-confirm]');
@@ -65,13 +59,11 @@ function initConfirmButtons() {
         }
     });
 }
-
 document.addEventListener('DOMContentLoaded', function () {
     autoHideAlerts();
     initDropdown();
     initConfirmButtons();
 });
-
 function apriFormIndirizzo(titolo, testoPulsante, action) {
     var wrap = document.getElementById('indirizzoFormWrap');
     var form = document.getElementById('formIndirizzo');
@@ -83,7 +75,6 @@ function apriFormIndirizzo(titolo, testoPulsante, action) {
     wrap.classList.add('open');
     wrap.scrollIntoView({behavior: 'smooth', block: 'nearest'});
 }
-
 function chiudiFormIndirizzo() {
     var wrap = document.getElementById('indirizzoFormWrap');
     var form = document.getElementById('formIndirizzo');

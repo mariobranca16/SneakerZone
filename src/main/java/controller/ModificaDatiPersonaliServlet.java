@@ -1,5 +1,4 @@
 package controller;
-
 import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,50 +9,39 @@ import jakarta.servlet.http.HttpSession;
 import model.Bean.Utente;
 import model.DAO.IndirizzoSpedizioneDAO;
 import model.DAO.UtenteDAO;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-
 @WebServlet(name = "aggiornaDatiPersonali", urlPatterns = "/myAccount/datiPersonali")
 public class ModificaDatiPersonaliServlet extends HttpServlet {
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         request.setCharacterEncoding("UTF-8");
-
         HttpSession session = request.getSession(false);
         Utente utente = (session != null) ? (Utente) session.getAttribute("utenteConnesso") : null;
-
         if (utente == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
-
         String nome = ValidatoreInput.normalizzaTesto(request.getParameter("nome"));
         String cognome = ValidatoreInput.normalizzaTesto(request.getParameter("cognome"));
         String email = ValidatoreInput.normalizzaTesto(request.getParameter("email"));
         String telefono = ValidatoreInput.normalizzaTelefono(request.getParameter("telefono"));
         String dataNascitaStr = ValidatoreInput.normalizzaTesto(request.getParameter("dataDiNascita"));
-
         boolean hasError = false;
-
         if (!ValidatoreInput.isNomeValido(nome)) {
             request.setAttribute("erroreNome", !ValidatoreInput.contieneTesto(nome)
                     ? "Campo obbligatorio."
                     : "Il nome deve avere 2-50 caratteri e contenere solo lettere.");
             hasError = true;
         }
-
         if (!ValidatoreInput.isNomeValido(cognome)) {
             request.setAttribute("erroreCognome", !ValidatoreInput.contieneTesto(cognome)
                     ? "Campo obbligatorio."
                     : "Il cognome deve avere 2-50 caratteri e contenere solo lettere.");
             hasError = true;
         }
-
         UtenteDAO dao = new UtenteDAO();
         if (!ValidatoreInput.contieneTesto(email)) {
             request.setAttribute("erroreEmail", "L'email non puo essere vuota.");
@@ -65,7 +53,6 @@ public class ModificaDatiPersonaliServlet extends HttpServlet {
             request.setAttribute("erroreEmail", "Email gia registrata.");
             hasError = true;
         }
-
         if (!ValidatoreInput.contieneTesto(telefono)) {
             request.setAttribute("erroreTelefono", "Il telefono non puo essere vuoto.");
             hasError = true;
@@ -73,7 +60,6 @@ public class ModificaDatiPersonaliServlet extends HttpServlet {
             request.setAttribute("erroreTelefono", "Numero di telefono non valido.");
             hasError = true;
         }
-
         LocalDate dataNascita = null;
         if (!ValidatoreInput.contieneTesto(dataNascitaStr)) {
             request.setAttribute("erroreDataNascita", "La data di nascita e obbligatoria.");
@@ -90,7 +76,6 @@ public class ModificaDatiPersonaliServlet extends HttpServlet {
                 hasError = true;
             }
         }
-
         if (hasError) {
             request.setAttribute("tabAttiva", "dati-personali");
             request.setAttribute("utente", utente);
@@ -103,7 +88,6 @@ public class ModificaDatiPersonaliServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/jsp/account.jsp").forward(request, response);
             return;
         }
-
         utente.setNome(nome);
         utente.setCognome(cognome);
         utente.setEmail(email);
@@ -111,7 +95,6 @@ public class ModificaDatiPersonaliServlet extends HttpServlet {
         utente.setDataDiNascita(dataNascita);
         dao.doUpdate(utente);
         session.setAttribute("utenteConnesso", utente);
-
         session.setAttribute("modificaEffettuata", true);
         session.setAttribute("tabAttiva", "dati-personali");
         response.sendRedirect(request.getContextPath() + "/myAccount");

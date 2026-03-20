@@ -13,24 +13,18 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/prodotto.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
 <main class="prodotto-page">
-
     <a class="back-link" href="${pageContext.request.contextPath}/catalogo">
         <i class="ti ti-arrow-left" aria-hidden="true"></i> Catalogo
     </a>
-
     <c:if test="${not empty messaggio}">
         <div class="alert alert-success">${messaggio}</div>
     </c:if>
     <c:if test="${not empty erroreCarrello}">
         <div class="alert alert-error">${erroreCarrello}</div>
     </c:if>
-
     <section class="prodotto-dettaglio">
-
         <div class="prodotto-immagini">
             <div class="immagine-principale">
                 <c:choose>
@@ -47,16 +41,13 @@
                 </c:choose>
             </div>
         </div>
-
         <div class="prodotto-info">
             <p class="prodotto-brand"><c:out value="${prodotto.brand}"/></p>
             <h1 class="prodotto-nome"><c:out value="${prodotto.nome}"/></h1>
             <p class="prodotto-colore"><strong>Colore:</strong> <c:out value="${prodotto.colore}"/></p>
-
             <p class="prodotto-prezzo">
                 <fmt:formatNumber value="${prodotto.costo}" minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
             </p>
-
             <c:if test="${not empty prodotto.categorie}">
                 <div class="prodotto-categorie">
                     <c:forEach var="cat" items="${prodotto.categorie}">
@@ -65,13 +56,11 @@
                     </c:forEach>
                 </div>
             </c:if>
-
             <form method="post" action="${pageContext.request.contextPath}/carrello" class="form-carrello"
                   id="formCarrello">
                 <input type="hidden" name="azione" value="aggiungi"/>
                 <input type="hidden" name="id" value="${prodotto.id}"/>
                 <input type="hidden" name="origine" value="prodotto"/>
-
                 <c:if test="${not empty prodotto.taglie}">
                     <div class="selezione-taglia">
                         <label for="taglia">Taglia:</label>
@@ -85,17 +74,14 @@
                         </select>
                     </div>
                 </c:if>
-
                 <div class="selezione-quantita">
                     <label for="quantita">Quantit&agrave;:</label>
                     <input type="number" name="quantita" id="quantita" value="1" min="1" max="10" required>
                 </div>
-
                 <button type="submit" class="btn-carrello">
                     <i class="ti ti-shopping-cart" aria-hidden="true"></i> Aggiungi al carrello
                 </button>
             </form>
-
             <c:if test="${not empty sessionScope.utenteConnesso}">
                 <form method="post" action="${pageContext.request.contextPath}/add-to-wishlist" class="form-wishlist">
                     <input type="hidden" name="idProdotto" value="${prodotto.id}"/>
@@ -104,7 +90,6 @@
                     </button>
                 </form>
             </c:if>
-
             <c:if test="${not empty prodotto.descrizione}">
                 <div class="prodotto-descrizione">
                     <h3>Descrizione</h3>
@@ -113,10 +98,8 @@
             </c:if>
         </div>
     </section>
-
     <section class="sezione-recensioni">
         <h2>Recensioni</h2>
-
         <c:if test="${param.successoRecensione == '1'}">
             <div class="alert alert-success">Recensione pubblicata con successo!</div>
         </c:if>
@@ -126,14 +109,12 @@
         <c:if test="${param.erroreRecensione == '1' && empty erroreRecensione}">
             <div class="alert alert-error">Errore nell'invio della recensione. Verifica i dati e riprova.</div>
         </c:if>
-
         <c:if test="${puoRecensire}">
             <div class="form-recensione-wrapper">
                 <h3>Scrivi una recensione</h3>
                 <form method="post" action="${pageContext.request.contextPath}/aggiungi-recensione"
                       class="form-recensione" id="formRecensione">
                     <input type="hidden" name="id" value="${prodotto.id}"/>
-
                     <div class="recensione-campo">
                         <label for="titolo">Titolo <span class="obbligatorio">*</span></label>
                         <input type="text" id="titolo" name="titolo" maxlength="255" required
@@ -143,7 +124,6 @@
                             <p class="recensione-errore-campo">${erroreTitoloRecensione}</p>
                         </c:if>
                     </div>
-
                     <div class="recensione-campo">
                         <label>Valutazione <span class="obbligatorio">*</span></label>
                         <div class="stelle-input" id="stelleInput" role="group"
@@ -164,7 +144,6 @@
                             </c:choose>
                         </p>
                     </div>
-
                     <div class="recensione-campo">
                         <label for="commento">Commento</label>
                         <textarea id="commento" name="commento" rows="4" maxlength="2000"
@@ -173,16 +152,13 @@
                             <p class="recensione-errore-campo">${erroreCommentoRecensione}</p>
                         </c:if>
                     </div>
-
                     <button type="submit" class="btn-primary">Pubblica recensione</button>
                 </form>
             </div>
         </c:if>
-
         <c:if test="${haGiaRecensito}">
             <p class="info-recensione">Hai già recensito questo prodotto.</p>
         </c:if>
-
         <c:choose>
             <c:when test="${not empty recensioni}">
                 <div class="lista-recensioni">
@@ -229,15 +205,12 @@
             </c:otherwise>
         </c:choose>
     </section>
-
     <div class="torna-catalogo">
         <a href="${pageContext.request.contextPath}/catalogo"><i class="ti ti-arrow-left" aria-hidden="true"></i> Torna
             al catalogo</a>
     </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-
 <script src="${pageContext.request.contextPath}/js/prodotto.js"></script>
 </body>
 </html>

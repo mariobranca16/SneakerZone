@@ -9,17 +9,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/errore.css">
 </head>
 <body>
-
 <c:set var="statusCode" value="${requestScope['jakarta.servlet.error.status_code']}"/>
-
 <div class="error-card">
-
     <div class="error-icon">
         <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
         </svg>
     </div>
-
     <c:choose>
         <c:when test="${statusCode == 404}">
             <div class="error-code">Errore <span>${statusCode}</span></div>
@@ -44,16 +40,11 @@
             <p>Si è verificato un errore durante l'elaborazione della richiesta.</p>
         </c:otherwise>
     </c:choose>
-
     <div class="error-divider"></div>
-
     <c:if test="${not empty messaggioErrore}">
         <p class="error-detail">${messaggioErrore}</p>
     </c:if>
-
     <a href="${pageContext.request.contextPath}/home">Torna alla home</a>
-
 </div>
-
 </body>
 </html>

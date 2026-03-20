@@ -1,5 +1,4 @@
 package controller;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,12 +9,9 @@ import model.Bean.Prodotto;
 import model.Bean.Utente;
 import model.DAO.ProdottoDAO;
 import model.DAO.RecensioneDAO;
-
 import java.io.IOException;
-
 @WebServlet(name = "prodotto", urlPatterns = "/prodotto")
 public class ProdottoServlet extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
@@ -23,7 +19,6 @@ public class ProdottoServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/catalogo");
             return;
         }
-
         long idProdotto;
         try {
             idProdotto = Long.parseLong(idParam);
@@ -31,13 +26,11 @@ public class ProdottoServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/catalogo");
             return;
         }
-
         Prodotto prodotto = new ProdottoDAO().doRetrieveByKey(idProdotto);
         if (prodotto == null) {
             response.sendRedirect(request.getContextPath() + "/catalogo");
             return;
         }
-
         request.setAttribute("prodotto", prodotto);
         if ("1".equals(request.getParameter("erroreCarrello"))) {
             request.setAttribute("erroreCarrello", "Quantità richiesta superiore alla disponibilità del prodotto");
@@ -45,10 +38,8 @@ public class ProdottoServlet extends HttpServlet {
         if ("1".equals(request.getParameter("successoCarrello"))) {
             request.setAttribute("messaggio", "Prodotto aggiunto al carrello");
         }
-
         RecensioneDAO recensioneDAO = new RecensioneDAO();
         request.setAttribute("recensioni", recensioneDAO.doRetrieveByProdotto(idProdotto));
-
         HttpSession session = request.getSession(false);
         if (session != null) {
             Utente utente = (Utente) session.getAttribute("utenteConnesso");
@@ -62,7 +53,6 @@ public class ProdottoServlet extends HttpServlet {
                 }
             }
         }
-
         request.getRequestDispatcher("/WEB-INF/jsp/prodotto.jsp").forward(request, response);
     }
 }

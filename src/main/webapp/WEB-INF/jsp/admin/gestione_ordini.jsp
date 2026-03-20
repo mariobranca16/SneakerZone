@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -12,9 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/admin-ordini.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
-
 <c:if test="${not empty sessionScope.flashSuccesso}">
     <div class="alert alert-success"><c:out value="${sessionScope.flashSuccesso}"/></div>
     <c:remove var="flashSuccesso" scope="session"/>
@@ -23,8 +20,6 @@
     <div class="alert alert-error"><c:out value="${sessionScope.flashErrore}"/></div>
     <c:remove var="flashErrore" scope="session"/>
 </c:if>
-
-
 <div class="admin-page-header">
     <div>
         <h1 class="admin-page-title">Gestione ordini</h1>
@@ -36,10 +31,7 @@
         </p>
     </div>
 </div>
-
-
 <div class="admin-card admin-card--flush">
-
     <c:choose>
         <c:when test="${empty ordini}">
             <div class="prod-empty">
@@ -60,7 +52,6 @@
                     </tr>
                     </thead>
                     <tbody>
-
                     <c:forEach var="o" items="${ordini}">
                         <tr>
                             <td class="col-id col-center">
@@ -91,19 +82,14 @@
                             </td>
                         </tr>
                     </c:forEach>
-
                     </tbody>
                 </table>
             </div>
         </c:otherwise>
     </c:choose>
-
 </div>
-
 </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/admin/footer_admin.jsp"/>
-
 </body>
 </html>

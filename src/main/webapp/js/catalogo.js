@@ -1,15 +1,12 @@
 document.addEventListener('DOMContentLoaded', function () {
     var filtriForm = document.getElementById('filtriForm');
     if (!filtriForm) return;
-
     var debounceTimer = null;
-
     function caricaProdotti() {
         var params = new URLSearchParams();
         new FormData(filtriForm).forEach(function (val, key) {
             if (val.trim() !== '') params.append(key, val.trim());
         });
-
         fetch(filtriForm.action + (params.toString() ? '?' + params.toString() : ''), {
             headers: {'X-Requested-With': 'XMLHttpRequest'}
         })
@@ -23,18 +20,15 @@ document.addEventListener('DOMContentLoaded', function () {
             .catch(function () {
             });
     }
-
     filtriForm.querySelectorAll('input[type="radio"]').forEach(function (r) {
         r.addEventListener('change', caricaProdotti);
     });
-
     filtriForm.querySelectorAll('input[type="text"], input[type="number"]').forEach(function (inp) {
         inp.addEventListener('input', function () {
             clearTimeout(debounceTimer);
             debounceTimer = setTimeout(caricaProdotti, 400);
         });
     });
-
     var btnAzzera = document.getElementById('btnAzzera');
     if (btnAzzera) {
         btnAzzera.addEventListener('click', function (e) {

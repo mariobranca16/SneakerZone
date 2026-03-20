@@ -11,17 +11,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/registrazione.css">
 </head>
-
 <body>
-
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
 <main>
     <div class="register-page">
         <div class="register-card page-card">
             <h1 class="register-title page-title">Crea il tuo account</h1>
             <p class="register-subtitle page-subtitle">Inserisci i tuoi dati per completare la registrazione</p>
-
             <form id="formRegistrazione" class="register-form" method="post"
                   action="${pageContext.request.contextPath}/registrazione" novalidate>
                 <div class="form-group">
@@ -32,7 +28,6 @@
                         <span class="field-error"><c:out value="${erroreNome}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group">
                     <label for="cognome">Cognome</label>
                     <input type="text" id="cognome" name="cognome"
@@ -41,7 +36,6 @@
                         <span class="field-error"><c:out value="${erroreCognome}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group full">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email"
@@ -50,7 +44,6 @@
                         <span class="field-error"><c:out value="${erroreEmail}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group full">
                     <label for="password">Password</label>
                     <div class="password-wrapper">
@@ -66,7 +59,6 @@
                         <span class="field-error"><c:out value="${errorePassword}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group">
                     <label for="telefono">Telefono</label>
                     <input type="tel" id="telefono" name="telefono"
@@ -75,7 +67,6 @@
                         <span class="field-error"><c:out value="${erroreTelefono}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group">
                     <label for="dataNascita">Data di nascita</label>
                     <input type="date" id="dataNascita" name="dataNascita"
@@ -84,7 +75,6 @@
                         <span class="field-error"><c:out value="${erroreDataNascita}"/></span>
                     </c:if>
                 </div>
-
                 <div class="register-actions">
                     <button class="btn-primary" type="submit">Registrati</button>
                 </div>
@@ -92,10 +82,7 @@
         </div>
     </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-
 <script src="${pageContext.request.contextPath}/js/validazione.js"></script>
-
 </body>
 </html>

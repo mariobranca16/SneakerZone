@@ -1,11 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     'use strict';
-
-    /* ---- Gestione indirizzo checkout ---- */
-
     var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
     var formIndirizzo = document.getElementById('formIndirizzo');
-
     window.selezionaIndirizzoCheckout = function (card) {
         document.querySelectorAll('.profilo-addr-card').forEach(function (c) {
             c.classList.remove('selected');
@@ -23,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('ck-paese').value = card.dataset.paese;
         if (indirizzoFormWrap) indirizzoFormWrap.classList.remove('open');
     };
-
     window.apriNuovoIndirizzo = function () {
         if (!formIndirizzo) return;
         formIndirizzo.reset();
@@ -31,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('indirizzoFrom').value = '';
         apriFormIndirizzo('Nuovo indirizzo', 'Salva indirizzo', indirizzoFormWrap.dataset.actionNuovo);
     };
-
     window.apriEditIndirizzo = function (card) {
         document.getElementById('indirizzoId').value = card.dataset.id;
         document.getElementById('destinatario').value = card.dataset.destinatario;
@@ -43,40 +37,29 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('indirizzoFrom').value = 'checkout';
         apriFormIndirizzo('Modifica indirizzo', 'Salva modifiche', indirizzoFormWrap.dataset.actionModifica);
     };
-
     window.chiudiEditIndirizzo = chiudiFormIndirizzo;
-
-    /* se il form è già aperto (errori server), non interferire */
     var firstCard = document.querySelector('.profilo-addr-card');
     if (indirizzoFormWrap && indirizzoFormWrap.classList.contains('open')) {
-        /* form aperto lato server per errori di validazione: lascialo così */
     } else if (firstCard) {
         selezionaIndirizzoCheckout(firstCard);
     } else if (indirizzoFormWrap) {
-        /* nessun indirizzo salvato: apri subito il form */
         indirizzoFormWrap.classList.add('open');
         document.getElementById('btnAnnullaEdit').hidden = true;
     }
-
-    /* ---- Checkout form ---- */
-
     document.querySelectorAll('.js-card-number').forEach(function (input) {
         input.addEventListener('input', function () {
             var v = this.value.replace(/\D/g, '').substring(0, 16);
             this.value = v.replace(/(.{4})/g, '$1 ').trim();
         });
     });
-
     document.querySelectorAll('.js-card-expiry').forEach(function (input) {
         input.addEventListener('input', function () {
             var v = this.value.replace(/\D/g, '').substring(0, 4);
             this.value = v.length >= 3 ? v.substring(0, 2) + '/' + v.substring(2) : v;
         });
     });
-
     var inputValidation = window.ValidazioneInput;
     if (!inputValidation) return;
-
     var checkoutForm = document.querySelector('.checkout-form');
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', function (e) {
@@ -84,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 el.remove();
             });
             var valido = true;
-
             var ckDestinatario = document.getElementById('ck-destinatario');
             if (!ckDestinatario || !ckDestinatario.value.trim()) {
                 var addrSection = document.getElementById('checkout-addr-section');
@@ -94,7 +76,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (addrSection) addrSection.appendChild(errAddr);
                 valido = false;
             }
-
             function mostraErrore(inputId, msg) {
                 var input = document.getElementById(inputId);
                 if (!input) return;
@@ -105,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 gruppo.appendChild(span);
                 valido = false;
             }
-
             var nomeCarta = document.getElementById('nomeCarta');
             if (nomeCarta) {
                 var nomeVal = inputValidation.normalizeText(nomeCarta.value);
@@ -115,23 +95,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     mostraErrore('nomeCarta', 'Inserisci nome e cognome come appaiono sulla carta (es. Mario Rossi).');
                 }
             }
-
             var numeroCarta = document.getElementById('numeroCarta');
             if (numeroCarta && !inputValidation.isNumeroCartaValido(numeroCarta.value)) {
                 mostraErrore('numeroCarta', 'Inserisci un numero di carta valido (16 cifre).');
             }
-
             var scadenza = document.getElementById('scadenza');
             if (scadenza) {
                 var erroreScadenza = inputValidation.getErroreScadenzaCarta(scadenza.value);
                 if (erroreScadenza) mostraErrore('scadenza', erroreScadenza);
             }
-
             var cvv = document.getElementById('cvv');
             if (cvv && !inputValidation.isCvvValido(cvv.value)) {
                 mostraErrore('cvv', 'CVV non valido (3 o 4 cifre).');
             }
-
             if (!valido) e.preventDefault();
         });
     }

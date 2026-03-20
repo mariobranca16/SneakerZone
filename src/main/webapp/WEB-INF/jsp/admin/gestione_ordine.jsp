@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -11,9 +10,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/admin-prodotto.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
-
 <c:if test="${not empty sessionScope.flashSuccesso}">
     <div class="alert alert-success"><c:out value="${sessionScope.flashSuccesso}"/></div>
     <c:remove var="flashSuccesso" scope="session"/>
@@ -22,7 +19,6 @@
     <div class="alert alert-error"><c:out value="${sessionScope.flashErrore}"/></div>
     <c:remove var="flashErrore" scope="session"/>
 </c:if>
-
 <div class="admin-page-header">
     <div>
         <h1 class="admin-page-title">Ordine #${ordine.id}</h1>
@@ -34,17 +30,12 @@
         </a>
     </div>
 </div>
-
 <div class="admin-card">
-
-
     <div class="admin-grid-3">
-
         <div class="order-info-col">
             <div class="order-info-label">Utente</div>
             <div class="order-info-value">${emailUtente}</div>
         </div>
-
         <div class="order-info-col">
             <div class="order-info-label">Indirizzo di spedizione</div>
             <c:choose>
@@ -61,7 +52,6 @@
                 </c:otherwise>
             </c:choose>
         </div>
-
         <div class="order-info-col">
             <form method="post" action="${pageContext.request.contextPath}/admin/ordini">
                 <input type="hidden" name="id" value="${ordine.id}">
@@ -76,10 +66,7 @@
                 </button>
             </form>
         </div>
-
     </div>
-
-
     <c:if test="${not empty ordine.dettagliOrdine}">
         <div class="order-items">
             <c:forEach var="d" items="${ordine.dettagliOrdine}">
@@ -94,7 +81,6 @@
                             <div class="order-item-thumb-empty"><i class="ti ti-tag"></i></div>
                         </c:otherwise>
                     </c:choose>
-
                     <div class="order-item-info">
                         <div class="order-item-nome">
                             <c:choose>
@@ -110,7 +96,6 @@
                             <span class="order-item-pill">Qty ${d.quantita}</span>
                         </div>
                     </div>
-
                     <div class="order-item-price">
                         <div class="order-item-sub">&euro;&nbsp;<fmt:formatNumber value="${d.subtotale}" type="number"
                                                                                   minFractionDigits="2"
@@ -124,7 +109,6 @@
                     </div>
                 </div>
             </c:forEach>
-
             <div class="order-total-row">
                 <span class="order-total-label">Totale ordine</span>
                 <span class="order-total-value">&euro;&nbsp;<fmt:formatNumber value="${ordine.totaleOrdine}"
@@ -133,13 +117,9 @@
             </div>
         </div>
     </c:if>
-
 </div>
-
 </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/admin/footer_admin.jsp"/>
-
 </body>
 </html>

@@ -1,16 +1,13 @@
 package model.DAO;
-
 import model.Bean.Prodotto;
 import model.Bean.Wishlist;
 import model.ConPool;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 public class WishlistDAO {
     public void addToWishlist(Wishlist wishlist) {
         try (Connection connection = ConPool.getConnection();
@@ -24,7 +21,6 @@ public class WishlistDAO {
             throw new RuntimeException("Errore nell'aggiunta alla wishlist del prodotto con ID: " + wishlist.getIdProdotto(), e);
         }
     }
-
     public void removeFromWishlist(Wishlist wishlist) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -37,7 +33,6 @@ public class WishlistDAO {
             throw new RuntimeException("Errore nella rimozione dalla wishlist del prodotto con ID: " + wishlist.getIdProdotto(), e);
         }
     }
-
     public int countByUtente(long idUtente) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -52,11 +47,9 @@ public class WishlistDAO {
         }
         return 0;
     }
-
     public List<Prodotto> doRetrieveProdottiByUtente(long idUtente) {
         List<Prodotto> prodotti = new ArrayList<>();
         ProdottoDAO prodottoDAO = new ProdottoDAO();
-
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
                      "SELECT p.* FROM Wishlist w " +
@@ -73,5 +66,4 @@ public class WishlistDAO {
         }
         return prodotti;
     }
-
 }

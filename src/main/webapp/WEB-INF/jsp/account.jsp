@@ -14,23 +14,15 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/account.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
-
 <c:if test="${modificaEffettuata}">
     <div class="alert alert-success">
         <i class="ti ti-circle-check"></i>&nbsp; Modifiche salvate con successo.
     </div>
 </c:if>
-
 <main>
     <div class="account-wrap" data-tab="${fn:escapeXml(tabAttiva)}">
-
-
         <h1 class="account-page-title page-title">Profilo</h1>
-
-
         <div class="account-tabs">
             <button class="tab-btn active" type="button" data-section="dati-personali">
                 <i class="ti ti-user-circle"></i>
@@ -45,17 +37,13 @@
                 <span>Indirizzi</span>
             </button>
         </div>
-
-
         <div class="account-section page-card active" id="section-dati-personali">
             <div class="section-header">
                 <h1 class="section-title">Dati personali</h1>
                 <p class="section-subtitle">Gestisci le informazioni del tuo profilo</p>
             </div>
-
             <form id="formDatiPersonali" class="account-form"
                   action="${pageContext.request.contextPath}/myAccount/datiPersonali" method="post" novalidate>
-
                 <div class="form-group">
                     <label for="nome">Nome</label>
                     <input type="text" id="nome" name="nome"
@@ -64,7 +52,6 @@
                         <span class="field-error"><c:out value="${erroreNome}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group">
                     <label for="cognome">Cognome</label>
                     <input type="text" id="cognome" name="cognome"
@@ -73,7 +60,6 @@
                         <span class="field-error"><c:out value="${erroreCognome}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group full">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email"
@@ -82,7 +68,6 @@
                         <span class="field-error"><c:out value="${erroreEmail}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group">
                     <label for="telefono">Telefono</label>
                     <input type="tel" id="telefono" name="telefono"
@@ -91,7 +76,6 @@
                         <span class="field-error"><c:out value="${erroreTelefono}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group">
                     <label for="dataDiNascita">Data di nascita</label>
                     <input type="date" id="dataDiNascita" name="dataDiNascita"
@@ -100,7 +84,6 @@
                         <span class="field-error"><c:out value="${erroreDataNascita}"/></span>
                     </c:if>
                 </div>
-
                 <div class="account-actions">
                     <button class="btn-primary" type="submit">
                         Salva modifiche
@@ -108,17 +91,13 @@
                 </div>
             </form>
         </div>
-
-
         <div class="account-section page-card" id="section-password" hidden>
             <div class="section-header">
                 <h1 class="section-title">Sicurezza</h1>
                 <p class="section-subtitle">Modifica la tua password di accesso</p>
             </div>
-
             <form class="account-form" action="${pageContext.request.contextPath}/myAccount/password" method="post"
                   novalidate id="formPassword">
-
                 <div class="form-group full">
                     <label for="passwordAttuale">Password attuale</label>
                     <div class="password-wrapper">
@@ -133,7 +112,6 @@
                         <span class="field-error"><c:out value="${errorePasswordAttuale}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group full">
                     <label for="nuovaPassword">Nuova password</label>
                     <div class="password-wrapper">
@@ -149,7 +127,6 @@
                         <span class="field-error"><c:out value="${erroreNuovaPassword}"/></span>
                     </c:if>
                 </div>
-
                 <div class="form-group full">
                     <label for="confermaPassword">Conferma nuova password</label>
                     <div class="password-wrapper">
@@ -164,7 +141,6 @@
                         <span class="field-error"><c:out value="${erroreConfermaPassword}"/></span>
                     </c:if>
                 </div>
-
                 <div class="account-actions">
                     <button class="btn-primary" type="submit">
                         <i class="ti ti-key"></i> Aggiorna password
@@ -172,15 +148,11 @@
                 </div>
             </form>
         </div>
-
-
         <div class="account-section page-card" id="section-indirizzo" hidden>
             <div class="section-header">
                 <h1 class="section-title">Indirizzo di spedizione</h1>
                 <p class="section-subtitle">Gestisci i tuoi indirizzi di consegna</p>
             </div>
-
-
             <c:if test="${not empty indirizzi}">
                 <div class="profilo-addr-list">
                     <c:forEach var="ind" items="${indirizzi}">
@@ -219,12 +191,9 @@
                     </c:forEach>
                 </div>
             </c:if>
-
-
             <button type="button" class="btn-aggiungi-indirizzo" onclick="apriNuovoIndirizzo()">
                 Aggiungi un nuovo indirizzo
             </button>
-
             <div class="profilo-edit-section${not empty apriFormIndirizzo ? ' open' : ''}" id="indirizzoFormWrap"
                  data-action-nuovo="${pageContext.request.contextPath}/aggiungi-indirizzo"
                  data-action-modifica="${pageContext.request.contextPath}/myAccount/indirizzo/modifica"
@@ -234,7 +203,6 @@
                       action="${pageContext.request.contextPath}/aggiungi-indirizzo" novalidate>
                     <input type="hidden" name="idIndirizzo" id="indirizzoId">
                     <input type="hidden" name="from" value="profile">
-
                     <div class="form-group full">
                         <label for="destinatario">Destinatario</label>
                         <input type="text" id="destinatario" name="destinatario"
@@ -292,17 +260,11 @@
                 </form>
             </div>
         </div>
-
-
     </div>
-
 </main>
-
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-
 <script src="${pageContext.request.contextPath}/js/validazione.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete.js"></script>
 <script src="${pageContext.request.contextPath}/js/account.js"></script>
-
 </body>
 </html>

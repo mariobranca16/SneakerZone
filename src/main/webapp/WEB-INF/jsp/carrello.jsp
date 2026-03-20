@@ -13,18 +13,14 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/carrello.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
 <main>
     <div class="cart-page">
         <div class="cart-card page-card">
             <h1 class="cart-title page-title">Il tuo carrello</h1>
-
             <c:if test="${not empty erroreCarrello}">
                 <div class="alert alert-error">${erroreCarrello}</div>
             </c:if>
-
             <c:choose>
                 <c:when test="${empty carrello.prodotti}">
                     <div class="cart-empty-state empty-state">
@@ -41,7 +37,6 @@
                         </div>
                     </div>
                 </c:when>
-
                 <c:otherwise>
                     <div class="cart-list">
                         <c:forEach var="item" items="${carrello.prodotti}">
@@ -65,7 +60,6 @@
                                     <span class="cart-field-label">Quantit&agrave;</span>
                                     <span class="cart-field-label">Subtotale</span>
                                     <span class="cart-field-label"></span>
-
                                     <span class="cart-field-value">${item.taglia}</span>
                                     <form class="qty-form" method="post"
                                           action="${pageContext.request.contextPath}/carrello">
@@ -93,7 +87,6 @@
                             </div>
                         </c:forEach>
                     </div>
-
                     <div class="cart-totale">
                         <span class="cart-totale-label">Totale:</span>
                         <span class="cart-totale-valore">
@@ -102,22 +95,18 @@
                                                                             maxFractionDigits="2"/></span>&nbsp;&euro;
                         </span>
                     </div>
-
                     <form class="cart-checkout-form" method="get" action="${pageContext.request.contextPath}/checkout">
                         <button class="btn-primary" type="submit">Procedi all'ordine</button>
                     </form>
                 </c:otherwise>
             </c:choose>
-
             <c:if test="${not empty carrello.prodotti}">
                 <a class="cart-link cart-link-home" href="${pageContext.request.contextPath}/home">Torna alla home</a>
             </c:if>
         </div>
     </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-
 <script src="${pageContext.request.contextPath}/js/carrello.js"></script>
 </body>
 </html>

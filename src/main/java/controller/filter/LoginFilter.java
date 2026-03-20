@@ -1,5 +1,4 @@
 package controller.filter;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebFilter;
@@ -8,9 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Bean.Utente;
-
 import java.io.IOException;
-
 @WebFilter(urlPatterns = {
         "/myAccount",
         "/myAccount/datiPersonali",
@@ -32,14 +29,11 @@ public class LoginFilter extends HttpFilter {
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpSession session = request.getSession(false);
         Utente utente = session != null ? (Utente) session.getAttribute("utenteConnesso") : null;
-
         if (utente == null) {
             request.getSession().setAttribute("redirectDopoLogin", request.getRequestURI());
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
-
         chain.doFilter(request, response);
     }
 }
-

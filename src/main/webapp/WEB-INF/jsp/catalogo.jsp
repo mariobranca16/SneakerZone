@@ -2,33 +2,24 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalogo Prodotti</title>
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/catalogo.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
 <main>
     <div class="catalogo-page">
         <h1 class="catalogo-title page-title">Catalogo</h1>
-
         <div class="catalogo-layout">
-
-
             <aside class="catalogo-sidebar">
                 <form method="get" action="${pageContext.request.contextPath}/catalogo" id="filtriForm">
-
-
                     <div class="sidebar-section">
                         <label for="q" class="sidebar-label">Cerca</label>
                         <div class="sidebar-search-wrap">
@@ -38,8 +29,6 @@
                                    value="${fn:escapeXml(filtroQ)}">
                         </div>
                     </div>
-
-
                     <div class="sidebar-section">
                         <div class="sidebar-label">Categoria</div>
                         <ul class="sidebar-radio-list">
@@ -61,8 +50,6 @@
                             </c:forEach>
                         </ul>
                     </div>
-
-
                     <div class="sidebar-section">
                         <div class="sidebar-label">Genere</div>
                         <ul class="sidebar-radio-list">
@@ -96,8 +83,6 @@
                             </li>
                         </ul>
                     </div>
-
-
                     <div class="sidebar-section">
                         <div class="sidebar-label">Prezzo (&euro;)</div>
                         <div class="sidebar-prezzo-row">
@@ -114,43 +99,27 @@
                                    value="${fn:escapeXml(filtroPrezzoMax)}">
                         </div>
                     </div>
-
-
                     <div class="sidebar-actions">
                         <a id="btnAzzera" class="sidebar-btn sidebar-btn--reset"
                            href="${pageContext.request.contextPath}/catalogo">
                             <i class="ti ti-x"></i> Azzera filtri
                         </a>
                     </div>
-
                 </form>
             </aside>
-
-
             <div class="catalogo-risultati">
-
                 <c:if test="${not empty messaggio}">
                     <div class="alert alert-success">${messaggio}</div>
                 </c:if>
-
                 <div id="risultatiProdotti">
                     <jsp:include page="/WEB-INF/jsp/catalogo_risultati.jsp"/>
                 </div>
-
             </div>
-
-
         </div>
-
-
         <a class="catalogo-link-back" href="${pageContext.request.contextPath}/home">Torna alla home</a>
     </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-
-
 <script src="${pageContext.request.contextPath}/js/catalogo.js"></script>
-
 </body>
 </html>

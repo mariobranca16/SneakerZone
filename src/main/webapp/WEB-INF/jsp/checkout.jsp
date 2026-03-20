@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -16,27 +15,19 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/checkout.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
 <main>
     <div class="checkout-page">
-
         <c:if test="${not empty erroreStock}">
             <div class="alert alert-error alert-wide">
                 <i class="ti ti-alert-circle"></i>&nbsp;<c:out value="${erroreStock}"/>
             </div>
         </c:if>
-
-
         <h1 class="checkout-title page-title">Checkout</h1>
-
-
         <div class="checkout-card page-card">
             <h2 class="checkout-section-title">
                 <i class="ti ti-shopping-bag"></i> Riepilogo ordine
             </h2>
-
             <div class="checkout-items">
                 <c:forEach var="item" items="${carrello.prodotti}">
                     <div class="checkout-item">
@@ -58,7 +49,6 @@
                     </div>
                 </c:forEach>
             </div>
-
             <div class="checkout-total-row">
                 <span class="checkout-total-label">Totale</span>
                 <span class="checkout-total-value">
@@ -67,19 +57,15 @@
                 </span>
             </div>
         </div>
-
-
         <div class="checkout-card page-card" id="checkout-addr-section">
             <h2 class="checkout-section-title">
                 <i class="ti ti-map-pin"></i> Indirizzo di spedizione
             </h2>
-
             <c:if test="${not empty erroreDestinatario or not empty erroreVia or not empty erroreCap or not empty erroreCitta or not empty erroreProvincia or not empty errorePaese}">
                 <div class="alert alert-error checkout-addr-alert">
                     Seleziona o inserisci un indirizzo di spedizione valido.
                 </div>
             </c:if>
-
             <c:if test="${not empty indirizzi}">
                 <div class="profilo-addr-list">
                     <c:forEach var="ind" items="${indirizzi}">
@@ -105,11 +91,9 @@
                     </c:forEach>
                 </div>
             </c:if>
-
             <button type="button" class="btn-aggiungi-indirizzo" onclick="apriNuovoIndirizzo()">
                 Aggiungi un nuovo indirizzo
             </button>
-
             <div class="profilo-edit-section${not empty apriFormIndirizzo ? ' open' : ''}" id="indirizzoFormWrap"
                  data-action-nuovo="${pageContext.request.contextPath}/aggiungi-indirizzo"
                  data-action-modifica="${pageContext.request.contextPath}/myAccount/indirizzo/modifica">
@@ -118,7 +102,6 @@
                       action="${pageContext.request.contextPath}/aggiungi-indirizzo" novalidate>
                     <input type="hidden" name="idIndirizzo" id="indirizzoId">
                     <input type="hidden" name="from" id="indirizzoFrom" value="">
-
                     <div class="form-group full">
                         <label for="destinatario">Destinatario</label>
                         <input type="text" id="destinatario" name="destinatario"
@@ -158,10 +141,7 @@
                 </form>
             </div>
         </div>
-
-
         <form class="checkout-form" method="post" action="${pageContext.request.contextPath}/checkout">
-
             <input type="hidden" name="destinatario" id="ck-destinatario"
                    value="${fn:escapeXml(indirizzoPrecompilato.destinatario)}">
             <input type="hidden" name="via" id="ck-via"
@@ -174,13 +154,10 @@
                    value="${fn:escapeXml(indirizzoPrecompilato.provincia)}">
             <input type="hidden" name="paese" id="ck-paese"
                    value="${fn:escapeXml(indirizzoPrecompilato.paese)}">
-
-
             <div class="checkout-card page-card">
                 <h2 class="checkout-section-title">
                     <i class="ti ti-credit-card"></i> Dati di pagamento
                 </h2>
-
                 <div class="pay-grid">
                     <div class="pay-group pay-full">
                         <label class="pay-label" for="nomeCarta">Nome sulla carta</label>
@@ -226,28 +203,19 @@
                         </c:if>
                     </div>
                 </div>
-
             </div>
-
-
             <button class="btn-confirm" type="submit">
                 <i class="ti ti-lock"></i> Conferma ordine
             </button>
-
         </form>
-
         <a class="checkout-back" href="${pageContext.request.contextPath}/carrello">
             <i class="ti ti-arrow-left"></i> Torna al carrello
         </a>
-
     </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-
 <script src="${pageContext.request.contextPath}/js/validazione.js"></script>
 <script src="${pageContext.request.contextPath}/js/autocomplete.js"></script>
 <script src="${pageContext.request.contextPath}/js/checkout.js"></script>
-
 </body>
 </html>

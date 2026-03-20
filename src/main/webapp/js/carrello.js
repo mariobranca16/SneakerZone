@@ -3,12 +3,10 @@ function enforceQtyBounds(input) {
     if (isNaN(val) || val < 1) input.value = 1;
     else if (val > 99) input.value = 99;
 }
-
 function aggiornaTotale(totale) {
     var el = document.getElementById('cart-totale-valore');
     if (el) el.textContent = parseFloat(totale).toFixed(2).replace('.', ',');
 }
-
 function inviaFormAjax(form, body, onSuccess) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', form.getAttribute('action'), true);
@@ -32,27 +30,23 @@ function inviaFormAjax(form, body, onSuccess) {
     };
     xhr.send(body);
 }
-
 function inviaRimozione(form) {
     var id = form.querySelector('[name="id"]').value;
     var taglia = form.querySelector('[name="taglia"]').value;
     var body = 'azione=rimuovi&id=' + encodeURIComponent(id) + '&taglia=' + encodeURIComponent(taglia) + '&ajax=1';
     var row = form.closest('tr');
-
     inviaFormAjax(form, body, function (data) {
         if (row) row.remove();
         if (data.vuoto) window.location.reload();
         else aggiornaTotale(data.totale);
     });
 }
-
 function inviaAggiornamento(form) {
     var id = form.querySelector('[name="id"]').value;
     var taglia = form.querySelector('[name="taglia"]').value;
     var quantita = form.querySelector('[name="quantita"]').value;
     var body = 'azione=aggiorna&id=' + encodeURIComponent(id) + '&taglia=' + encodeURIComponent(taglia) + '&quantita=' + encodeURIComponent(quantita) + '&ajax=1';
     var row = form.closest('tr');
-
     inviaFormAjax(form, body, function (data) {
         if (data.rimosso) {
             if (row) row.remove();
@@ -69,7 +63,6 @@ function inviaAggiornamento(form) {
         aggiornaTotale(data.totale);
     });
 }
-
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.qty-input').forEach(function (input) {
         input.addEventListener('change', function () {
@@ -78,14 +71,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (form) inviaAggiornamento(form);
         });
     });
-
     document.querySelectorAll('.qty-form').forEach(function (form) {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             inviaAggiornamento(form);
         });
     });
-
     document.querySelectorAll('.inline-form').forEach(function (form) {
         form.addEventListener('submit', function (e) {
             e.preventDefault();

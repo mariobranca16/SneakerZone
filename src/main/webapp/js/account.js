@@ -1,10 +1,8 @@
 (function () {
     'use strict';
-
     var inputValidation = window.ValidazioneInput;
     var tabBtns = document.querySelectorAll('.tab-btn');
     var sections = document.querySelectorAll('.account-section');
-
     function mostraSezione(sectionId) {
         tabBtns.forEach(function (b) {
             b.classList.toggle('active', b.dataset.section === sectionId);
@@ -15,30 +13,25 @@
             s.hidden = !attiva;
         });
     }
-
     tabBtns.forEach(function (btn) {
         btn.addEventListener('click', function () {
             mostraSezione(btn.dataset.section);
             chiudiEditIndirizzo();
         });
     });
-
     var wrap = document.querySelector('.account-wrap');
     var tabAttiva = wrap ? wrap.dataset.tab : '';
     var urlParams = new URLSearchParams(window.location.search);
     var sectionParam = urlParams.get('section') || tabAttiva;
     if (sectionParam) mostraSezione(sectionParam);
-
     var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
     var formIndirizzo = document.getElementById('formIndirizzo');
-
     window.apriNuovoIndirizzo = function () {
         if (!formIndirizzo) return;
         formIndirizzo.reset();
         document.getElementById('indirizzoId').value = '';
         apriFormIndirizzo('Nuovo indirizzo', 'Salva indirizzo', indirizzoFormWrap.dataset.actionNuovo);
     };
-
     window.apriEditIndirizzo = function (card) {
         document.getElementById('indirizzoId').value = card.dataset.id;
         document.getElementById('destinatario').value = card.dataset.destinatario;
@@ -49,17 +42,13 @@
         document.getElementById('paese').value = card.dataset.paese;
         apriFormIndirizzo('Modifica indirizzo', 'Salva modifiche', indirizzoFormWrap.dataset.actionModifica);
     };
-
     window.chiudiEditIndirizzo = chiudiFormIndirizzo;
-
     if (indirizzoFormWrap && indirizzoFormWrap.dataset.apriEdit === 'true') {
         apriFormIndirizzo('Modifica indirizzo', 'Salva modifiche', indirizzoFormWrap.dataset.actionModifica);
     }
-
     if (!inputValidation) {
         return;
     }
-
     var formPassword = document.getElementById('formPassword');
     if (formPassword) {
         formPassword.addEventListener('submit', function (e) {
@@ -67,7 +56,6 @@
                 el.remove();
             });
             var valido = true;
-
             function mostraErrorePassword(inputId, messaggio) {
                 var input = document.getElementById(inputId);
                 if (!input) return;
@@ -78,11 +66,9 @@
                 gruppo.appendChild(span);
                 valido = false;
             }
-
             var attuale = document.getElementById('passwordAttuale').value;
             var nuova = document.getElementById('nuovaPassword').value;
             var conferma = document.getElementById('confermaPassword').value;
-
             if (!attuale) mostraErrorePassword('passwordAttuale', 'Inserisci la password attuale.');
             if (!nuova) {
                 mostraErrorePassword('nuovaPassword', 'Inserisci una nuova password.');
@@ -93,7 +79,6 @@
             if (!valido) e.preventDefault();
         });
     }
-
     var formDatiPersonali = document.getElementById('formDatiPersonali');
     if (formDatiPersonali) {
         formDatiPersonali.addEventListener('submit', function (e) {
@@ -101,7 +86,6 @@
                 el.remove();
             });
             var valido = true;
-
             function mostraErroreDati(inputId, messaggio) {
                 var input = document.getElementById(inputId);
                 if (!input) return;
@@ -112,13 +96,11 @@
                 gruppo.appendChild(span);
                 valido = false;
             }
-
             var nome = inputValidation.normalizeText(document.getElementById('nome').value);
             var cognome = inputValidation.normalizeText(document.getElementById('cognome').value);
             var email = inputValidation.normalizeText(document.getElementById('email').value);
             var telefono = document.getElementById('telefono').value;
             var dataNasc = document.getElementById('dataDiNascita').value;
-
             if (!nome) {
                 mostraErroreDati('nome', 'Il nome e obbligatorio.');
             } else if (!inputValidation.isNomeValido(nome)) {
@@ -147,6 +129,4 @@
             if (!valido) e.preventDefault();
         });
     }
-
-
 })();

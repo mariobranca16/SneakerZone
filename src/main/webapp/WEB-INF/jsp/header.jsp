@@ -1,18 +1,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <header class="topbar">
     <div class="topbar-inner">
-
         <a class="topbar-logo" href="${pageContext.request.contextPath}/home">
             <img src="${pageContext.request.contextPath}/images/logo.png" alt="SneakerZone">
         </a>
-
         <nav>
             <ul class="topbar-nav">
                 <li><a href="${pageContext.request.contextPath}/catalogo">
                     <i class="ti ti-building-store topbar-nav-icon"></i><span class="topbar-nav-label"> Catalogo</span>
                 </a></li>
-
                 <c:if test="${not empty sessionScope.utenteConnesso}">
                     <li>
                         <a class="topbar-icon-btn" href="${pageContext.request.contextPath}/wishlist"
@@ -24,7 +20,6 @@
                         </a>
                     </li>
                 </c:if>
-
                 <c:choose>
                     <c:when test="${not empty sessionScope.utenteConnesso}">
                         <li class="dropdown">
@@ -50,7 +45,6 @@
                         </a></li>
                     </c:otherwise>
                 </c:choose>
-
                 <li>
                     <a class="topbar-icon-btn" href="${pageContext.request.contextPath}/carrello" aria-label="Carrello">
                         <i class="ti ti-shopping-cart"></i>
@@ -61,6 +55,5 @@
                 </li>
             </ul>
         </nav>
-
     </div>
 </header>

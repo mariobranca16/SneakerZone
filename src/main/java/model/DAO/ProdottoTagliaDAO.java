@@ -1,8 +1,6 @@
 package model.DAO;
-
 import model.Bean.ProdottoTaglia;
 import model.ConPool;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,11 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 public class ProdottoTagliaDAO {
-
     public static final int[] TAGLIE_DISPONIBILI = {35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46};
-
     public static List<ProdottoTaglia> buildFromParams(Map<String, String[]> params, long idProdotto) {
         List<ProdottoTaglia> taglie = new ArrayList<>();
         for (int taglia : TAGLIE_DISPONIBILI) {
@@ -35,7 +30,6 @@ public class ProdottoTagliaDAO {
         }
         return taglie;
     }
-
     public void doDeleteByProdotto(Connection connection, long idProdotto) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(
                 "DELETE FROM Prodotto_Taglia WHERE prodotto_id = ?"
@@ -44,11 +38,9 @@ public class ProdottoTagliaDAO {
             ps.executeUpdate();
         }
     }
-
     public void doSaveOrUpdate(Connection connection, ProdottoTaglia pt) throws SQLException {
         if (pt.getQuantita() < 0)
             throw new IllegalArgumentException("La quantità non può essere negativa");
-
         try (PreparedStatement ps = connection.prepareStatement(
                 "INSERT INTO Prodotto_Taglia (prodotto_id, taglia, quantita) VALUES (?, ?, ?) " +
                         "ON DUPLICATE KEY UPDATE quantita = ?"
@@ -60,7 +52,6 @@ public class ProdottoTagliaDAO {
             ps.executeUpdate();
         }
     }
-
     public int doRetrieveDisponibilita(long idProdotto, int taglia) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -77,7 +68,6 @@ public class ProdottoTagliaDAO {
         }
         return 0;
     }
-
     public List<ProdottoTaglia> doRetrieveDisponibilitaByProdotto(long idProdotto) {
         List<ProdottoTaglia> taglie = new ArrayList<>();
         try (Connection connection = ConPool.getConnection();
@@ -99,7 +89,6 @@ public class ProdottoTagliaDAO {
         }
         return taglie;
     }
-
     public void incrementaDisponibilita(Connection connection, long idProdotto, int taglia, int quantita) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(
                 "UPDATE Prodotto_Taglia SET quantita = quantita + ? WHERE prodotto_id = ? AND taglia = ?"
@@ -111,7 +100,6 @@ public class ProdottoTagliaDAO {
                 throw new RuntimeException("Incremento non riuscito, prodotto o taglia non trovati");
         }
     }
-
     public void decrementaDisponibilita(Connection connection, long idProdotto, int taglia, int quantita) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(
                 "UPDATE Prodotto_Taglia SET quantita = quantita - ? WHERE prodotto_id = ? AND taglia = ? AND quantita >= ?"

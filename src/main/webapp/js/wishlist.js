@@ -14,17 +14,13 @@ function aggiornaBadgeWishlist(count) {
         badge.remove();
     }
 }
-
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.form-wishlist').forEach(function (form) {
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-
             var btn = form.querySelector('button[type="submit"]');
             var idProdotto = form.querySelector('[name="idProdotto"]').value;
-
             btn.disabled = true;
-
             fetch(form.action, {
                 method: 'POST',
                 headers: {

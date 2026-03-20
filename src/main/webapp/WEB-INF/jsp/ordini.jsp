@@ -13,9 +13,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ordini.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
 <main>
     <div class="ordini-page">
         <c:choose>
@@ -37,7 +35,6 @@
                     </div>
                 </div>
             </c:when>
-
             <c:otherwise>
                 <div class="ordini-card page-card">
                     <h1 class="ordini-title page-title">I tuoi ordini</h1>
@@ -45,7 +42,6 @@
                     <div class="ordini-list">
                         <c:forEach var="ordine" items="${ordini}">
                             <div class="ordine-card ${ordine.statoCssClass}">
-
                                 <div class="ordine-header">
                                     <div class="ordine-header-left">
                                         <span class="ordine-num">Ordine <strong>#${ordine.id}</strong></span>
@@ -64,7 +60,6 @@
                                         </span>
                                         </div>
                                     </div>
-
                                     <div class="ordine-header-right">
                                         <c:choose>
                                             <c:when test="${ordine.consegnato}">
@@ -88,7 +83,6 @@
                                             </span>
                                             </c:when>
                                         </c:choose>
-
                                         <c:if test="${ordine.inElaborazione}">
                                             <form class="ordine-annulla-form" method="post"
                                                   action="${pageContext.request.contextPath}/modifica-ordine">
@@ -102,7 +96,6 @@
                                         </c:if>
                                     </div>
                                 </div>
-
                                 <c:if test="${not empty ordine.indirizzo}">
                                     <div class="ordine-indirizzo">
                                         <i class="ti ti-map-pin" aria-hidden="true"></i>
@@ -110,7 +103,6 @@
                                             ${ordine.indirizzo.cap} (${ordine.indirizzo.provincia})
                                     </div>
                                 </c:if>
-
                                 <div class="ordine-items">
                                     <c:forEach var="item" items="${ordine.dettagliOrdine}">
                                         <a class="ordine-item" href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.id}">
@@ -139,7 +131,6 @@
                                         </a>
                                     </c:forEach>
                                 </div>
-
                                 <div class="ordine-footer">
                                     <span class="ordine-totale-label">Totale ordine</span>
                                     <span class="ordine-totale-amount">
@@ -147,18 +138,14 @@
                                                       minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                                 </span>
                                 </div>
-
                             </div>
                         </c:forEach>
                     </div>
                 </div>
             </c:otherwise>
         </c:choose>
-
     </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-
 </body>
 </html>

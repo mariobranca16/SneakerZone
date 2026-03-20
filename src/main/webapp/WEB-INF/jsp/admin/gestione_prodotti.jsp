@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -12,9 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/admin-prodotti.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
-
 <c:if test="${not empty sessionScope.flashSuccesso}">
     <div class="alert alert-success"><c:out value="${sessionScope.flashSuccesso}"/></div>
     <c:remove var="flashSuccesso" scope="session"/>
@@ -23,8 +20,6 @@
     <div class="alert alert-error"><c:out value="${sessionScope.flashErrore}"/></div>
     <c:remove var="flashErrore" scope="session"/>
 </c:if>
-
-
 <div class="admin-page-header">
     <div>
         <h1 class="admin-page-title">Catalogo prodotti</h1>
@@ -41,10 +36,7 @@
         </a>
     </div>
 </div>
-
-
 <div class="admin-card admin-card--flush">
-
     <c:choose>
         <c:when test="${empty prodotti}">
             <div class="prod-empty">
@@ -123,13 +115,9 @@
             </div>
         </c:otherwise>
     </c:choose>
-
 </div>
-
 </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/admin/footer_admin.jsp"/>
-
 </body>
 </html>

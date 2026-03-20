@@ -12,13 +12,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
 <c:if test="${not empty messaggioHome}">
     <div class="alert alert-success"><c:out value="${messaggioHome}"/></div>
 </c:if>
-
 <main>
     <section class="hero">
         <div class="hero-content">
@@ -27,7 +24,6 @@
             <a href="${pageContext.request.contextPath}/catalogo" class="btn">Acquista ora</a>
         </div>
     </section>
-
     <section class="evidenza">
         <div class="evidenza-header">
             <h2>Prodotti in evidenza</h2>
@@ -67,8 +63,6 @@
         </div>
     </section>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-
 </body>
 </html>

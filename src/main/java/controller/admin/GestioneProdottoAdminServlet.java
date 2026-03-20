@@ -1,5 +1,4 @@
 package controller.admin;
-
 import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -10,21 +9,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import model.Bean.*;
 import model.DAO.*;
-
 import java.io.IOException;
 import java.util.*;
-
 @MultipartConfig(maxFileSize = 5 * 1024 * 1024)
 @WebServlet(name = "gestioneProdottoAdmin", urlPatterns = "/admin/prodotto")
 public class GestioneProdottoAdminServlet extends HttpServlet {
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idParam = request.getParameter("id");
         Prodotto prodotto = null;
         String titoloPagina = "Nuovo prodotto";
         Set<Long> idCategorieSelezionate = new HashSet<>();
-
         if (idParam != null && !idParam.isBlank()) {
             long id;
             try {
@@ -33,28 +28,23 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/admin/prodotti");
                 return;
             }
-
             prodotto = new ProdottoDAO().doRetrieveByKey(id);
             if (prodotto == null) {
                 response.sendRedirect(request.getContextPath() + "/admin/prodotti");
                 return;
             }
-
             titoloPagina = "Modifica prodotto";
             CategoriaDAO categoriaDAO = new CategoriaDAO();
             for (Categoria c : categoriaDAO.doRetrieveByProdotto(prodotto.getId())) {
                 idCategorieSelezionate.add(c.getId());
             }
         }
-
         caricaDatiForm(request, prodotto, titoloPagina, idCategorieSelezionate, null);
         request.getRequestDispatcher("/WEB-INF/jsp/admin/gestione_prodotto.jsp").forward(request, response);
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-
         String idParam = ValidatoreInput.normalizzaTesto(request.getParameter("id"));
         String nome = ValidatoreInput.normalizzaTesto(request.getParameter("nome"));
         String descrizione = ValidatoreInput.normalizzaTesto(request.getParameter("descrizione"));
@@ -62,11 +52,9 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
         String colore = ValidatoreInput.normalizzaTesto(request.getParameter("colore"));
         String genere = ValidatoreInput.normalizzaTesto(request.getParameter("genere"));
         String costoParam = ValidatoreInput.normalizzaTesto(request.getParameter("costo"));
-
         ProdottoDAO prodottoDAO = new ProdottoDAO();
         Prodotto prodotto;
         String titoloPagina = "Nuovo prodotto";
-
         if (idParam != null && !idParam.isBlank()) {
             long id;
             try {
@@ -75,7 +63,6 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/admin/prodotti");
                 return;
             }
-
             prodotto = prodottoDAO.doRetrieveByKey(id);
             if (prodotto == null) {
                 response.sendRedirect(request.getContextPath() + "/admin/prodotti");
@@ -85,42 +72,34 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
         } else {
             prodotto = new Prodotto();
         }
-
         if (!ValidatoreInput.contieneTesto(genere)) {
             genere = "Unisex";
         }
-
         boolean hasError = false;
-
         if (!ValidatoreInput.isNomeProdottoValido(nome)) {
             request.setAttribute("erroreNome", !ValidatoreInput.contieneTesto(nome)
                     ? "Il nome e obbligatorio."
                     : "Il nome non puo superare 150 caratteri.");
             hasError = true;
         }
-
         if (!ValidatoreInput.isBrandProdottoValido(brand)) {
             request.setAttribute("erroreBrand", !ValidatoreInput.contieneTesto(brand)
                     ? "Il brand e obbligatorio."
                     : "Il brand non puo superare 100 caratteri.");
             hasError = true;
         }
-
         if (!ValidatoreInput.isDescrizioneProdottoValida(descrizione)) {
             request.setAttribute("erroreDescrizione", "La descrizione non puo superare 2000 caratteri.");
             hasError = true;
         }
-
         if (!ValidatoreInput.isColoreProdottoValido(colore)) {
             request.setAttribute("erroreColore", "Il colore non puo superare 50 caratteri.");
             hasError = true;
         }
-
         if (!ValidatoreInput.isGenereProdottoValido(genere)) {
             request.setAttribute("erroreGenere", "Seleziona un genere valido.");
             hasError = true;
         }
-
         boolean costoValido = false;
         double costo = 0;
         if (!ValidatoreInput.contieneTesto(costoParam)) {
@@ -143,7 +122,6 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
                 hasError = true;
             }
         }
-
         CategoriaDAO categoriaDAO = new CategoriaDAO();
         Set<Long> idCategorie = new HashSet<>();
         boolean hasInvalidCategorie = false;
@@ -164,12 +142,10 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
             request.setAttribute("erroreCategorie", "Le categorie selezionate non sono valide.");
             hasError = true;
         }
-
         List<ProdottoTaglia> taglie = new ArrayList<>();
         Map<Integer, String> valoriFormTaglie = new LinkedHashMap<>();
         boolean hasInvalidTaglie = false;
         boolean hasPositiveQuantity = false;
-
         for (int taglia : ProdottoTagliaDAO.TAGLIE_DISPONIBILI) {
             String raw = request.getParameter("q_" + taglia);
             String valore = raw == null ? "" : raw.trim();
@@ -177,7 +153,6 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
                 valore = "0";
             }
             valoriFormTaglie.put(taglia, valore);
-
             int quantita;
             try {
                 quantita = Integer.parseInt(valore);
@@ -185,23 +160,19 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
                 hasInvalidTaglie = true;
                 continue;
             }
-
             if (quantita < 0) {
                 hasInvalidTaglie = true;
                 continue;
             }
-
             if (quantita > 0) {
                 hasPositiveQuantity = true;
             }
-
             ProdottoTaglia pt = new ProdottoTaglia();
             pt.setIdProdotto(prodotto.getId());
             pt.setTaglia(taglia);
             pt.setQuantita(quantita);
             taglie.add(pt);
         }
-
         if (hasInvalidTaglie) {
             request.setAttribute("erroreTaglie", "Le quantita devono essere numeri interi maggiori o uguali a zero.");
             hasError = true;
@@ -209,27 +180,22 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
             request.setAttribute("erroreTaglie", "Inserisci almeno una taglia con quantita disponibile maggiore di zero.");
             hasError = true;
         }
-
         prodotto.setNome(nome);
         prodotto.setDescrizione(descrizione);
         prodotto.setBrand(brand);
         prodotto.setColore(colore);
         prodotto.setGenere(genere);
         prodotto.setTaglie(taglie);
-
         if (costoValido) {
             prodotto.setCosto(costo);
         }
-
         if (hasError) {
             request.setAttribute("formCosto", costoParam);
             caricaDatiForm(request, prodotto, titoloPagina, idCategorie, valoriFormTaglie);
             request.getRequestDispatcher("/WEB-INF/jsp/admin/gestione_prodotto.jsp").forward(request, response);
             return;
         }
-
         prodotto.setCosto(costo);
-
         if (prodotto.getId() > 0) {
             prodottoDAO.doUpdate(prodotto);
             new ProdottoCategoriaDAO().doReplace(prodotto.getId(), idCategorie);
@@ -238,14 +204,12 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/admin/prodotti");
             return;
         }
-
         prodottoDAO.doSave(prodotto);
         new ProdottoCategoriaDAO().doReplace(prodotto.getId(), idCategorie);
         salvaImmagine(request, prodotto.getId());
         request.getSession().setAttribute("flashSuccesso", "Prodotto creato con successo");
         response.sendRedirect(request.getContextPath() + "/admin/prodotto?id=" + prodotto.getId());
     }
-
     private void salvaImmagine(HttpServletRequest request, long idProdotto) throws ServletException, IOException {
         Part part = request.getPart("fileImmagine");
         if (part == null || part.getSize() == 0) return;
@@ -258,14 +222,11 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
         String imgPath = "/uploads/prodotti/" + nomeFile;
         new ImmagineProdottoDAO().doSaveWithFile(idProdotto, bytes, uploadDir, nomeFile, imgPath);
     }
-
-    // carica tutti i dati necessari alla pagina form prodotto (categorie, taglie, immagini, recensioni)
     private void caricaDatiForm(HttpServletRequest request, Prodotto prodotto, String titoloPagina,
                                 Set<Long> idCategorieSelezionate, Map<Integer, String> quantitaPerTaglia) {
         request.setAttribute("prodotto", prodotto);
         request.setAttribute("titoloPagina", titoloPagina);
         request.setAttribute("taglieDisponibili", ProdottoTagliaDAO.TAGLIE_DISPONIBILI);
-
         if (quantitaPerTaglia == null) {
             Map<Integer, String> mappa = new LinkedHashMap<>();
             for (int t : ProdottoTagliaDAO.TAGLIE_DISPONIBILI) {
@@ -281,15 +242,12 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
             quantitaPerTaglia = mappa;
         }
         request.setAttribute("quantitaPerTaglia", quantitaPerTaglia);
-
         request.setAttribute("tutteCategorie", new CategoriaDAO().doRetrieveAll());
         request.setAttribute("idCategorieSelezionate",
                 idCategorieSelezionate != null ? idCategorieSelezionate : Collections.emptySet());
-
         if (prodotto != null && prodotto.getId() > 0) {
             List<Recensione> recensioni = new RecensioneDAO().doRetrieveByProdotto(prodotto.getId());
             request.setAttribute("recensioni", recensioni);
-
             UtenteDAO utenteDAO = new UtenteDAO();
             Map<Long, String> emailUtenti = new HashMap<>();
             for (Recensione rec : recensioni) {
@@ -301,5 +259,4 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
             request.setAttribute("emailUtenti", emailUtenti);
         }
     }
-
 }

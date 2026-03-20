@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -12,9 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/admin/admin-prodotto.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
-
 <c:if test="${not empty sessionScope.flashSuccesso}">
     <div class="alert alert-success"><c:out value="${sessionScope.flashSuccesso}"/></div>
     <c:remove var="flashSuccesso" scope="session"/>
@@ -23,7 +20,6 @@
     <div class="alert alert-error"><c:out value="${sessionScope.flashErrore}"/></div>
     <c:remove var="flashErrore" scope="session"/>
 </c:if>
-
 <div class="admin-page-header">
     <div>
         <h1 class="admin-page-title">${titoloPagina}</h1>
@@ -37,20 +33,14 @@
         </a>
     </div>
 </div>
-
-
 <div class="admin-card">
     <div class="admin-card-title"><i class="ti ti-package"></i> Dati prodotto e taglie</div>
-
     <form method="post" action="${pageContext.request.contextPath}/admin/prodotto" class="admin-form"
           enctype="multipart/form-data">
         <c:if test="${prodotto != null && prodotto.id > 0}">
             <input type="hidden" name="id" value="${prodotto.id}">
         </c:if>
-
-
         <div class="form-grid">
-
             <div class="form-row">
                 <label class="label" for="nome">Nome</label>
                 <input class="input" type="text" id="nome" name="nome"
@@ -59,7 +49,6 @@
                     <div class="form-error"><c:out value="${erroreNome}"/></div>
                 </c:if>
             </div>
-
             <div class="form-row">
                 <label class="label" for="brand">Brand</label>
                 <input class="input" type="text" id="brand" name="brand"
@@ -68,7 +57,6 @@
                     <div class="form-error"><c:out value="${erroreBrand}"/></div>
                 </c:if>
             </div>
-
             <div class="form-row">
                 <label class="label" for="colore">Colore</label>
                 <input class="input" type="text" id="colore" name="colore"
@@ -77,7 +65,6 @@
                     <div class="form-error"><c:out value="${erroreColore}"/></div>
                 </c:if>
             </div>
-
             <div class="form-row">
                 <label class="label" for="genere">Genere</label>
                 <select class="input" id="genere" name="genere">
@@ -91,7 +78,6 @@
                     <div class="form-error"><c:out value="${erroreGenere}"/></div>
                 </c:if>
             </div>
-
             <div class="form-row">
                 <label class="label" for="costo">Prezzo (&euro;)</label>
                 <input class="input" type="text" id="costo" name="costo"
@@ -101,7 +87,6 @@
                     <div class="form-error"><c:out value="${erroreCosto}"/></div>
                 </c:if>
             </div>
-
             <div class="form-row form-row--full">
                 <label class="label" for="descrizione">Descrizione</label>
                 <textarea class="textarea" id="descrizione" name="descrizione"
@@ -110,10 +95,7 @@
                     <div class="form-error"><c:out value="${erroreDescrizione}"/></div>
                 </c:if>
             </div>
-
         </div>
-
-
         <div class="taglie-section">
             <div class="taglie-section-title">Taglie e disponibilit&agrave;</div>
             <div class="taglie-grid">
@@ -129,8 +111,6 @@
                 <div class="form-error"><c:out value="${erroreTaglie}"/></div>
             </c:if>
         </div>
-
-
         <div class="taglie-section">
             <div class="taglie-section-title">Categorie</div>
             <div class="taglie-grid">
@@ -147,7 +127,6 @@
                 <div class="form-error"><c:out value="${erroreCategorie}"/></div>
             </c:if>
         </div>
-
         <div class="form-row form-row--full">
             <label class="label" for="fileImmagine">Immagine prodotto</label>
             <input class="input" type="file" id="fileImmagine" name="fileImmagine"
@@ -160,7 +139,6 @@
                 </span>
             </c:if>
         </div>
-
         <div class="admin-actions">
             <button class="btn btn--primary" type="submit">
                 Salva prodotto
@@ -168,14 +146,11 @@
         </div>
     </form>
 </div>
-
-
 <c:if test="${prodotto != null && prodotto.id > 0}">
     <div class="admin-card admin-card--flush">
         <div class="admin-card-title">
             <i class="ti ti-star"></i> Recensioni
         </div>
-
         <c:choose>
             <c:when test="${empty recensioni}">
                 <p class="admin-empty-note">
@@ -231,11 +206,8 @@
         </c:choose>
     </div>
 </c:if>
-
 </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/admin/footer_admin.jsp"/>
-
 </body>
 </html>

@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -14,12 +13,9 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/conferma_ordine.css">
 </head>
 <body>
-
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
-
 <main>
     <div class="confirm-page">
-
         <div class="confirm-banner">
             <i class="ti ti-circle-check confirm-banner-icon" aria-hidden="true"></i>
             <div>
@@ -30,9 +26,7 @@
                 </p>
             </div>
         </div>
-
         <div class="confirm-card">
-
             <div class="confirm-info">
                 <div class="confirm-info-row">
                     <span class="confirm-info-label">Numero ordine</span>
@@ -65,9 +59,7 @@
                     </div>
                 </c:if>
             </div>
-
             <div class="confirm-section-title">Prodotti ordinati</div>
-
             <div class="confirm-items">
                 <c:forEach var="d" items="${ordine.dettagliOrdine}">
                     <div class="confirm-item">
@@ -91,7 +83,6 @@
                     </div>
                 </c:forEach>
             </div>
-
             <div class="confirm-total">
                 <span class="confirm-total-label">Totale</span>
                 <span class="confirm-total-value">
@@ -99,7 +90,6 @@
                                       minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                 </span>
             </div>
-
             <div class="confirm-actions">
                 <a class="confirm-btn-primary" href="${pageContext.request.contextPath}/ordini">
                     I miei ordini
@@ -108,12 +98,9 @@
                     Continua lo shopping
                 </a>
             </div>
-
         </div>
     </div>
 </main>
-
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
-
 </body>
 </html>

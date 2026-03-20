@@ -1,5 +1,4 @@
 package controller;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,36 +8,29 @@ import jakarta.servlet.http.HttpSession;
 import model.Bean.IndirizzoSpedizione;
 import model.Bean.Utente;
 import model.DAO.IndirizzoSpedizioneDAO;
-
 import java.io.IOException;
 import java.util.List;
-
 @WebServlet(name = "myAccount", urlPatterns = "/myAccount")
 public class AccountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         HttpSession session = request.getSession(false);
         Utente utente = (session != null) ? (Utente) session.getAttribute("utenteConnesso") : null;
-
         if (utente == null) {
             response.sendRedirect(request.getContextPath() + "/login");
             return;
         }
-
         Boolean conferma = (Boolean) session.getAttribute("modificaEffettuata");
         if (Boolean.TRUE.equals(conferma)) {
             request.setAttribute("modificaEffettuata", true);
             session.removeAttribute("modificaEffettuata");
         }
-
         String tabAttiva = (String) session.getAttribute("tabAttiva");
         if (tabAttiva != null) {
             request.setAttribute("tabAttiva", tabAttiva);
             session.removeAttribute("tabAttiva");
         }
-
         request.setAttribute("utente", utente);
         List<IndirizzoSpedizione> indirizzi = new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId());
         request.setAttribute("indirizzi", indirizzi);

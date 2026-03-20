@@ -1,12 +1,9 @@
 package model.DAO;
-
 import model.Bean.IndirizzoSpedizione;
 import model.ConPool;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 public class IndirizzoSpedizioneDAO {
     public void doSave(IndirizzoSpedizione is) {
         try (Connection connection = ConPool.getConnection();
@@ -22,7 +19,6 @@ public class IndirizzoSpedizioneDAO {
             ps.setString(5, is.getProvincia());
             ps.setString(6, is.getCap());
             ps.setString(7, is.getPaese());
-
             if (ps.executeUpdate() != 1)
                 throw new RuntimeException("Errore nell'inserimento dell'indirizzo");
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -33,14 +29,12 @@ public class IndirizzoSpedizioneDAO {
             throw new RuntimeException("Errore nell'inserimento dell'indirizzo " + is.getVia(), e);
         }
     }
-
     public IndirizzoSpedizione doRetrieveByKey(long id) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
                      "SELECT * FROM IndirizzoSpedizione WHERE id = ?"
              )) {
             ps.setLong(1, id);
-
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return buildIndirizzoSpedizione(rs);
@@ -51,16 +45,13 @@ public class IndirizzoSpedizioneDAO {
         }
         return null;
     }
-
     public List<IndirizzoSpedizione> doRetrieveByUtente(long idUtente) {
         List<IndirizzoSpedizione> indirizzi = new ArrayList<>();
-
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
                      "SELECT * FROM IndirizzoSpedizione WHERE utente_id = ?"
              )) {
             ps.setLong(1, idUtente);
-
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next())
                     indirizzi.add(buildIndirizzoSpedizione(rs));
@@ -70,7 +61,6 @@ public class IndirizzoSpedizioneDAO {
         }
         return indirizzi;
     }
-
     public void doUpdate(IndirizzoSpedizione is) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -84,14 +74,12 @@ public class IndirizzoSpedizioneDAO {
             ps.setString(5, is.getCap());
             ps.setString(6, is.getPaese());
             ps.setLong(7, is.getId());
-
             if (ps.executeUpdate() != 1)
                 throw new RuntimeException("Errore nell'aggiornamento dell'indirizzo");
         } catch (SQLException e) {
             throw new RuntimeException("Errore nell'aggiornamento dell'indirizzo " + is.getVia(), e);
         }
     }
-
     public void doDelete(long idIndirizzoSpedizione) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -103,7 +91,6 @@ public class IndirizzoSpedizioneDAO {
             throw new RuntimeException("Errore nella cancellazione dell'indirizzo con ID: " + idIndirizzoSpedizione, e);
         }
     }
-
     private IndirizzoSpedizione buildIndirizzoSpedizione(ResultSet rs) throws SQLException {
         IndirizzoSpedizione is = new IndirizzoSpedizione();
         is.setId(rs.getLong("id"));

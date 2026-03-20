@@ -1,7 +1,5 @@
 package model.DAO;
-
 import model.ConPool;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,9 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 public class ImmagineProdottoDAO {
-
     public String doRetrievePrimaImmagine(long idProdotto) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -27,18 +23,15 @@ public class ImmagineProdottoDAO {
         }
         return null;
     }
-
     public void doSaveWithFile(long idProdotto, byte[] fileContent, String uploadDir, String nomeFile, String imgPath) throws IOException {
         File dir = new File(uploadDir);
         if (!dir.exists() && !dir.mkdirs() && !dir.exists()) {
             throw new IOException("Impossibile creare la cartella di upload delle immagini");
         }
-
         File dest = new File(dir, nomeFile);
         try (OutputStream out = new FileOutputStream(dest)) {
             out.write(fileContent);
         }
-
         try (Connection connection = ConPool.getConnection()) {
             doDeleteByProdottoRows(connection, idProdotto);
             try (PreparedStatement ps = connection.prepareStatement(
@@ -54,7 +47,6 @@ public class ImmagineProdottoDAO {
             throw new RuntimeException("Errore nel salvataggio dell'immagine per il prodotto", e);
         }
     }
-
     public void doDeleteByProdotto(long idProdotto, String appRealPath) {
         String imgPath = doRetrievePrimaImmagine(idProdotto);
         if (imgPath != null && appRealPath != null) {
@@ -67,7 +59,6 @@ public class ImmagineProdottoDAO {
             throw new RuntimeException("Errore nella cancellazione delle immagini per il prodotto con ID: " + idProdotto, e);
         }
     }
-
     private void doDeleteByProdottoRows(Connection connection, long idProdotto) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(
                 "DELETE FROM Immagine_Prodotto WHERE prodotto_id = ?"
