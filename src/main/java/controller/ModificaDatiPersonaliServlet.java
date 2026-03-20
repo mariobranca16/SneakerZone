@@ -41,12 +41,16 @@ public class ModificaDatiPersonaliServlet extends HttpServlet {
         boolean hasError = false;
 
         if (!ValidatoreInput.isNomeValido(nome)) {
-            request.setAttribute("erroreNome", "Il nome deve avere 2-50 caratteri e contenere solo lettere.");
+            request.setAttribute("erroreNome", !ValidatoreInput.contieneTesto(nome)
+                    ? "Campo obbligatorio."
+                    : "Il nome deve avere 2-50 caratteri e contenere solo lettere.");
             hasError = true;
         }
 
         if (!ValidatoreInput.isNomeValido(cognome)) {
-            request.setAttribute("erroreCognome", "Il cognome deve avere 2-50 caratteri e contenere solo lettere.");
+            request.setAttribute("erroreCognome", !ValidatoreInput.contieneTesto(cognome)
+                    ? "Campo obbligatorio."
+                    : "Il cognome deve avere 2-50 caratteri e contenere solo lettere.");
             hasError = true;
         }
 

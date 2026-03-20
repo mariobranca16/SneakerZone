@@ -18,9 +18,6 @@ main {
 }
 
 .login-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
     padding: 30px 34px;
     max-width: 720px;
     width: 100%;

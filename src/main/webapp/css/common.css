@@ -547,44 +547,8 @@ main {
     cursor: default;
 }
 
-.input-disabled {
-    opacity: 0.55;
-    cursor: default;
-}
-
 .form-group.full {
     grid-column: 1 / -1;
-}
-
-.ac-dropdown {
-    position: absolute;
-    top: calc(100% + 2px);
-    left: 0;
-    right: 0;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    box-shadow: 0 2px 6px #ccc;
-    list-style: none;
-    margin: 0;
-    padding: 4px 0;
-    z-index: 200;
-    max-height: 220px;
-    overflow-y: auto;
-}
-
-.ac-dropdown li {
-    padding: 9px 14px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    cursor: pointer;
-}
-
-.ac-dropdown li:hover,
-.ac-dropdown li.ac-active {
-    background: #fff5f0;
-    color: var(--brand);
 }
 
 

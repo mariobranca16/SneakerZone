@@ -7,11 +7,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Bean.Carrello;
 import model.Bean.IndirizzoSpedizione;
 import model.Bean.Utente;
 import model.DAO.IndirizzoSpedizioneDAO;
 
 import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name = "aggiungi-indirizzo", urlPatterns = "/aggiungi-indirizzo")
 public class AggiungiIndirizzoServlet extends HttpServlet {
@@ -68,8 +70,22 @@ public class AggiungiIndirizzoServlet extends HttpServlet {
         }
 
         if (hasError) {
-            request.getSession(true).setAttribute("tabAttiva", "indirizzo");
-            response.sendRedirect(request.getContextPath() + "/myAccount");
+            request.setAttribute("apriFormIndirizzo", "nuovo");
+            List<IndirizzoSpedizione> indirizzi = new IndirizzoSpedizioneDAO().doRetrieveByUtente(utente.getId());
+            if ("profile".equals(from)) {
+                request.setAttribute("tabAttiva", "indirizzo");
+                request.setAttribute("utente", utente);
+                request.setAttribute("indirizzi", indirizzi);
+                request.getRequestDispatcher("/WEB-INF/jsp/account.jsp").forward(request, response);
+            } else {
+                Carrello carrello = (Carrello) session.getAttribute("carrello");
+                if (!indirizzi.isEmpty()) {
+                    request.setAttribute("indirizzoPrecompilato", indirizzi.get(0));
+                }
+                request.setAttribute("indirizzi", indirizzi);
+                request.setAttribute("carrello", carrello);
+                request.getRequestDispatcher("/WEB-INF/jsp/checkout.jsp").forward(request, response);
+            }
             return;
         }
 

@@ -21,7 +21,7 @@ function isPasswordForte(value) {
 
 function isNomeValido(value) {
     var nome = normalizeText(value);
-    return nome.length >= 2 && nome.length <= 50 && /[A-Za-zÀ-ÿ]/.test(nome);
+    return nome.length >= 2 && nome.length <= 50 && /^[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*$/.test(nome);
 }
 
 function isViaValida(value) {

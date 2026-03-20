@@ -109,7 +109,7 @@
                 Aggiungi un nuovo indirizzo
             </button>
 
-            <div class="profilo-edit-section" id="indirizzoFormWrap"
+            <div class="profilo-edit-section${not empty apriFormIndirizzo ? ' open' : ''}" id="indirizzoFormWrap"
                  data-action-nuovo="${pageContext.request.contextPath}/aggiungi-indirizzo"
                  data-action-modifica="${pageContext.request.contextPath}/myAccount/indirizzo/modifica">
                 <h3 class="edit-section-title" id="indirizzoFormTitolo">Nuovo indirizzo</h3>

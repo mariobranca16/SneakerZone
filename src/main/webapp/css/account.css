@@ -142,6 +142,7 @@ main {
 
 .btn-addr-edit:hover {
     background: var(--brand);
+    color: #fff;
 }
 
 .btn-addr-del {

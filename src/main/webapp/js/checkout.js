@@ -43,9 +43,11 @@
 
     window.chiudiEditIndirizzo = chiudiFormIndirizzo;
 
-    /* auto-seleziona il primo indirizzo (precompilato) se esiste */
+    /* se il form è già aperto (errori server), non interferire */
     var firstCard = document.querySelector('.profilo-addr-card');
-    if (firstCard) {
+    if (indirizzoFormWrap && indirizzoFormWrap.classList.contains('open')) {
+        /* form aperto lato server per errori di validazione: lascialo così */
+    } else if (firstCard) {
         selezionaIndirizzoCheckout(firstCard);
     } else if (indirizzoFormWrap) {
         /* nessun indirizzo salvato: apri subito il form */
