@@ -11,15 +11,12 @@ import model.DAO.CategoriaDAO;
 import model.DAO.ProdottoDAO;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet(name = "catalogo", urlPatterns = "/catalogo")
 public class CatalogoServlet extends HttpServlet {
+
+    private static final String ORDINE_KEY = "catalogoOrdine";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,11 +28,19 @@ public class CatalogoServlet extends HttpServlet {
 
         Double prezzoMin = null;
         if (prezzoMinP != null && !prezzoMinP.isBlank()) {
-            try { double v = Double.parseDouble(prezzoMinP.trim()); if (v >= 0) prezzoMin = v; } catch (NumberFormatException ignored) {}
+            try {
+                double v = Double.parseDouble(prezzoMinP.trim());
+                if (v >= 0) prezzoMin = v;
+            } catch (NumberFormatException ignored) {
+            }
         }
         Double prezzoMax = null;
         if (prezzoMaxP != null && !prezzoMaxP.isBlank()) {
-            try { double v = Double.parseDouble(prezzoMaxP.trim()); if (v >= 0) prezzoMax = v; } catch (NumberFormatException ignored) {}
+            try {
+                double v = Double.parseDouble(prezzoMaxP.trim());
+                if (v >= 0) prezzoMax = v;
+            } catch (NumberFormatException ignored) {
+            }
         }
 
         boolean anyFilter = (categoria != null && !categoria.isBlank())
@@ -82,8 +87,6 @@ public class CatalogoServlet extends HttpServlet {
 
         request.getRequestDispatcher("/WEB-INF/jsp/catalogo.jsp").forward(request, response);
     }
-
-    private static final String ORDINE_KEY = "catalogoOrdine";
 
     private List<Long> getOrCreateOrdine() {
         @SuppressWarnings("unchecked")

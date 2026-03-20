@@ -52,7 +52,7 @@
                     <div class="prodotto-footer">
                         <div class="prodotto-prezzo">
                             <fmt:formatNumber value="${prodotto.costo}" minFractionDigits="2"
-                                             maxFractionDigits="2"/><span class="currency">&euro;</span>
+                                              maxFractionDigits="2"/><span class="currency">&euro;</span>
                         </div>
                         <div class="prodotto-azioni">
                             <a class="btn-primary"

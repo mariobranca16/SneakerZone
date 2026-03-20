@@ -122,7 +122,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var regForm = document.getElementById('formRegistrazione');
     if (regForm) {
         regForm.addEventListener('submit', function (e) {
-            regForm.querySelectorAll('.field-error').forEach(function (el) { el.remove(); });
+            regForm.querySelectorAll('.field-error').forEach(function (el) {
+                el.remove();
+            });
             var valido = true;
 
             function mostraErrore(nomeCampo, messaggio) {
@@ -182,7 +184,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var addrForm = document.getElementById('formIndirizzo');
     if (addrForm) {
         addrForm.addEventListener('submit', function (e) {
-            addrForm.querySelectorAll('.field-error').forEach(function (el) { el.remove(); });
+            addrForm.querySelectorAll('.field-error').forEach(function (el) {
+                el.remove();
+            });
             var valido = true;
 
             function mostraErrore(nomeCampo, messaggio) {

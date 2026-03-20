@@ -96,7 +96,8 @@
                                 <span class="addr-destinatario"><c:out value="${ind.destinatario}"/></span>
                                 <span class="addr-detail"><c:out value="${ind.via}"/></span>
                                 <span class="addr-detail">
-                                    <c:out value="${ind.cap}"/> <c:out value="${ind.citta}"/> (<c:out value="${ind.provincia}"/>), <c:out value="${ind.paese}"/>
+                                    <c:out value="${ind.cap}"/> <c:out value="${ind.citta}"/> (<c:out
+                                        value="${ind.provincia}"/>), <c:out value="${ind.paese}"/>
                                 </span>
                             </div>
                         </div>
@@ -152,7 +153,8 @@
                     <div class="account-actions">
                         <button type="submit" class="btn-primary" id="btnSalvaIndirizzo">Salva indirizzo</button>
                         <button type="button" class="btn-secondary" id="btnAnnullaEdit"
-                                onclick="chiudiEditIndirizzo()" hidden>Annulla</button>
+                                onclick="chiudiEditIndirizzo()" hidden>Annulla
+                        </button>
                     </div>
                 </form>
             </div>

@@ -35,7 +35,8 @@
                         <p class="cart-empty">Il carrello &egrave; vuoto. Scopri le ultime sneaker e aggiungi i tuoi
                             preferiti.</p>
                         <div class="cart-empty-actions">
-                            <a class="btn-primary" href="${pageContext.request.contextPath}/catalogo">Vai al catalogo</a>
+                            <a class="btn-primary" href="${pageContext.request.contextPath}/catalogo">Vai al
+                                catalogo</a>
                             <a class="btn-secondary" href="${pageContext.request.contextPath}/home">Torna alla home</a>
                         </div>
                     </div>
@@ -56,7 +57,7 @@
                                     </c:if>
                                     <a class="cart-item-name"
                                        href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.id}">
-                                        ${item.prodotto.nome}
+                                            ${item.prodotto.nome}
                                     </a>
                                 </div>
                                 <div class="cart-item-fields">
@@ -76,7 +77,8 @@
                                                aria-label="Quantità di ${item.prodotto.nome}"/>
                                     </form>
                                     <span class="cart-field-value cart-price">
-                                        <fmt:formatNumber value="${item.subtotale}" minFractionDigits="2" maxFractionDigits="2"/> &euro;
+                                        <fmt:formatNumber value="${item.subtotale}" minFractionDigits="2"
+                                                          maxFractionDigits="2"/> &euro;
                                     </span>
                                     <form class="inline-form" method="post"
                                           action="${pageContext.request.contextPath}/carrello">

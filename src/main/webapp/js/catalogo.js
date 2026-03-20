@@ -13,14 +13,15 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(filtriForm.action + (params.toString() ? '?' + params.toString() : ''), {
             headers: {'X-Requested-With': 'XMLHttpRequest'}
         })
-        .then(function (res) {
-            if (!res.ok) throw new Error();
-            return res.text();
-        })
-        .then(function (html) {
-            document.getElementById('risultatiProdotti').innerHTML = html;
-        })
-        .catch(function () {});
+            .then(function (res) {
+                if (!res.ok) throw new Error();
+                return res.text();
+            })
+            .then(function (html) {
+                document.getElementById('risultatiProdotti').innerHTML = html;
+            })
+            .catch(function () {
+            });
     }
 
     filtriForm.querySelectorAll('input[type="radio"]').forEach(function (r) {

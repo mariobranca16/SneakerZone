@@ -1,10 +1,10 @@
 DROP
-DATABASE IF EXISTS db_progetto;
+    DATABASE IF EXISTS db_progetto;
 CREATE
-DATABASE IF NOT EXISTS db_progetto;
+    DATABASE IF NOT EXISTS db_progetto;
 
 USE
-db_progetto;
+    db_progetto;
 
 CREATE TABLE Utente
 (
@@ -28,10 +28,10 @@ CREATE TABLE Categoria
 CREATE TABLE Prodotto
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nome        VARCHAR(255)   NOT NULL,
+    nome        VARCHAR(255)                   NOT NULL,
     descrizione TEXT,
-    brand       VARCHAR(100)   NOT NULL,
-    costo       DECIMAL(10, 2) NOT NULL,
+    brand       VARCHAR(100)                   NOT NULL,
+    costo       DECIMAL(10, 2)                 NOT NULL,
     colore      VARCHAR(50),
     genere      ENUM ('Uomo','Donna','Unisex') NOT NULL DEFAULT 'Unisex'
 );
@@ -49,7 +49,7 @@ CREATE TABLE Immagine_Prodotto
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     prodotto_id BIGINT UNSIGNED NOT NULL,
-    imgPath     VARCHAR(255) NOT NULL,
+    imgPath     VARCHAR(255)    NOT NULL,
     descrizione VARCHAR(255),
     posizione   INT DEFAULT 0,
     FOREIGN KEY (prodotto_id) REFERENCES Prodotto (id) ON DELETE CASCADE
@@ -68,12 +68,12 @@ CREATE TABLE IndirizzoSpedizione
 (
     id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     utente_id    BIGINT UNSIGNED NOT NULL,
-    destinatario VARCHAR(255) NOT NULL,
-    via          VARCHAR(255) NOT NULL,
-    citta        VARCHAR(100) NOT NULL,
-    provincia    VARCHAR(100) NOT NULL,
-    cap          VARCHAR(10)  NOT NULL,
-    paese        VARCHAR(100) NOT NULL,
+    destinatario VARCHAR(255)    NOT NULL,
+    via          VARCHAR(255)    NOT NULL,
+    citta        VARCHAR(100)    NOT NULL,
+    provincia    VARCHAR(100)    NOT NULL,
+    cap          VARCHAR(10)     NOT NULL,
+    paese        VARCHAR(100)    NOT NULL,
     FOREIGN KEY (utente_id) REFERENCES Utente (id) ON DELETE CASCADE
 );
 
@@ -82,7 +82,7 @@ CREATE TABLE Ordine
     id                      BIGINT UNSIGNED                                                NOT NULL AUTO_INCREMENT PRIMARY KEY,
     utente_id               BIGINT UNSIGNED                                                NOT NULL,
     indirizzo_spedizione_id BIGINT UNSIGNED                                                NOT NULL,
-    data_ordine             DATE NOT NULL,
+    data_ordine             DATE                                                           NOT NULL,
     stato_ordine            ENUM ('IN_ELABORAZIONE', 'SPEDITO', 'CONSEGNATO', 'ANNULLATO') NOT NULL DEFAULT 'IN_ELABORAZIONE',
     data_consegna           DATE,
     FOREIGN KEY (utente_id) REFERENCES Utente (id) ON DELETE CASCADE,
@@ -105,9 +105,9 @@ CREATE TABLE MetodoPagamento
 (
     id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     utente_id    BIGINT UNSIGNED NOT NULL UNIQUE,
-    nome_carta   VARCHAR(255) NOT NULL,
-    numero_carta VARCHAR(16)  NOT NULL,
-    scadenza     VARCHAR(5)   NOT NULL,
+    nome_carta   VARCHAR(255)    NOT NULL,
+    numero_carta VARCHAR(16)     NOT NULL,
+    scadenza     VARCHAR(5)      NOT NULL,
     FOREIGN KEY (utente_id) REFERENCES Utente (id) ON DELETE CASCADE
 );
 

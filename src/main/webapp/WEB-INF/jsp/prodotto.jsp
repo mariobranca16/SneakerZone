@@ -152,7 +152,8 @@
                                 </button>
                             </c:forEach>
                         </div>
-                        <p class="stelle-errore<c:if test="${not empty erroreValutazioneRecensione}"> visibile</c:if>" id="stelleErrore">
+                        <p class="stelle-errore<c:if test="${not empty erroreValutazioneRecensione}"> visibile</c:if>"
+                           id="stelleErrore">
                             <c:choose>
                                 <c:when test="${not empty erroreValutazioneRecensione}">${erroreValutazioneRecensione}</c:when>
                                 <c:otherwise>Seleziona una valutazione.</c:otherwise>

@@ -79,7 +79,9 @@
                         <div class="confirm-item-info">
                             <span class="confirm-item-nome"><c:out value="${d.prodotto.nome}"/></span>
                             <span class="confirm-item-meta">
-                                Taglia&nbsp;${d.taglia}&nbsp;&middot;&nbsp;Qt&agrave;&nbsp;${d.quantita}<c:if test="${not empty d.prodotto.brand}">&nbsp;&middot;&nbsp;<c:out value="${d.prodotto.brand}"/></c:if>
+                                Taglia&nbsp;${d.taglia}&nbsp;&middot;&nbsp;Qt&agrave;&nbsp;${d.quantita}
+                                <c:if test="${not empty d.prodotto.brand}">&nbsp;&middot;&nbsp;<c:out
+                                    value="${d.prodotto.brand}"/></c:if>
                             </span>
                         </div>
                         <span class="confirm-item-prezzo">

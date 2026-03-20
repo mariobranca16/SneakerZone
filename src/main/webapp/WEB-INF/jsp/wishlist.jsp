@@ -29,7 +29,8 @@
                         <p class="wishlist-empty-text">Non hai ancora aggiunto prodotti alla tua wishlist. Esplora il
                             catalogo per trovare le scarpe che ami.</p>
                         <div class="wishlist-empty-actions">
-                            <a class="btn-primary" href="${pageContext.request.contextPath}/catalogo">Vai al catalogo</a>
+                            <a class="btn-primary" href="${pageContext.request.contextPath}/catalogo">Vai al
+                                catalogo</a>
                         </div>
                     </div>
                 </div>

@@ -270,7 +270,8 @@
                     <div class="account-actions">
                         <button type="submit" class="btn-primary" id="btnSalvaIndirizzo">Salva indirizzo</button>
                         <button type="button" class="btn-secondary" id="btnAnnullaEdit"
-                                onclick="chiudiEditIndirizzo()" hidden>Annulla</button>
+                                onclick="chiudiEditIndirizzo()" hidden>Annulla
+                        </button>
                     </div>
                 </form>
             </div>

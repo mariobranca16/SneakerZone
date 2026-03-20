@@ -29,7 +29,7 @@
     var sectionParam = urlParams.get('section') || tabAttiva;
     if (sectionParam) mostraSezione(sectionParam);
 
-var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
+    var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
     var formIndirizzo = document.getElementById('formIndirizzo');
 
     window.apriNuovoIndirizzo = function () {

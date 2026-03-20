@@ -153,10 +153,21 @@ main {
     color: #333;
 }
 
-.stato-consegnato { color: #16a34a; }
-.stato-spedito    { color: #2563eb; }
-.stato-elaborazione { color: #d97706; }
-.stato-annullato  { color: #dc2626; }
+.stato-consegnato {
+    color: #16a34a;
+}
+
+.stato-spedito {
+    color: #2563eb;
+}
+
+.stato-elaborazione {
+    color: #d97706;
+}
+
+.stato-annullato {
+    color: #dc2626;
+}
 
 
 /* ── Indirizzo ── */

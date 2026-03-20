@@ -18,7 +18,9 @@ function mostraNotifica(testo) {
     setTimeout(function () {
         notifica.style.transition = 'opacity 0.4s';
         notifica.style.opacity = '0';
-        setTimeout(function () { notifica.remove(); }, 400);
+        setTimeout(function () {
+            notifica.remove();
+        }, 400);
     }, 3000);
 }
 
@@ -79,7 +81,7 @@ function apriFormIndirizzo(titolo, testoPulsante, action) {
     document.getElementById('btnAnnullaEdit').hidden = false;
     form.action = action;
     wrap.classList.add('open');
-    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    wrap.scrollIntoView({behavior: 'smooth', block: 'nearest'});
 }
 
 function chiudiFormIndirizzo() {

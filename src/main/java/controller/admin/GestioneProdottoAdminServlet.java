@@ -259,7 +259,7 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
 
     // carica tutti i dati necessari alla pagina form prodotto (categorie, taglie, immagini, recensioni)
     private void caricaDatiForm(HttpServletRequest request, Prodotto prodotto, String titoloPagina,
-                                 Set<Long> idCategorieSelezionate, Map<Integer, String> quantitaPerTaglia) {
+                                Set<Long> idCategorieSelezionate, Map<Integer, String> quantitaPerTaglia) {
         request.setAttribute("prodotto", prodotto);
         request.setAttribute("titoloPagina", titoloPagina);
         request.setAttribute("taglieDisponibili", ProdottoTagliaDAO.TAGLIE_DISPONIBILI);

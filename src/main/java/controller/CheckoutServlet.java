@@ -130,11 +130,11 @@ public class CheckoutServlet extends HttpServlet {
         IndirizzoSpedizioneDAO indirizzoDAO = new IndirizzoSpedizioneDAO();
         IndirizzoSpedizione indirizzo = indirizzoDAO.doRetrieveByUtente(utente.getId()).stream()
                 .filter(i -> i.getDestinatario().equalsIgnoreCase(destinatario)
-                          && i.getVia().equalsIgnoreCase(via)
-                          && i.getCap().equalsIgnoreCase(cap)
-                          && i.getCitta().equalsIgnoreCase(citta)
-                          && i.getProvincia().equalsIgnoreCase(provincia)
-                          && i.getPaese().equalsIgnoreCase(paese))
+                        && i.getVia().equalsIgnoreCase(via)
+                        && i.getCap().equalsIgnoreCase(cap)
+                        && i.getCitta().equalsIgnoreCase(citta)
+                        && i.getProvincia().equalsIgnoreCase(provincia)
+                        && i.getPaese().equalsIgnoreCase(paese))
                 .findFirst()
                 .orElse(null);
 

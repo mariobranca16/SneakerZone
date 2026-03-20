@@ -15,9 +15,9 @@ function aggiornaBadgeWishlist(count) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.form-wishlist').forEach(function(form) {
-        form.addEventListener('submit', function(e) {
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.form-wishlist').forEach(function (form) {
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
 
             var btn = form.querySelector('button[type="submit"]');
@@ -33,22 +33,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 body: 'idProdotto=' + encodeURIComponent(idProdotto)
             })
-            .then(function(res) { return res.json(); })
-            .then(function(data) {
-                if (!data.success && data.redirect) {
-                    window.location.href = data.redirect;
-                    return;
-                }
-                btn.disabled = false;
-                if (data.success) {
-                    mostraNotifica('Prodotto aggiunto alla wishlist');
-                    aggiornaBadgeWishlist(data.count);
-                }
-            })
-            .catch(function() {
-                btn.disabled = false;
-                form.submit();
-            });
+                .then(function (res) {
+                    return res.json();
+                })
+                .then(function (data) {
+                    if (!data.success && data.redirect) {
+                        window.location.href = data.redirect;
+                        return;
+                    }
+                    btn.disabled = false;
+                    if (data.success) {
+                        mostraNotifica('Prodotto aggiunto alla wishlist');
+                        aggiornaBadgeWishlist(data.count);
+                    }
+                })
+                .catch(function () {
+                    btn.disabled = false;
+                    form.submit();
+                });
         });
     });
 });

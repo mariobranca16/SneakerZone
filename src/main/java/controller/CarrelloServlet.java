@@ -175,7 +175,7 @@ public class CarrelloServlet extends HttpServlet {
     }
 
     private void redirectConErrore(HttpServletRequest request, HttpServletResponse response,
-                                    HttpSession session, long idProdotto, String origine, String messaggio)
+                                   HttpSession session, long idProdotto, String origine, String messaggio)
             throws IOException {
         if ("prodotto".equalsIgnoreCase(origine)) {
             response.sendRedirect(request.getContextPath() + "/prodotto?id=" + idProdotto + "&erroreCarrello=1");
