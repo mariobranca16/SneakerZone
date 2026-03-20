@@ -121,8 +121,14 @@
 
                 <div class="form-group full">
                     <label for="passwordAttuale">Password attuale</label>
-                    <input type="password" id="passwordAttuale" name="passwordAttuale" required
-                           autocomplete="current-password">
+                    <div class="password-wrapper">
+                        <input type="password" id="passwordAttuale" name="passwordAttuale" required
+                               autocomplete="current-password">
+                        <button type="button" class="toggle-password" aria-label="Mostra password"
+                                onclick="togglePassword('passwordAttuale', this)">
+                            <i class="ti ti-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
                     <c:if test="${not empty errorePasswordAttuale}">
                         <span class="field-error"><c:out value="${errorePasswordAttuale}"/></span>
                     </c:if>
@@ -130,8 +136,14 @@
 
                 <div class="form-group full">
                     <label for="nuovaPassword">Nuova password</label>
-                    <input type="password" id="nuovaPassword" name="nuovaPassword" required autocomplete="new-password"
-                           minlength="8" maxlength="64">
+                    <div class="password-wrapper">
+                        <input type="password" id="nuovaPassword" name="nuovaPassword" required autocomplete="new-password"
+                               minlength="8" maxlength="64">
+                        <button type="button" class="toggle-password" aria-label="Mostra password"
+                                onclick="togglePassword('nuovaPassword', this)">
+                            <i class="ti ti-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
                     <span class="field-hint">8-64 caratteri, con maiuscola, minuscola, numero e simbolo, senza spazi.</span>
                     <c:if test="${not empty erroreNuovaPassword}">
                         <span class="field-error"><c:out value="${erroreNuovaPassword}"/></span>
@@ -140,8 +152,14 @@
 
                 <div class="form-group full">
                     <label for="confermaPassword">Conferma nuova password</label>
-                    <input type="password" id="confermaPassword" name="confermaPassword" required
-                           autocomplete="new-password">
+                    <div class="password-wrapper">
+                        <input type="password" id="confermaPassword" name="confermaPassword" required
+                               autocomplete="new-password">
+                        <button type="button" class="toggle-password" aria-label="Mostra password"
+                                onclick="togglePassword('confermaPassword', this)">
+                            <i class="ti ti-eye" aria-hidden="true"></i>
+                        </button>
+                    </div>
                     <c:if test="${not empty erroreConfermaPassword}">
                         <span class="field-error"><c:out value="${erroreConfermaPassword}"/></span>
                     </c:if>
@@ -252,8 +270,7 @@
                     <div class="form-group">
                         <label for="provincia">Provincia</label>
                         <input type="text" id="provincia" name="provincia"
-                               placeholder="Es. MI" maxlength="5" list="list-province" required>
-                        <datalist id="list-province"></datalist>
+                               placeholder="Es. MI" maxlength="5" data-ac="province" required>
                         <c:if test="${not empty erroreProvincia}">
                             <span class="field-error">${erroreProvincia}</span>
                         </c:if>
@@ -261,8 +278,7 @@
                     <div class="form-group">
                         <label for="paese">Paese</label>
                         <input type="text" id="paese" name="paese"
-                               placeholder="Es. Italia" list="list-nazioni" required>
-                        <datalist id="list-nazioni"></datalist>
+                               placeholder="Es. Italia" data-ac="nazioni" required>
                         <c:if test="${not empty errorePaese}">
                             <span class="field-error">${errorePaese}</span>
                         </c:if>

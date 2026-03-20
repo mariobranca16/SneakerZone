@@ -17,14 +17,6 @@
 
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
-<c:if test="${not empty errore}">
-    <div class="alert alert-error"><c:out value="${errore}"/></div>
-</c:if>
-
-<c:if test="${not empty messaggio}">
-    <div class="alert alert-success"><c:out value="${messaggio}"/></div>
-</c:if>
-
 <main>
     <div class="login-page">
         <div class="login-card">
@@ -46,6 +38,9 @@
                             <i class="ti ti-eye" aria-hidden="true"></i>
                         </button>
                     </div>
+                    <c:if test="${not empty errore}">
+                        <span class="field-error"><c:out value="${errore}"/></span>
+                    </c:if>
                 </div>
 
                 <div class="login-actions">

@@ -85,6 +85,7 @@ public class GestioneOrdiniAdminServlet extends HttpServlet {
             return;
         }
 
+        request.getSession().setAttribute("flashSuccesso", "Stato ordine aggiornato con successo");
         response.sendRedirect(request.getContextPath() + "/admin/ordini");
     }
 }

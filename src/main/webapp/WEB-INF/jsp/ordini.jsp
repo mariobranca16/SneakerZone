@@ -113,40 +113,30 @@
 
                                 <div class="ordine-items">
                                     <c:forEach var="item" items="${ordine.dettagliOrdine}">
-                                        <div class="ordine-item">
-                                            <div class="ordine-item-thumb-wrap">
-                                                <c:choose>
-                                                    <c:when test="${not empty item.prodotto and not empty item.prodotto.imgPath}">
-                                                        <img class="ordine-item-thumb"
-                                                             src="${pageContext.request.contextPath}${item.prodotto.imgPath}"
-                                                             alt="${item.prodotto.nome}">
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <div class="ordine-item-thumb-placeholder">
-                                                            <i class="ti ti-shoe" aria-hidden="true"></i>
-                                                        </div>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </div>
+                                        <a class="ordine-item" href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.id}">
+                                            <c:choose>
+                                                <c:when test="${not empty item.prodotto and not empty item.prodotto.imgPath}">
+                                                    <img class="ordine-item-thumb"
+                                                         src="${pageContext.request.contextPath}${item.prodotto.imgPath}"
+                                                         alt="${item.prodotto.nome}">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="ordine-item-thumb-placeholder">
+                                                        <i class="ti ti-shoe" aria-hidden="true"></i>
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>
                                             <div class="ordine-item-info">
-                                                <span class="ordine-prodotto-nome"><c:out
-                                                        value="${item.prodotto.nome}"/></span>
-                                                <div class="ordine-item-tags">
-                                                    <span class="ordine-tag">EU&nbsp;${item.taglia}</span>
-                                                    <span class="ordine-tag">Qt&agrave;&nbsp;${item.quantita}</span>
-                                                </div>
+                                                <span class="ordine-prodotto-nome"><c:out value="${item.prodotto.nome}"/></span>
+                                                <span class="ordine-item-meta">
+                                                    Taglia&nbsp;${item.taglia}&nbsp;&middot;&nbsp;Qt&agrave;&nbsp;${item.quantita}<c:if test="${not empty item.prodotto.brand}">&nbsp;&middot;&nbsp;<c:out value="${item.prodotto.brand}"/></c:if>
+                                                </span>
                                             </div>
-                                            <div class="ordine-item-pricing">
                                             <span class="ordine-item-subtotale">
                                                 <fmt:formatNumber value="${item.subtotale}" type="number"
                                                                   minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                                             </span>
-                                                <span class="ordine-item-unit">
-                                                <fmt:formatNumber value="${item.costo}" type="number"
-                                                                  minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;&nbsp;&times;&nbsp;${item.quantita}
-                                            </span>
-                                            </div>
-                                        </div>
+                                        </a>
                                     </c:forEach>
                                 </div>
 

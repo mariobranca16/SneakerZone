@@ -18,6 +18,15 @@ public class HomeServlet extends HttpServlet {
         ProdottoDAO prodottoDAO = new ProdottoDAO();
         List<Prodotto> prodottiInEvidenza = prodottoDAO.doRetrieveProdottiInEvidenza(4);
 
+        jakarta.servlet.http.HttpSession session = request.getSession(false);
+        if (session != null) {
+            String msg = (String) session.getAttribute("messaggioHome");
+            if (msg != null) {
+                request.setAttribute("messaggioHome", msg);
+                session.removeAttribute("messaggioHome");
+            }
+        }
+
         request.setAttribute("prodottiInEvidenza", prodottiInEvidenza);
         request.getRequestDispatcher("/WEB-INF/jsp/home.jsp").forward(request, response);
     }

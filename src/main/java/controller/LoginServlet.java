@@ -22,11 +22,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/home");
                 return;
             }
-            String erroreLogin = (String) session.getAttribute("erroreLogin");
-            if (erroreLogin != null) {
-                request.setAttribute("messaggio", erroreLogin);
-                session.removeAttribute("erroreLogin");
-            }
+            session.removeAttribute("erroreLogin");
         }
         request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
     }
@@ -59,6 +55,7 @@ public class LoginServlet extends HttpServlet {
             if (redirect != null && !redirect.isBlank()) {
                 response.sendRedirect(redirect);
             } else {
+                session.setAttribute("messaggioHome", "Bentornato, " + utente.getNome() + "!");
                 response.sendRedirect(request.getContextPath() + "/home");
             }
             return;

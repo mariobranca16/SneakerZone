@@ -37,6 +37,7 @@ public class EliminaRecensioneAdminServlet extends HttpServlet {
         }
 
         recensioneDAO.doDelete(idRecensione);
+        request.getSession().setAttribute("flashSuccesso", "Recensione eliminata con successo");
         response.sendRedirect(request.getContextPath() + "/admin/prodotto?id=" + recensione.getIdProdotto());
     }
 }

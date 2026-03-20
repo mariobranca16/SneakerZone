@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="ctx" content="${pageContext.request.contextPath}">
     <title>Checkout – SneakerZone</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/common.css">
@@ -141,14 +142,12 @@
                     <div class="form-group">
                         <label for="provincia">Provincia</label>
                         <input type="text" id="provincia" name="provincia"
-                               placeholder="Es. MI" maxlength="5" list="list-province" required>
-                        <datalist id="list-province"></datalist>
+                               placeholder="Es. MI" maxlength="5" data-ac="province" required>
                     </div>
                     <div class="form-group">
                         <label for="paese">Paese</label>
                         <input type="text" id="paese" name="paese"
-                               placeholder="Es. Italia" list="list-nazioni" required>
-                        <datalist id="list-nazioni"></datalist>
+                               placeholder="Es. Italia" data-ac="nazioni" required>
                     </div>
                     <div class="account-actions">
                         <button type="submit" class="btn-primary" id="btnSalvaIndirizzo">Salva indirizzo</button>

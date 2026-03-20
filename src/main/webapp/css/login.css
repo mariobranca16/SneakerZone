@@ -21,6 +21,9 @@ main {
     padding: 30px 34px;
     max-width: 720px;
     width: 100%;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
 }
 
 .login-title {

@@ -1,5 +1,8 @@
-/* ---- Gestione indirizzo checkout ---- */
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
+    'use strict';
+
+    /* ---- Gestione indirizzo checkout ---- */
+
     var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
     var formIndirizzo = document.getElementById('formIndirizzo');
 
@@ -54,11 +57,8 @@
         indirizzoFormWrap.classList.add('open');
         document.getElementById('btnAnnullaEdit').hidden = true;
     }
-}());
 
-/* ---- Checkout form ---- */
-document.addEventListener('DOMContentLoaded', function () {
-    'use strict';
+    /* ---- Checkout form ---- */
 
     document.querySelectorAll('.js-card-number').forEach(function (input) {
         input.addEventListener('input', function () {
@@ -75,9 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     var inputValidation = window.ValidazioneInput;
-    if (!inputValidation) {
-        return;
-    }
+    if (!inputValidation) return;
 
     var checkoutForm = document.querySelector('.checkout-form');
     if (checkoutForm) {
@@ -126,9 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var scadenza = document.getElementById('scadenza');
             if (scadenza) {
                 var erroreScadenza = inputValidation.getErroreScadenzaCarta(scadenza.value);
-                if (erroreScadenza) {
-                    mostraErrore('scadenza', erroreScadenza);
-                }
+                if (erroreScadenza) mostraErrore('scadenza', erroreScadenza);
             }
 
             var cvv = document.getElementById('cvv');

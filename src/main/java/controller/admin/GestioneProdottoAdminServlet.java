@@ -234,6 +234,7 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
             prodottoDAO.doUpdate(prodotto);
             new ProdottoCategoriaDAO().doReplace(prodotto.getId(), idCategorie);
             salvaImmagine(request, prodotto.getId());
+            request.getSession().setAttribute("flashSuccesso", "Prodotto aggiornato con successo");
             response.sendRedirect(request.getContextPath() + "/admin/prodotti");
             return;
         }
@@ -241,6 +242,7 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
         prodottoDAO.doSave(prodotto);
         new ProdottoCategoriaDAO().doReplace(prodotto.getId(), idCategorie);
         salvaImmagine(request, prodotto.getId());
+        request.getSession().setAttribute("flashSuccesso", "Prodotto creato con successo");
         response.sendRedirect(request.getContextPath() + "/admin/prodotto?id=" + prodotto.getId());
     }
 

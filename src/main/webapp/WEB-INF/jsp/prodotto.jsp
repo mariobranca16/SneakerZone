@@ -18,6 +18,10 @@
 
 <main class="prodotto-page">
 
+    <a class="back-link" href="${pageContext.request.contextPath}/catalogo">
+        <i class="ti ti-arrow-left" aria-hidden="true"></i> Catalogo
+    </a>
+
     <c:if test="${not empty messaggio}">
         <div class="alert alert-success">${messaggio}</div>
     </c:if>

@@ -111,6 +111,7 @@ public class RegistrazioneServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         session.setAttribute("utenteConnesso", utente);
+        session.setAttribute("messaggioHome", "Benvenuto, " + utente.getNome() + "!");
         response.sendRedirect(request.getContextPath() + "/home");
     }
 

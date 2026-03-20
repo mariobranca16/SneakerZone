@@ -368,26 +368,28 @@ td.col-center > .admin-table-actions {
 
 
 .alert {
+    position: fixed;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    padding: 14px 22px;
     border-radius: 12px;
-    padding: 12px 16px;
-    margin-bottom: 16px;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    width: max-content;
+    max-width: 340px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .alert-success {
-    background: #d1fae5;
-    border: 1px solid #6ee7b7;
-    color: #065F46;
+    background: #10B981;
+    color: #ffffff;
 }
 
 .alert-error {
-    background: #fef2f2;
-    border: 1px solid #fca5a5;
-    color: #7F1D1D;
+    background: #EF4444;
+    color: #ffffff;
 }
 
 

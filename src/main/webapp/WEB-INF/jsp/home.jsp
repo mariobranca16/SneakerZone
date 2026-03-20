@@ -15,6 +15,10 @@
 
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 
+<c:if test="${not empty messaggioHome}">
+    <div class="alert alert-success"><c:out value="${messaggioHome}"/></div>
+</c:if>
+
 <main>
     <section class="hero">
         <div class="hero-content">

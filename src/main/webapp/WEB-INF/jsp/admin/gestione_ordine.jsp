@@ -14,6 +14,15 @@
 
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
 
+<c:if test="${not empty sessionScope.flashSuccesso}">
+    <div class="alert alert-success"><c:out value="${sessionScope.flashSuccesso}"/></div>
+    <c:remove var="flashSuccesso" scope="session"/>
+</c:if>
+<c:if test="${not empty sessionScope.flashErrore}">
+    <div class="alert alert-error"><c:out value="${sessionScope.flashErrore}"/></div>
+    <c:remove var="flashErrore" scope="session"/>
+</c:if>
+
 <div class="admin-page-header">
     <div>
         <h1 class="admin-page-title">Ordine #${ordine.id}</h1>

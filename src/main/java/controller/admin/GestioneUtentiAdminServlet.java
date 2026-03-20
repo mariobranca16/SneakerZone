@@ -67,6 +67,7 @@ public class GestioneUtentiAdminServlet extends HttpServlet {
 
         if ("elimina".equalsIgnoreCase(azione)) {
             utenteDAO.doDelete(idUtente);
+            request.getSession().setAttribute("flashSuccesso", "Utente eliminato con successo");
         }
 
         response.sendRedirect(request.getContextPath() + "/admin/utenti");

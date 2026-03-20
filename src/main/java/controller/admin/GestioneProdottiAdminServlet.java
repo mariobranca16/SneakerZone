@@ -55,6 +55,7 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
 
         if ("elimina".equalsIgnoreCase(azione)) {
             prodottoDAO.doDelete(id);
+            request.getSession().setAttribute("flashSuccesso", "Prodotto eliminato con successo");
         } else {
             response.sendRedirect(request.getContextPath() + "/admin/prodotti");
             return;
