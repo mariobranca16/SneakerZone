@@ -52,6 +52,7 @@ public class AggiungiAllaWishlistServlet extends HttpServlet {
             return;
         }
 
+        // parsing id prodotto
         long idProdotto;
         try {
             idProdotto = Long.parseLong(idProdottoParam);
