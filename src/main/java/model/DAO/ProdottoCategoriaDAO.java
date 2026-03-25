@@ -1,10 +1,19 @@
 package model.DAO;
+
 import model.ConPool;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Set;
+
+/*
+ * DAO per la tabella di associazione n-m tra Prodotto e Categoria.
+ * Gestisce l'assegnazione delle categorie a un prodotto.
+ */
 public class ProdottoCategoriaDAO {
+
+    // associa una categoria a un prodotto
     public void doSave(long idProdotto, long idCategoria) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -17,11 +26,17 @@ public class ProdottoCategoriaDAO {
             throw new RuntimeException("Errore nell'associazione prodotto-categoria", e);
         }
     }
+
+    // sostituisce completamente le categorie del prodotto
     public void doReplace(long idProdotto, Set<Long> idCategorie) {
+        // rimuove prima tutte quelle vecchie
         doDeleteByProdotto(idProdotto);
+        // ricrea tutte le associazione in base alle categorie
         for (long idCat : idCategorie)
             doSave(idProdotto, idCat);
     }
+
+    // elimina tutte le categorie associate a un prodotto
     public void doDeleteByProdotto(long idProdotto) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(

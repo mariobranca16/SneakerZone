@@ -1,6 +1,8 @@
 package model.DAO;
+
 import model.Bean.Categoria;
 import model.ConPool;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,14 +11,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+/*
+ * DAO della tabella Categoria.
+ * Serve per recuperare le categorie usate nel catalogo e nei prodotti.
+ */
 public class CategoriaDAO {
+    // Recupera tutte le categorie, ordinate per nome
     public List<Categoria> doRetrieveAll() {
         List<Categoria> categorie = new ArrayList<>();
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
                      "SELECT * FROM Categoria ORDER BY nome"
              );
-             ResultSet rs = ps.executeQuery()) {
+            ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Categoria categoria = new Categoria();
                 categoria.setId(rs.getLong("id"));
@@ -28,10 +36,13 @@ public class CategoriaDAO {
         }
         return categorie;
     }
+
+    // Recupera solo le categorie che compaiono in almeno un prodotto.
     public List<Categoria> doRetrieveAllUsed() {
         List<Categoria> categorie = new ArrayList<>();
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
+                     // DISTINCT per evitare duplicati
                      "SELECT DISTINCT c.* FROM Categoria c JOIN Prodotto_Categoria pc ON c.id = pc.categoria_id ORDER BY c.nome"
              );
              ResultSet rs = ps.executeQuery()) {
@@ -46,6 +57,8 @@ public class CategoriaDAO {
         }
         return categorie;
     }
+
+    // Recupera le categorie associate a uno specifico prodotto
     public List<Categoria> doRetrieveByProdotto(long idProdotto) {
         List<Categoria> categorie = new ArrayList<>();
         try (Connection connection = ConPool.getConnection();
@@ -66,6 +79,11 @@ public class CategoriaDAO {
         }
         return categorie;
     }
+
+    /*
+     * Controlla che tutti gli id ricevuti esistano veramente nel db.
+     * Serve nel form admin per evitare categorie inventate o mancanti.
+     */
     public boolean doExistsAllByIds(Set<Long> ids) {
         if (ids == null || ids.isEmpty()) {
             return false;
@@ -81,6 +99,7 @@ public class CategoriaDAO {
             }
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
+                    // se il conteggio coincide con la dimensione del set, allora tutte le categorie richieste esistono
                     return rs.getInt(1) == ids.size();
                 }
             }

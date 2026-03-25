@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Bean.Ordine;
-import model.Bean.StatoOrdine;
 import model.Bean.Utente;
 import model.DAO.OrdineDAO;
 
@@ -68,8 +67,8 @@ public class ModificaOrdineServlet extends HttpServlet {
             return;
         }
 
-        // aggiorna lo stato ad annullato
-        ordineDAO.doUpdateStato(idOrdine, StatoOrdine.ANNULLATO);
+        // annulla l'ordine e ripristina lo stock delle taglie
+        ordineDAO.doAnnulla(ordine);
         response.sendRedirect(request.getContextPath() + "/ordini");
     }
 

@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Bean.Prodotto;
 import model.DAO.ProdottoDAO;
 
@@ -22,7 +23,7 @@ public class HomeServlet extends HttpServlet {
         List<Prodotto> prodottiInEvidenza = prodottoDAO.doRetrieveProdottiInEvidenza(4);
 
         // Gestione flash message di benvenuto (mostrato una sola volta dopo login/registrazione)
-        jakarta.servlet.http.HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false);
         if (session != null) {
             String msg = (String) session.getAttribute("messaggioHome");
             if (msg != null) {

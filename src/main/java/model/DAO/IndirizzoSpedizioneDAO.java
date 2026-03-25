@@ -1,10 +1,18 @@
 package model.DAO;
+
 import model.Bean.IndirizzoSpedizione;
 import model.ConPool;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+/*
+ * DAO per la tabella IndirizzoSpedizione.
+ * Gestisce il salvataggio e il recupero degli indirizzi usati dagli utenti.
+ */
 public class IndirizzoSpedizioneDAO {
+    // Inserisce un nuovo indirizzo nel db
     public void doSave(IndirizzoSpedizione is) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -21,6 +29,7 @@ public class IndirizzoSpedizioneDAO {
             ps.setString(7, is.getPaese());
             if (ps.executeUpdate() != 1)
                 throw new RuntimeException("Errore nell'inserimento dell'indirizzo");
+            // salva l'id generato direttamente nel bean
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next())
                     is.setId(rs.getLong(1));
@@ -29,6 +38,8 @@ public class IndirizzoSpedizioneDAO {
             throw new RuntimeException("Errore nell'inserimento dell'indirizzo " + is.getVia(), e);
         }
     }
+
+    // Recupera un indirizzo di spedizione tramite l'id; se non esiste restituisce null
     public IndirizzoSpedizione doRetrieveByKey(long id) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -45,6 +56,8 @@ public class IndirizzoSpedizioneDAO {
         }
         return null;
     }
+
+    // Recupera tutti gli indirizzi salvati da un utente
     public List<IndirizzoSpedizione> doRetrieveByUtente(long idUtente) {
         List<IndirizzoSpedizione> indirizzi = new ArrayList<>();
         try (Connection connection = ConPool.getConnection();
@@ -61,6 +74,8 @@ public class IndirizzoSpedizioneDAO {
         }
         return indirizzi;
     }
+
+    // Aggiorna i campi di un indirizzo già esistente
     public void doUpdate(IndirizzoSpedizione is) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -80,6 +95,8 @@ public class IndirizzoSpedizioneDAO {
             throw new RuntimeException("Errore nell'aggiornamento dell'indirizzo " + is.getVia(), e);
         }
     }
+
+    // Elimina un indirizzo tramite il suo id
     public void doDelete(long idIndirizzoSpedizione) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -91,6 +108,8 @@ public class IndirizzoSpedizioneDAO {
             throw new RuntimeException("Errore nella cancellazione dell'indirizzo con ID: " + idIndirizzoSpedizione, e);
         }
     }
+
+    // Helper privato per settare i campi dell'oggetto a partire dal ResultSet
     private IndirizzoSpedizione buildIndirizzoSpedizione(ResultSet rs) throws SQLException {
         IndirizzoSpedizione is = new IndirizzoSpedizione();
         is.setId(rs.getLong("id"));

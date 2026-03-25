@@ -1,35 +1,22 @@
 package model.DAO;
+
 import model.Bean.ProdottoTaglia;
 import model.ConPool;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
+/*
+ * DAO per la tabella Prodotto_Taglia.
+ * Gestisce la disponibilità delle taglie per ogni prodotto.
+ */
 public class ProdottoTagliaDAO {
     public static final int[] TAGLIE_DISPONIBILI = {35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46};
-    public static List<ProdottoTaglia> buildFromParams(Map<String, String[]> params, long idProdotto) {
-        List<ProdottoTaglia> taglie = new ArrayList<>();
-        for (int taglia : TAGLIE_DISPONIBILI) {
-            String[] values = params.get("q_" + taglia);
-            if (values == null || values.length == 0 || values[0].isBlank()) continue;
-            int quantita;
-            try {
-                quantita = Integer.parseInt(values[0]);
-            } catch (NumberFormatException e) {
-                continue;
-            }
-            if (quantita < 0) continue;
-            ProdottoTaglia pt = new ProdottoTaglia();
-            pt.setIdProdotto(idProdotto);
-            pt.setTaglia(taglia);
-            pt.setQuantita(quantita);
-            taglie.add(pt);
-        }
-        return taglie;
-    }
+    // Cancella tutte le taglie associate a un prodotto
     public void doDeleteByProdotto(Connection connection, long idProdotto) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(
                 "DELETE FROM Prodotto_Taglia WHERE prodotto_id = ?"
@@ -38,6 +25,8 @@ public class ProdottoTagliaDAO {
             ps.executeUpdate();
         }
     }
+
+    // Inserisce una nuova taglia, oppure aggiorna la quantità associata se esiste già
     public void doSaveOrUpdate(Connection connection, ProdottoTaglia pt) throws SQLException {
         if (pt.getQuantita() < 0)
             throw new IllegalArgumentException("La quantità non può essere negativa");
@@ -52,6 +41,8 @@ public class ProdottoTagliaDAO {
             ps.executeUpdate();
         }
     }
+
+    // Recupera la disponibilità di una specifica taglia per un prodotto
     public int doRetrieveDisponibilita(long idProdotto, int taglia) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
@@ -68,6 +59,8 @@ public class ProdottoTagliaDAO {
         }
         return 0;
     }
+
+    // Recupera tutte le taglie disponibili di un prodotto, ordinate in base alla taglia
     public List<ProdottoTaglia> doRetrieveDisponibilitaByProdotto(long idProdotto) {
         List<ProdottoTaglia> taglie = new ArrayList<>();
         try (Connection connection = ConPool.getConnection();
@@ -89,6 +82,8 @@ public class ProdottoTagliaDAO {
         }
         return taglie;
     }
+
+    // Incrementa la disponibilità di una taglia (usato quando un ordine viene annullato)
     public void incrementaDisponibilita(Connection connection, long idProdotto, int taglia, int quantita) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(
                 "UPDATE Prodotto_Taglia SET quantita = quantita + ? WHERE prodotto_id = ? AND taglia = ?"
@@ -100,6 +95,8 @@ public class ProdottoTagliaDAO {
                 throw new RuntimeException("Incremento non riuscito, prodotto o taglia non trovati");
         }
     }
+
+    // Decrementa la disponibilità di una taglia
     public void decrementaDisponibilita(Connection connection, long idProdotto, int taglia, int quantita) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(
                 "UPDATE Prodotto_Taglia SET quantita = quantita - ? WHERE prodotto_id = ? AND taglia = ? AND quantita >= ?"

@@ -29,7 +29,7 @@ public class CatalogoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // legge dalla request i parametri usati come filtri nel catalogo
         String categoria = request.getParameter("categoria");
-        String q = request.getParameter("q");
+        String testoRicerca = request.getParameter("q");
         String prezzoMinP = request.getParameter("prezzoMin");
         String prezzoMaxP = request.getParameter("prezzoMax");
         String genere = request.getParameter("genere");
@@ -54,17 +54,15 @@ public class CatalogoServlet extends HttpServlet {
             }
         }
 
-        // flag per capire se almeno un filtro è stato impostato
-        // serve per decidere quale metodo del DAO usare
+        ProdottoDAO prodottoDAO = new ProdottoDAO();
         boolean anyFilter = (categoria != null && !categoria.isBlank())
-                || (q != null && !q.isBlank())
+                || (testoRicerca != null && !testoRicerca.isBlank())
                 || prezzoMin != null || prezzoMax != null
                 || (genere != null && !genere.isBlank());
 
-        ProdottoDAO prodottoDAO = new ProdottoDAO();
-        // se ci sono dei filtri, chiama il metodo con i filtri, altrimenti recupera tutti i prodotti
+        // se ci sono filtri attivi usa il metodo apposito, altrimenti recupera tutti i prodotti
         List<Prodotto> prodotti = anyFilter
-                ? prodottoDAO.doRetrieveByFiltriRandom(categoria, q, prezzoMin, prezzoMax, genere)
+                ? prodottoDAO.doRetrieveByFiltriRandom(categoria, testoRicerca, prezzoMin, prezzoMax, genere)
                 : prodottoDAO.doRetrieveAllRandom();
 
         // Applica l'ordinamento casuale dei prodotti recuperati
@@ -74,7 +72,7 @@ public class CatalogoServlet extends HttpServlet {
         request.setAttribute("prodotti", prodotti);
         request.setAttribute("tutteCategorie", new CategoriaDAO().doRetrieveAllUsed());
         request.setAttribute("filtroCategoria", categoria);
-        request.setAttribute("filtroQ", q);
+        request.setAttribute("filtroQ", testoRicerca);
         request.setAttribute("filtroPrezzoMin", prezzoMinP);
         request.setAttribute("filtroPrezzoMax", prezzoMaxP);
         request.setAttribute("filtroGenere", genere);

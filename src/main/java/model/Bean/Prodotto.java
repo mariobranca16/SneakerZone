@@ -1,8 +1,13 @@
 package model.Bean;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+
+/*
+ * Rappresenta un prodotto del catalogo.
+ */
 public class Prodotto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -16,8 +21,10 @@ public class Prodotto implements Serializable {
     private List<ProdottoTaglia> taglie;
     private List<Categoria> categorie;
     private String imgPath;
+
     public Prodotto() {
     }
+
     public Prodotto(long id, String nome, String descrizione, String brand, double costo, String colore) {
         this.id = id;
         this.nome = nome;
@@ -26,66 +33,88 @@ public class Prodotto implements Serializable {
         this.costo = costo;
         this.colore = colore;
     }
+
     public long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
+
     public String getNome() {
         return nome;
     }
+
     public void setNome(String nome) {
         this.nome = nome;
     }
+
     public String getDescrizione() {
         return descrizione;
     }
+
     public void setDescrizione(String descrizione) {
         this.descrizione = descrizione;
     }
+
     public String getBrand() {
         return brand;
     }
+
     public void setBrand(String brand) {
         this.brand = brand;
     }
+
     public double getCosto() {
         return costo;
     }
+
     public void setCosto(double costo) {
         this.costo = costo;
     }
+
     public String getColore() {
         return colore;
     }
+
     public void setColore(String colore) {
         this.colore = colore;
     }
+
     public String getGenere() {
         return genere;
     }
+
     public void setGenere(String genere) {
         this.genere = genere;
     }
+
     public List<ProdottoTaglia> getTaglie() {
         return taglie;
     }
+
     public void setTaglie(List<ProdottoTaglia> taglie) {
         this.taglie = taglie;
     }
+
     public List<Categoria> getCategorie() {
         return categorie;
     }
+
     public void setCategorie(List<Categoria> categorie) {
         this.categorie = categorie;
     }
+
     public String getImgPath() {
         return imgPath;
     }
+
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
     }
+
+    // restituisce la prima taglia disponibile con quantità maggiore di zero
     public String getPrimaTagliaDisponibile() {
         if (taglie != null) {
             for (ProdottoTaglia pt : taglie) {
@@ -94,6 +123,7 @@ public class Prodotto implements Serializable {
         }
         return null;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -103,10 +133,12 @@ public class Prodotto implements Serializable {
         Prodotto p = (Prodotto) o;
         return id == p.id;
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
+
     @Override
     public String toString() {
         return "Prodotto [ID: " + id +
