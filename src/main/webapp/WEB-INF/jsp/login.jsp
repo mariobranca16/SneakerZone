@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%-- Pagina di login. In caso di credenziali errate, la servlet rimanda qui
+     con ${emailInserita} e ${errore}. Dopo il login reindirizza a redirectDopoLogin. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -18,6 +20,8 @@
         <div class="login-card">
             <h1 class="login-title">Accedi al tuo account</h1>
             <p class="login-subtitle">Inserisci le credenziali per continuare</p>
+            <!-- form login: l'errore è mostrato sotto la password, non sotto l'email,
+                 per non rivelare se è sbagliata l'email o la password -->
             <form method="post" action="${pageContext.request.contextPath}/login">
                 <div class="form-group">
                     <label for="email">Email</label>

@@ -1,31 +1,42 @@
+/* Tabella ordini con select inline per cambio stato. */
+
 .ordini-table-wrap {
     overflow-x: auto;
     margin-bottom: 0;
 }
+
 .ordini-table {
     min-width: 580px;
 }
+
 .col-id {
     width: 64px;
 }
+
 .col-utente {
     min-width: 160px;
 }
+
 .col-data {
     width: 120px;
 }
+
 .col-totale {
     width: 110px;
 }
+
 .col-aggiorna {
     width: 260px;
 }
+
 .ordine-totale-val {
     font-size: 15px;
     font-weight: 700;
     color: var(--brand);
     white-space: nowrap;
 }
+
+/* Select inline per aggiornare lo stato dell'ordine direttamente dalla tabella */
 .select-inline {
     height: 36px;
     border: 1px solid var(--border);
@@ -38,28 +49,34 @@
     outline: none;
     transition: border-color 0.2s;
 }
+
 .select-inline:focus {
     border-color: #FF4500;
 }
+
 @media (max-width: 860px) {
     .select-inline {
         max-width: 130px;
     }
 }
+
 @media (max-width: 640px) {
     .select-inline {
         max-width: none;
         width: 100%;
     }
+
     .admin-table-actions {
         flex-direction: column;
         align-items: flex-start;
     }
+
     .admin-table-actions .inline-form {
         width: 100%;
         display: flex;
         gap: 6px;
     }
+
     .admin-table-actions .inline-form .btn {
         flex: 1;
     }

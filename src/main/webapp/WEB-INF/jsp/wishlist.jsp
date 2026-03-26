@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%-- Wishlist utente. ${disponibilitaPerProdotto} è una mappa idProdotto → taglie disponibili:
+     se vuota per un prodotto viene mostrato "non disponibile". --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -15,6 +17,7 @@
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 <main>
     <div class="wishlist-page">
+        <!-- stato vuoto o pieno della wishlist -->
         <c:choose>
             <c:when test="${empty prodotti}">
                 <div class="wishlist-card page-card">
@@ -71,6 +74,7 @@
                                             class="currency">&euro;</span></span>
                                 </div>
                                 <div class="wishlist-item-actions">
+                                    <!-- form carrello: visibile solo se il prodotto ha taglie disponibili -->
                                     <c:set var="taglieDisponibili" value="${disponibilitaPerProdotto[p.id]}"/>
                                     <c:choose>
                                         <c:when test="${not empty taglieDisponibili}">

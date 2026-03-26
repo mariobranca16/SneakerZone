@@ -1,8 +1,11 @@
+/* Pagina dettaglio prodotto: immagine, info, form carrello, recensioni. */
+
 .prodotto-page {
     max-width: 1100px;
     margin: 0 auto;
     padding: 32px 20px;
 }
+
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -13,18 +16,22 @@
     text-decoration: none;
     margin-bottom: 20px;
 }
+
 .back-link:hover {
     color: var(--text);
 }
+
 .prodotto-dettaglio {
     display: flex;
     gap: 40px;
     margin-bottom: 48px;
 }
+
 .prodotto-immagini {
     flex: 0 0 400px;
     max-width: 400px;
 }
+
 .immagine-principale {
     width: 100%;
     aspect-ratio: 1;
@@ -37,6 +44,7 @@
     border: 1px solid #aaa49f;
     padding: 16px;
 }
+
 .immagine-principale img {
     max-width: 100%;
     max-height: 100%;
@@ -44,17 +52,21 @@
     object-fit: contain;
     object-position: center;
 }
+
 .no-immagine {
     text-align: center;
     color: #6B7280;
 }
+
 .no-immagine i {
     font-size: 64px;
     margin-bottom: 12px;
 }
+
 .prodotto-info {
     flex: 1;
 }
+
 .prodotto-brand {
     font-size: 14px;
     text-transform: uppercase;
@@ -62,29 +74,34 @@
     letter-spacing: 1px;
     margin-bottom: 4px;
 }
+
 .prodotto-nome {
     font-size: 28px;
     font-weight: 700;
     margin-bottom: 8px;
     color: #222;
 }
+
 .prodotto-colore {
     font-size: 15px;
     color: #4B5563;
     margin-bottom: 16px;
 }
+
 .prodotto-prezzo {
     font-size: 26px;
     font-weight: 700;
     color: var(--brand);
     margin-bottom: 20px;
 }
+
 .prodotto-categorie {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 24px;
 }
+
 .tag-categoria {
     display: inline-block;
     padding: 4px 12px;
@@ -96,17 +113,21 @@
     text-decoration: none;
     transition: background-color 0.2s;
 }
+
 .tag-categoria:hover {
     background-color: var(--brand);
     color: #fff;
 }
+
 .form-carrello {
     margin-bottom: 12px;
 }
+
 .selezione-taglia,
 .selezione-quantita {
     margin-bottom: 14px;
 }
+
 .selezione-taglia label,
 .selezione-quantita label {
     display: block;
@@ -115,6 +136,7 @@
     margin-bottom: 6px;
     color: #333;
 }
+
 .selezione-taglia select,
 .selezione-quantita input {
     padding: 10px 12px;
@@ -123,22 +145,28 @@
     border-radius: 8px;
     background-color: #F7F2ED;
 }
+
 .selezione-taglia select {
     width: auto;
     max-width: 130px;
 }
+
 .selezione-quantita input {
     width: 80px;
 }
+
+/* lascia le frecce native */
 .selezione-quantita input::-webkit-inner-spin-button,
 .selezione-quantita input::-webkit-outer-spin-button {
     opacity: 1;
 }
+
 .selezione-taglia select:focus,
 .selezione-quantita input:focus {
     outline: none;
     border-color: var(--brand);
 }
+
 .btn-carrello {
     display: inline-block;
     width: 100%;
@@ -153,65 +181,80 @@
     cursor: pointer;
     transition: background-color 0.2s;
 }
+
 .btn-carrello:hover {
     background-color: var(--brand-dark);
 }
+
 .btn-carrello i {
     margin-right: 8px;
 }
+
 .form-wishlist {
     margin-bottom: 24px;
 }
+
 .prodotto-descrizione {
     border-top: 1px solid #D9DFE6;
     padding-top: 20px;
 }
+
 .prodotto-descrizione h3 {
     font-size: 18px;
     margin-bottom: 8px;
     color: #333;
 }
+
 .prodotto-descrizione p {
     font-size: 15px;
     line-height: 1.6;
     color: #4B5563;
 }
+
+/* sezione recensioni */
 .sezione-recensioni {
     border-top: 1px solid #D9DFE6;
     padding-top: 32px;
     margin-bottom: 32px;
 }
+
 .sezione-recensioni h2 {
     font-size: 22px;
     margin-bottom: 20px;
     color: #222;
 }
+
 .lista-recensioni {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
+
 .recensione-card {
     padding: 16px;
     border: 1px solid #D9DFE6;
     border-radius: 12px;
     background-color: #F7F2ED;
 }
+
 .recensione-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 6px;
 }
+
 .recensione-titolo {
     font-weight: 600;
     font-size: 16px;
     color: #333;
 }
+
 .recensione-data {
     font-size: 13px;
     color: #6B7280;
 }
+
 .recensione-stelle {
     margin-bottom: 8px;
     display: flex;
@@ -219,21 +262,26 @@
     font-size: 18px;
     line-height: 1;
 }
+
 .recensione-stelle .stella.piena {
     color: var(--brand);
 }
+
 .recensione-stelle .stella.vuota {
     color: #ccc;
 }
+
 .recensione-commento {
     font-size: 14px;
     line-height: 1.5;
     color: #4B5563;
 }
+
 .nessuna-recensione {
     color: #6B7280;
     font-style: italic;
 }
+
 .form-recensione-wrapper {
     background: #F7F2ED;
     border: 1px solid #D9DFE6;
@@ -241,14 +289,17 @@
     padding: 24px;
     margin-bottom: 24px;
 }
+
 .form-recensione-wrapper h3 {
     font-size: 18px;
     color: #222;
     margin-bottom: 16px;
 }
+
 .recensione-campo {
     margin-bottom: 16px;
 }
+
 .recensione-campo label {
     display: block;
     font-size: 14px;
@@ -256,9 +307,11 @@
     color: #333;
     margin-bottom: 6px;
 }
+
 .obbligatorio {
     color: var(--brand);
 }
+
 .recensione-campo input[type="text"],
 .recensione-campo textarea {
     width: 100%;
@@ -269,16 +322,20 @@
     background-color: #fff;
     font-family: inherit;
 }
+
 .recensione-campo input[type="text"]:focus,
 .recensione-campo textarea:focus {
     outline: none;
     border-color: var(--brand);
 }
+
+/* stelle recensione */
 .stelle-input {
     display: flex;
     gap: 6px;
     font-size: 28px;
 }
+
 .stella-input {
     padding: 0;
     border: none;
@@ -288,44 +345,56 @@
     font-size: inherit;
     line-height: 1;
 }
+
 .stella-input span {
     display: none;
 }
+
 .stella-input::before {
     content: '☆';
 }
+
 .stella-input.attiva {
     color: var(--brand);
 }
+
 .stella-input.attiva::before {
     content: '★';
 }
+
 .stella-input:focus-visible {
     outline: 2px solid var(--brand);
     outline-offset: 3px;
 }
+
+/* mostrato da prodotto.js */
 .stelle-errore {
     display: none;
     color: #c0392b;
     font-size: 13px;
     margin-top: 4px;
 }
+
 .stelle-errore.visibile {
     display: block;
 }
+
 .recensione-errore-campo {
     color: #c0392b;
     font-size: 13px;
     margin-top: 6px;
 }
+
 .info-recensione {
     color: #5C5C5C;
     font-style: italic;
     margin-bottom: 20px;
 }
+
 .form-rimuovi-recensione {
     margin-top: 10px;
 }
+
 .btn-rimuovi-recensione {
     padding: 6px 12px;
     background: #c0392b;
@@ -336,66 +405,84 @@
     cursor: pointer;
     transition: background-color 0.2s;
 }
+
 .btn-rimuovi-recensione:hover {
     background-color: #a93226;
 }
+
 .torna-catalogo {
     margin-bottom: 32px;
 }
+
 .torna-catalogo a {
     color: var(--brand);
     text-decoration: none;
     font-size: 15px;
     font-weight: 500;
 }
+
 .torna-catalogo a:hover {
     text-decoration: underline;
 }
+
 .torna-catalogo i {
     margin-right: 4px;
 }
+
+/* responsive */
 @media (max-width: 900px) {
     .prodotto-immagini {
         flex: 0 0 320px;
         max-width: 320px;
     }
 }
+
 @media (max-width: 480px) {
     .prodotto-page {
         padding: 16px 12px;
     }
+
     .prodotto-nome {
         font-size: 20px;
     }
+
     .prodotto-prezzo {
         font-size: 20px;
     }
+
     .form-recensione-wrapper {
         padding: 16px 14px;
     }
+
     .stelle-input {
         font-size: 24px;
     }
 }
+
 @media (max-width: 768px) {
     .prodotto-dettaglio {
         flex-direction: column;
         gap: 24px;
     }
+
     .prodotto-immagini {
         flex: none;
         width: 100%;
         max-width: 100%;
     }
+
     .prodotto-nome {
         font-size: 22px;
     }
+
     .prodotto-prezzo {
         font-size: 22px;
     }
+
     .btn-carrello {
         max-width: 100%;
     }
+
     .recensione-header {
         flex-direction: column;
         align-items: flex-start;

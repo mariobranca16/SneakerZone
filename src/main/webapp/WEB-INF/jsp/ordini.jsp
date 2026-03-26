@@ -2,6 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%-- Storico ordini. ${ordine.statoCssClass} controlla il colore del badge stato.
+     Il pulsante "Annulla" è visibile solo se ${ordine.inElaborazione} è true. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -16,6 +18,7 @@
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 <main>
     <div class="ordini-page">
+        <!-- stato vuoto o elenco ordini a seconda del contenuto di ordini -->
         <c:choose>
             <c:when test="${empty ordini}">
                 <div class="ordini-card page-card">
@@ -39,6 +42,7 @@
                 <div class="ordini-card page-card">
                     <h1 class="ordini-title page-title">I tuoi ordini</h1>
                     <p class="ordini-subtitle page-subtitle">Consulta lo stato e i dettagli dei tuoi acquisti</p>
+                    <!-- elenco ordini -->
                     <div class="ordini-list">
                         <c:forEach var="ordine" items="${ordini}">
                             <div class="ordine-card ${ordine.statoCssClass}">
@@ -61,6 +65,7 @@
                                         </div>
                                     </div>
                                     <div class="ordine-header-right">
+                                        <!-- badge stato: varia tra consegnato, spedito, in elaborazione, annullato -->
                                         <c:choose>
                                             <c:when test="${ordine.consegnato}">
                                             <span class="ordine-stato stato-consegnato">
@@ -83,6 +88,7 @@
                                             </span>
                                             </c:when>
                                         </c:choose>
+                                        <!-- pulsante annulla: visibile solo se l'ordine è ancora in elaborazione -->
                                         <c:if test="${ordine.inElaborazione}">
                                             <form class="ordine-annulla-form" method="post"
                                                   action="${pageContext.request.contextPath}/modifica-ordine">
@@ -96,6 +102,7 @@
                                         </c:if>
                                     </div>
                                 </div>
+                                <!-- indirizzo: può mancare se eliminato dopo la creazione dell'ordine -->
                                 <c:if test="${not empty ordine.indirizzo}">
                                     <div class="ordine-indirizzo">
                                         <i class="ti ti-map-pin" aria-hidden="true"></i>
@@ -105,7 +112,8 @@
                                 </c:if>
                                 <div class="ordine-items">
                                     <c:forEach var="item" items="${ordine.dettagliOrdine}">
-                                        <a class="ordine-item" href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.id}">
+                                        <a class="ordine-item"
+                                           href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.id}">
                                             <c:choose>
                                                 <c:when test="${not empty item.prodotto and not empty item.prodotto.imgPath}">
                                                     <img class="ordine-item-thumb"
@@ -119,9 +127,12 @@
                                                 </c:otherwise>
                                             </c:choose>
                                             <div class="ordine-item-info">
-                                                <span class="ordine-prodotto-nome"><c:out value="${item.prodotto.nome}"/></span>
+                                                <span class="ordine-prodotto-nome"><c:out
+                                                        value="${item.prodotto.nome}"/></span>
                                                 <span class="ordine-item-meta">
-                                                    Taglia&nbsp;${item.taglia}&nbsp;&middot;&nbsp;Qt&agrave;&nbsp;${item.quantita}<c:if test="${not empty item.prodotto.brand}">&nbsp;&middot;&nbsp;<c:out value="${item.prodotto.brand}"/></c:if>
+                                                    Taglia&nbsp;${item.taglia}&nbsp;&middot;&nbsp;Qt&agrave;&nbsp;${item.quantita}
+                                                    <c:if test="${not empty item.prodotto.brand}">&nbsp;&middot;&nbsp;<c:out
+                                                        value="${item.prodotto.brand}"/></c:if>
                                                 </span>
                                             </div>
                                             <span class="ordine-item-subtotale">

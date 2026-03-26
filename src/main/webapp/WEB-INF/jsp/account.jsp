@@ -2,11 +2,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Pannello account a tab (dati personali, password, indirizzi).
+     ${utente} è l'utente connesso; account.js gestisce la navigazione tra le tab. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Il context path viene esposto via meta tag: usato da autocomplete.js -->
     <meta name="ctx" content="${pageContext.request.contextPath}">
     <title>Profilo utente - SneakerZone</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
@@ -15,14 +18,19 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+
+<!-- alert successo dopo salvataggio -->
 <c:if test="${modificaEffettuata}">
     <div class="alert alert-success">
         <i class="ti ti-circle-check"></i>&nbsp; Modifiche salvate con successo.
     </div>
 </c:if>
+
 <main>
+    <!-- data-tab: AccountServlet lo imposta dopo redirect per ripristinare la sezione giusta -->
     <div class="account-wrap" data-tab="${fn:escapeXml(tabAttiva)}">
         <h1 class="account-page-title page-title">Profilo</h1>
+
         <div class="account-tabs">
             <button class="tab-btn active" type="button" data-section="dati-personali">
                 <i class="ti ti-user-circle"></i>
@@ -30,13 +38,16 @@
             </button>
             <button class="tab-btn" type="button" data-section="password">
                 <i class="ti ti-lock"></i>
-                <span>Sicurezza</span>
+                <span>Password</span>
             </button>
             <button class="tab-btn" type="button" data-section="indirizzo">
                 <i class="ti ti-map-pin"></i>
                 <span>Indirizzi</span>
             </button>
         </div>
+
+        <!-- tab dati personali: i campi usano form* (ripopolato dopo errore)
+             oppure utente.* come fallback -->
         <div class="account-section page-card active" id="section-dati-personali">
             <div class="section-header">
                 <h1 class="section-title">Dati personali</h1>
@@ -91,9 +102,11 @@
                 </div>
             </form>
         </div>
+
+        <!-- tab cambio password: richiede la password attuale per la verifica server-side -->
         <div class="account-section page-card" id="section-password" hidden>
             <div class="section-header">
-                <h1 class="section-title">Sicurezza</h1>
+                <h1 class="section-title">Password</h1>
                 <p class="section-subtitle">Modifica la tua password di accesso</p>
             </div>
             <form class="account-form" action="${pageContext.request.contextPath}/myAccount/password" method="post"
@@ -115,7 +128,8 @@
                 <div class="form-group full">
                     <label for="nuovaPassword">Nuova password</label>
                     <div class="password-wrapper">
-                        <input type="password" id="nuovaPassword" name="nuovaPassword" required autocomplete="new-password"
+                        <input type="password" id="nuovaPassword" name="nuovaPassword" required
+                               autocomplete="new-password"
                                minlength="8" maxlength="64">
                         <button type="button" class="toggle-password" aria-label="Mostra password"
                                 onclick="togglePassword('nuovaPassword', this)">
@@ -148,11 +162,15 @@
                 </div>
             </form>
         </div>
+
+        <!-- tab indirizzi di spedizione -->
         <div class="account-section page-card" id="section-indirizzo" hidden>
             <div class="section-header">
                 <h1 class="section-title">Indirizzo di spedizione</h1>
                 <p class="section-subtitle">Gestisci i tuoi indirizzi di consegna</p>
             </div>
+
+            <!-- elenco indirizzi salvati: ogni card espone i dati come data-attribute per account.js -->
             <c:if test="${not empty indirizzi}">
                 <div class="profilo-addr-list">
                     <c:forEach var="ind" items="${indirizzi}">
@@ -177,6 +195,7 @@
                                         onclick="apriEditIndirizzo(this.closest('.profilo-addr-card'))">
                                     <i class="ti ti-pencil"></i> Modifica
                                 </button>
+                                <!-- elimina indirizzo: data-confirm mostra conferma nativa tramite common.js -->
                                 <form method="post"
                                       action="${pageContext.request.contextPath}/myAccount/indirizzo/elimina"
                                       class="form-inline-del">
@@ -191,9 +210,13 @@
                     </c:forEach>
                 </div>
             </c:if>
+
             <button type="button" class="btn-aggiungi-indirizzo" onclick="apriNuovoIndirizzo()">
                 Aggiungi un nuovo indirizzo
             </button>
+
+            <!-- form indirizzo inline condiviso col checkout;
+                 data-apri-edit viene impostato dal server dopo un errore di modifica per riaprire il form -->
             <div class="profilo-edit-section${not empty apriFormIndirizzo ? ' open' : ''}" id="indirizzoFormWrap"
                  data-action-nuovo="${pageContext.request.contextPath}/aggiungi-indirizzo"
                  data-action-modifica="${pageContext.request.contextPath}/myAccount/indirizzo/modifica"
@@ -202,6 +225,7 @@
                 <form id="formIndirizzo" class="account-form" method="post"
                       action="${pageContext.request.contextPath}/aggiungi-indirizzo" novalidate>
                     <input type="hidden" name="idIndirizzo" id="indirizzoId">
+                    <!-- "from=profile" dice al server di redirigere a /myAccount dopo il salvataggio -->
                     <input type="hidden" name="from" value="profile">
                     <div class="form-group full">
                         <label for="destinatario">Destinatario</label>
@@ -238,7 +262,8 @@
                     <div class="form-group">
                         <label for="provincia">Provincia</label>
                         <input type="text" id="provincia" name="provincia"
-                               placeholder="Es. MI" maxlength="5" data-ac="province" required>
+                               placeholder="Es. MI" maxlength="5" list="listaProvince" required>
+                        <datalist id="listaProvince"></datalist>
                         <c:if test="${not empty erroreProvincia}">
                             <span class="field-error">${erroreProvincia}</span>
                         </c:if>
@@ -246,7 +271,8 @@
                     <div class="form-group">
                         <label for="paese">Paese</label>
                         <input type="text" id="paese" name="paese"
-                               placeholder="Es. Italia" data-ac="nazioni" required>
+                               placeholder="Es. Italia" list="listaNazioni" required>
+                        <datalist id="listaNazioni"></datalist>
                         <c:if test="${not empty errorePaese}">
                             <span class="field-error">${errorePaese}</span>
                         </c:if>
@@ -264,6 +290,7 @@
 </main>
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 <script src="${pageContext.request.contextPath}/js/validazione.js"></script>
+<!-- autocomplete.js: popola le datalist di provincia e paese -->
 <script src="${pageContext.request.contextPath}/js/autocomplete.js"></script>
 <script src="${pageContext.request.contextPath}/js/account.js"></script>
 </body>

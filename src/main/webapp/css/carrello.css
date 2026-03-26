@@ -1,3 +1,5 @@
+/* Lista prodotti nel carrello, controlli quantità, totale aggiornato via AJAX (carrello.js). */
+
 main {
     min-height: calc(100vh - 160px);
     display: flex;
@@ -6,6 +8,7 @@ main {
     padding: 32px 16px 24px;
     background: var(--bg);
 }
+
 .cart-page {
     max-width: 1120px;
     width: 100%;
@@ -14,14 +17,18 @@ main {
     justify-content: center;
     align-items: stretch;
 }
+
 .cart-card {
     padding: 30px 34px;
     max-width: 920px;
 }
+
 .cart-title {
     margin-bottom: 20px;
     text-align: center;
 }
+
+/* carrello vuoto */
 .cart-empty {
     color: #374151;
     font-size: 15px;
@@ -30,10 +37,12 @@ main {
     margin: 0 auto 18px;
     text-align: center;
 }
+
 .cart-empty-state {
     padding: 24px 20px;
     margin: 4px auto 6px;
 }
+
 .cart-empty-actions {
     display: flex;
     justify-content: center;
@@ -41,11 +50,14 @@ main {
     gap: 10px;
     flex-wrap: wrap;
 }
+
+/* lista prodotti */
 .cart-list {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
+
 .cart-item {
     display: flex;
     align-items: center;
@@ -55,9 +67,11 @@ main {
     border-radius: 12px;
     padding: 16px 20px;
 }
+
 .cart-item:hover {
     border-color: #bbb;
 }
+
 .cart-item-media {
     display: flex;
     align-items: center;
@@ -65,11 +79,13 @@ main {
     flex: 1;
     min-width: 0;
 }
+
 .cart-item-thumb {
     width: 64px;
     height: 64px;
     flex-shrink: 0;
 }
+
 .cart-item-name {
     color: var(--text);
     font-weight: 700;
@@ -80,10 +96,13 @@ main {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .cart-item-name:hover {
     text-decoration: underline;
     color: var(--brand);
 }
+
+/* griglia colonne: Taglia | Quantità | Subtotale | Rimuovi */
 .cart-item-fields {
     display: grid;
     grid-template-columns: auto auto auto auto;
@@ -94,6 +113,7 @@ main {
     justify-items: center;
     flex-shrink: 0;
 }
+
 .cart-field-label {
     font-size: 11px;
     font-weight: 700;
@@ -102,19 +122,24 @@ main {
     color: var(--muted);
     align-self: center;
 }
+
 .cart-field-value {
     font-size: 14px;
     font-weight: 600;
     color: var(--text);
 }
+
 .cart-price {
     font-weight: 700;
     white-space: nowrap;
     color: var(--text);
 }
+
+/* controllo quantità (il form è inviato via AJAX da carrello.js) */
 .qty-form {
     margin: 0;
 }
+
 .qty-input {
     width: 58px;
     height: 34px;
@@ -127,16 +152,23 @@ main {
     color: var(--text);
     outline: none;
 }
+
+/* mostra le frecce native su Chrome/Safari */
 .qty-input::-webkit-inner-spin-button,
 .qty-input::-webkit-outer-spin-button {
     opacity: 1;
 }
+
 .qty-input:focus {
     border-color: var(--brand);
 }
+
+/* .inline-form è usato anche per il form rimozione prodotto */
 .inline-form {
     margin: 0;
 }
+
+/* totale e checkout (#cart-totale-valore aggiornato via AJAX da carrello.js) */
 .cart-totale {
     display: flex;
     justify-content: flex-end;
@@ -147,23 +179,28 @@ main {
     border-top: none;
     font-size: 16px;
 }
+
 .cart-totale-label {
     color: #333;
     font-weight: 600;
 }
+
 .cart-totale-valore {
     font-size: 20px;
     font-weight: 700;
     color: var(--brand);
 }
+
 .cart-checkout-form {
     margin-top: 18px;
 }
+
 .cart-checkout-form .btn-primary {
     width: 100%;
     height: 46px;
     line-height: 46px;
 }
+
 .cart-link {
     display: inline-block;
     margin-top: 8px;
@@ -172,49 +209,64 @@ main {
     font-size: 13px;
     text-decoration: none;
 }
+
 .cart-link:hover {
     text-decoration: underline;
 }
+
 .cart-link-home {
     margin-top: 18px;
     text-align: center;
     width: 100%;
 }
+
+/* responsive */
 @media (max-width: 768px) {
     main {
         min-height: auto;
         padding-top: 18px;
     }
 }
+
 @media (max-width: 720px) {
     .cart-card {
         padding: 24px 20px;
     }
+
     .cart-title {
         font-size: 24px;
     }
+
+    /* Su tablet i campi del carrello vanno sotto la riga immagine+nome */
     .cart-item {
         flex-wrap: wrap;
     }
+
     .cart-item-fields {
         width: 100%;
         justify-content: space-between;
     }
+
     .cart-empty-actions {
         flex-direction: column;
         align-items: stretch;
     }
 }
+
 @media (max-width: 480px) {
     .cart-card {
         padding: 18px 12px;
     }
+
+    /* Su mobile l'immagine del prodotto è nascosta per risparmiare spazio */
     .cart-item-thumb {
         display: none;
     }
+
     .cart-item-fields {
         gap: 12px;
     }
+
     .qty-input {
         width: 46px;
     }

@@ -2,6 +2,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%-- Carrello in sessione. Rimozione e aggiornamento quantità vengono intercettati
+     da carrello.js e inviati via AJAX; fallback al submit normale se AJAX fallisce. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -18,9 +20,13 @@
     <div class="cart-page">
         <div class="cart-card page-card">
             <h1 class="cart-title page-title">Il tuo carrello</h1>
+
+            <!-- errore generico del carrello (es. taglia non più disponibile dopo un aggiornamento) -->
             <c:if test="${not empty erroreCarrello}">
                 <div class="alert alert-error">${erroreCarrello}</div>
             </c:if>
+
+            <!-- stato vuoto / lista articoli a seconda del contenuto del carrello -->
             <c:choose>
                 <c:when test="${empty carrello.prodotti}">
                     <div class="cart-empty-state empty-state">
@@ -38,6 +44,7 @@
                     </div>
                 </c:when>
                 <c:otherwise>
+                    <!-- lista articoli: ogni item ha due form distinti intercettati da carrello.js -->
                     <div class="cart-list">
                         <c:forEach var="item" items="${carrello.prodotti}">
                             <div class="cart-item">
@@ -61,6 +68,8 @@
                                     <span class="cart-field-label">Subtotale</span>
                                     <span class="cart-field-label"></span>
                                     <span class="cart-field-value">${item.taglia}</span>
+
+                                    <!-- form aggiornamento quantità (.qty-form): carrello.js invia AJAX e aggiorna il DOM -->
                                     <form class="qty-form" method="post"
                                           action="${pageContext.request.contextPath}/carrello">
                                         <input type="hidden" name="azione" value="aggiorna"/>
@@ -70,10 +79,14 @@
                                                value="${item.quantita}" min="1" max="99"
                                                aria-label="Quantità di ${item.prodotto.nome}"/>
                                     </form>
+
+                                    <!-- subtotale aggiornato da carrello.js dopo ogni risposta AJAX -->
                                     <span class="cart-field-value cart-price">
                                         <fmt:formatNumber value="${item.subtotale}" minFractionDigits="2"
                                                           maxFractionDigits="2"/> &euro;
                                     </span>
+
+                                    <!-- form rimozione (.inline-form): carrello.js invia AJAX; data-confirm mostra conferma nativa -->
                                     <form class="inline-form" method="post"
                                           action="${pageContext.request.contextPath}/carrello">
                                         <input type="hidden" name="azione" value="rimuovi"/>
@@ -87,6 +100,8 @@
                             </div>
                         </c:forEach>
                     </div>
+
+                    <!-- #cart-totale-valore: aggiornato da carrello.js dopo ogni risposta AJAX -->
                     <div class="cart-totale">
                         <span class="cart-totale-label">Totale:</span>
                         <span class="cart-totale-valore">

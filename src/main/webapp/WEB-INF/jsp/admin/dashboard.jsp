@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%-- Dashboard admin: tre tile di navigazione verso Utenti, Prodotti e Ordini. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>

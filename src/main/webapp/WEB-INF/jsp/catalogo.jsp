@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Catalogo con filtri in sidebar. catalogo.js intercetta le modifiche al form
+     e aggiorna #risultatiProdotti via Fetch senza ricaricare la pagina. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -107,6 +109,8 @@
                     </div>
                 </form>
             </aside>
+            <!-- #risultatiProdotti: alla prima richiesta include catalogo_risultati.jsp;
+                 nelle richieste AJAX successive catalogo.js inietta qui il nuovo HTML -->
             <div class="catalogo-risultati">
                 <c:if test="${not empty messaggio}">
                     <div class="alert alert-success">${messaggio}</div>

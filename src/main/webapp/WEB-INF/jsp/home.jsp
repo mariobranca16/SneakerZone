@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Homepage. HomeServlet carica ${prodottiInEvidenza} (selezione di prodotti)
+     e l'eventuale messaggio flash ${messaggioHome} (es. dopo il logout). --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -13,6 +15,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
+<!-- messaggio flash (es. dopo logout) -->
 <c:if test="${not empty messaggioHome}">
     <div class="alert alert-success"><c:out value="${messaggioHome}"/></div>
 </c:if>
@@ -31,6 +34,7 @@
                 Vedi tutti <i class="ti ti-arrow-right" aria-hidden="true"></i>
             </a>
         </div>
+        <!-- griglia prodotti in evidenza -->
         <div class="evidenza-grid">
             <c:forEach var="p" items="${prodottiInEvidenza}">
                 <div class="ev-card">

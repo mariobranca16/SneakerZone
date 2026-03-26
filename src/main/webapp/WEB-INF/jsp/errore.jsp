@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" isErrorPage="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- Pagina di errore generica (404, 500, 403). Il codice HTTP viene letto da requestScope
+     e usato per mostrare il messaggio corretto. ${messaggioErrore} è impostato dalle servlet. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>

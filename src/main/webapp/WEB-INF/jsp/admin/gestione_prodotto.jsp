@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%-- Form inserimento/modifica prodotto. Se prodotto.id > 0 è una modifica,
+     altrimenti è un nuovo inserimento. Mostra anche le recensioni se il prodotto esiste. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -12,6 +14,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
+<!-- flash messages da sessione (pattern PRG: redirect dopo POST) -->
 <c:if test="${not empty sessionScope.flashSuccesso}">
     <div class="alert alert-success"><c:out value="${sessionScope.flashSuccesso}"/></div>
     <c:remove var="flashSuccesso" scope="session"/>

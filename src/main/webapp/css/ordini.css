@@ -1,3 +1,5 @@
+/* Card ordini con header, lista prodotti e totale. Le classi .stato-* colorano il badge in base all'enum. */
+
 main {
     min-height: calc(100vh - 160px);
     padding: 36px 16px 60px;
@@ -6,26 +8,33 @@ main {
     align-items: center;
     justify-content: center;
 }
+
 .ordini-page {
     max-width: 880px;
     width: 100%;
     margin: 0 auto;
 }
+
 .ordini-title {
     font-size: 26px;
     text-align: center;
     margin-bottom: 6px;
 }
+
 .ordini-subtitle {
     text-align: center;
 }
+
 .ordini-card {
     border-radius: 16px;
     padding: 30px 32px;
 }
+
+/* nessun ordine */
 .ordini-empty-state {
     max-width: 580px;
 }
+
 .ordini-empty-text {
     color: #374151;
     font-size: 15px;
@@ -33,10 +42,12 @@ main {
     max-width: 400px;
     margin: 0 auto 20px;
 }
+
 .ordini-empty-actions {
     display: flex;
     justify-content: center;
 }
+
 .ordini-cta {
     padding: 10px 22px;
     border-radius: 8px;
@@ -47,21 +58,26 @@ main {
     background: var(--brand);
     color: #FFFFFF;
 }
+
 .ordini-cta:hover {
     background: var(--brand-dark);
 }
+
 .ordini-list {
     display: flex;
     flex-direction: column;
     gap: 14px;
     width: 100%;
 }
+
+/* card ordine */
 .ordine-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 16px;
     overflow: hidden;
 }
+
 .ordine-header {
     display: flex;
     justify-content: space-between;
@@ -70,25 +86,30 @@ main {
     padding: 16px 20px 12px;
     flex-wrap: wrap;
 }
+
 .ordine-header-left {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
+
 .ordine-num {
     font-size: 15px;
     color: var(--text);
 }
+
 .ordine-num strong {
     font-weight: 700;
     color: var(--brand);
 }
+
 .ordine-meta {
     display: flex;
     align-items: center;
     gap: 8px;
     flex-wrap: wrap;
 }
+
 .ordine-data {
     font-size: 12px;
     color: var(--muted);
@@ -96,23 +117,29 @@ main {
     align-items: center;
     gap: 5px;
 }
+
 .ordine-data i {
     font-size: 12px;
 }
+
 .ordine-sep {
     color: #D1C9C0;
     font-size: 12px;
 }
+
 .ordine-articoli-count {
     font-size: 12px;
     color: var(--muted);
 }
+
 .ordine-header-right {
     display: flex;
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
 }
+
+/* Badge stato ordine: colore testo variabile per stato (.stato-consegnato, ecc.) */
 .ordine-stato {
     font-size: 12px;
     font-weight: 700;
@@ -126,18 +153,23 @@ main {
     border: 1px solid #ccc;
     color: #333;
 }
+
 .stato-consegnato {
     color: #16a34a;
 }
+
 .stato-spedito {
     color: #2563eb;
 }
+
 .stato-elaborazione {
     color: #d97706;
 }
+
 .stato-annullato {
     color: #dc2626;
 }
+
 .ordine-indirizzo {
     padding: 0 20px 10px;
     font-size: 12px;
@@ -146,16 +178,19 @@ main {
     align-items: center;
     gap: 6px;
 }
+
 .ordine-indirizzo i {
     color: var(--brand);
     font-size: 13px;
     flex-shrink: 0;
 }
+
 .ordine-items {
     display: flex;
     flex-direction: column;
     padding: 0 20px 12px;
 }
+
 .ordine-item {
     display: flex;
     align-items: center;
@@ -165,12 +200,15 @@ main {
     text-decoration: none;
     color: inherit;
 }
+
 .ordine-item:last-child {
     border-bottom: none;
 }
+
 .ordine-item:hover {
     border-color: #bbb;
 }
+
 .ordine-item-thumb {
     width: 56px;
     height: 56px;
@@ -181,6 +219,7 @@ main {
     display: block;
     flex-shrink: 0;
 }
+
 .ordine-item-thumb-placeholder {
     width: 56px;
     height: 56px;
@@ -193,6 +232,7 @@ main {
     justify-content: center;
     flex-shrink: 0;
 }
+
 .ordine-item-info {
     flex: 1;
     min-width: 0;
@@ -200,6 +240,7 @@ main {
     flex-direction: column;
     gap: 4px;
 }
+
 .ordine-prodotto-nome {
     font-size: 14px;
     font-weight: 700;
@@ -209,10 +250,12 @@ main {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .ordine-item-meta {
     font-size: 12px;
     color: var(--muted);
 }
+
 .ordine-item-subtotale {
     font-size: 15px;
     font-weight: 700;
@@ -220,12 +263,14 @@ main {
     white-space: nowrap;
     flex-shrink: 0;
 }
+
 .ordine-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px 14px;
 }
+
 .ordine-totale-label {
     font-size: 11px;
     font-weight: 700;
@@ -233,46 +278,58 @@ main {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+
 .ordine-totale-amount {
     font-size: 20px;
     font-weight: 700;
     color: var(--brand);
 }
+
 .ordine-annulla-form {
     margin: 0;
 }
+
+/* responsive */
 @media (max-width: 768px) {
     main {
         min-height: auto;
         padding-top: 20px;
     }
 }
+
 @media (max-width: 600px) {
     .ordini-title {
         font-size: 22px;
     }
+
     .ordine-header {
         flex-direction: column;
         align-items: flex-start;
         padding: 14px 14px 10px;
         gap: 8px;
     }
+
     .ordine-header-right {
         flex-wrap: wrap;
     }
+
     .ordine-indirizzo {
         padding: 0 14px 10px;
     }
+
     .ordine-items {
         padding: 0 14px 12px;
     }
+
     .ordine-item-thumb,
     .ordine-item-thumb-placeholder {
         display: none;
     }
+
     .ordine-footer {
         padding: 10px 14px 12px;
     }
+
     .ordine-totale-amount {
         font-size: 16px;
     }

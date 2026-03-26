@@ -1,3 +1,5 @@
+/* Card wishlist con form per aggiungere al carrello (selezione taglia + quantità). */
+
 main {
     min-height: calc(100vh - 160px);
     display: flex;
@@ -6,23 +8,29 @@ main {
     padding: 32px 16px 48px;
     background: var(--bg);
 }
+
 .wishlist-page {
     max-width: 900px;
     width: 100%;
     margin: 0 auto;
 }
+
 .wishlist-title {
     text-align: center;
     margin-bottom: 8px;
 }
+
 .wishlist-subtitle {
     text-align: center;
 }
+
 .wishlist-card {
     padding: 30px 34px;
     max-width: 920px;
     margin: 0 auto;
 }
+
+/* wishlist vuota */
 .wishlist-empty-text {
     color: #374151;
     font-size: 15px;
@@ -30,24 +38,30 @@ main {
     max-width: 420px;
     margin: 0 auto 18px;
 }
+
 .wishlist-empty-actions {
     display: flex;
     justify-content: center;
 }
+
+/* lista prodotti */
 .wishlist-grid {
     display: flex;
     flex-direction: column;
     gap: 14px;
 }
+
 .wishlist-item {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 20px 22px;
 }
+
 .wishlist-item:hover {
     border-color: #bbb;
 }
+
 .wishlist-item-top {
     display: flex;
     justify-content: space-between;
@@ -57,6 +71,7 @@ main {
     padding-bottom: 14px;
     border-bottom: 1px solid var(--border);
 }
+
 .wishlist-item-media {
     display: flex;
     align-items: center;
@@ -64,16 +79,19 @@ main {
     flex: 1;
     min-width: 0;
 }
+
 .wishlist-item-thumb {
     width: 72px;
     height: 72px;
 }
+
 .wishlist-item-text {
     display: flex;
     flex-direction: column;
     gap: 4px;
     min-width: 0;
 }
+
 .wishlist-item-nome {
     font-size: 16px;
     font-weight: 700;
@@ -84,15 +102,18 @@ main {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .wishlist-item-nome:hover {
     text-decoration: underline;
     color: var(--brand);
 }
+
 .wishlist-item-brand {
     font-size: 13px;
     color: var(--muted);
     font-weight: 600;
 }
+
 .wishlist-item-prezzo {
     font-size: 18px;
     font-weight: 700;
@@ -100,18 +121,22 @@ main {
     white-space: nowrap;
     flex-shrink: 0;
 }
+
 .wishlist-item-prezzo .currency {
     font-weight: 700;
     font-size: 14px;
     color: #374151;
     margin-left: 2px;
 }
+
 .wishlist-item-actions {
     display: flex;
     align-items: flex-end;
     gap: 12px;
     flex-wrap: wrap;
 }
+
+/* form per aggiungere al carrello dalla wishlist (taglia + quantità) */
 .wishlist-cart-form {
     display: flex;
     align-items: flex-end;
@@ -119,20 +144,24 @@ main {
     flex-wrap: wrap;
     flex: 1;
 }
+
 .wishlist-cart-fields {
     display: flex;
     gap: 10px;
 }
+
 .wishlist-field {
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
+
 .wishlist-field label {
     font-size: 12px;
     font-weight: 600;
     color: var(--text);
 }
+
 .wishlist-field select,
 .wishlist-field input[type="number"] {
     height: 38px;
@@ -144,23 +173,28 @@ main {
     font-size: 14px;
     outline: none;
 }
+
 .wishlist-field select {
     width: auto;
     min-width: 0;
     padding-right: 28px;
 }
+
 .wishlist-field input[type="number"] {
     width: 64px;
     text-align: center;
 }
+
 .wishlist-field input[type="number"]::-webkit-inner-spin-button,
 .wishlist-field input[type="number"]::-webkit-outer-spin-button {
     opacity: 1;
 }
+
 .wishlist-field select:focus,
 .wishlist-field input[type="number"]:focus {
     border-color: var(--brand);
 }
+
 .wishlist-unavailable {
     font-size: 14px;
     color: var(--muted);
@@ -168,9 +202,11 @@ main {
     flex: 1;
     margin: 0;
 }
+
 .wishlist-remove-form {
     margin: 0;
 }
+
 .wishlist-item-actions .btn-primary,
 .wishlist-item-actions .btn-danger {
     height: 38px;
@@ -178,38 +214,48 @@ main {
     font-size: 13px;
     line-height: 38px;
 }
+
+/* responsive */
 @media (max-width: 768px) {
     main {
         min-height: auto;
         padding-top: 18px;
     }
 }
+
 @media (max-width: 600px) {
     .wishlist-title {
         font-size: 24px;
     }
+
     .wishlist-item {
         padding: 16px;
     }
+
     .wishlist-item-top {
         flex-wrap: wrap;
         gap: 10px;
     }
+
     .wishlist-item-thumb {
         width: 56px;
         height: 56px;
     }
+
     .wishlist-item-actions {
         flex-direction: column;
         align-items: stretch;
     }
+
     .wishlist-cart-form {
         flex-direction: column;
         align-items: stretch;
     }
+
     .wishlist-cart-fields {
         flex-direction: row;
     }
+
     .wishlist-field select {
         min-width: 0;
         flex: 1;

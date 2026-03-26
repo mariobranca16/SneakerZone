@@ -1,3 +1,5 @@
+/* Dashboard admin: sezione benvenuto e griglia tile di navigazione. */
+
 main {
     flex: 1;
     min-height: 0;
@@ -6,20 +8,24 @@ main {
     justify-content: center;
     padding-bottom: 28px;
 }
+
 .admin-welcome {
     text-align: center;
     margin-bottom: 28px;
 }
+
 .admin-welcome-title {
     font-size: 26px;
     font-weight: 700;
     color: var(--text);
     margin-bottom: 6px;
 }
+
 .admin-welcome-subtitle {
     font-size: 15px;
     color: var(--muted);
 }
+
 .admin-tile {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -31,6 +37,7 @@ main {
     gap: 10px;
     transition: box-shadow 0.2s;
 }
+
 .admin-tile-icon {
     width: 46px;
     height: 46px;
@@ -41,16 +48,19 @@ main {
     color: var(--brand);
     font-size: 20px;
 }
+
 .admin-tile-title {
     font-size: 17px;
     font-weight: 700;
     color: var(--text);
 }
+
 .admin-tile-desc {
     font-size: 14px;
     color: var(--muted);
     line-height: 1.4;
 }
+
 @media (max-width: 640px) {
     .admin-welcome-title {
         font-size: 22px;

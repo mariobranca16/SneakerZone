@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%-- Dettaglio ordine admin (id passato come parametro). Mostra articoli, indirizzo
+     e form per aggiornare lo stato. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -11,6 +13,8 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
+
+<!-- flash messages da sessione (pattern PRG) -->
 <c:if test="${not empty sessionScope.flashSuccesso}">
     <div class="alert alert-success"><c:out value="${sessionScope.flashSuccesso}"/></div>
     <c:remove var="flashSuccesso" scope="session"/>
@@ -19,6 +23,7 @@
     <div class="alert alert-error"><c:out value="${sessionScope.flashErrore}"/></div>
     <c:remove var="flashErrore" scope="session"/>
 </c:if>
+
 <div class="admin-page-header">
     <div>
         <h1 class="admin-page-title">Ordine #${ordine.id}</h1>
@@ -30,12 +35,15 @@
         </a>
     </div>
 </div>
+
 <div class="admin-card">
+    <!-- griglia di riepilogo: utente, indirizzo di spedizione, form cambio stato -->
     <div class="admin-grid-3">
         <div class="order-info-col">
             <div class="order-info-label">Utente</div>
             <div class="order-info-value">${emailUtente}</div>
         </div>
+        <!-- indirizzo: può essere null se l'indirizzo è stato eliminato dopo l'ordine -->
         <div class="order-info-col">
             <div class="order-info-label">Indirizzo di spedizione</div>
             <c:choose>
@@ -52,6 +60,7 @@
                 </c:otherwise>
             </c:choose>
         </div>
+        <!-- form cambio stato: inviato a POST /admin/ordini con il valore dell'enum pre-selezionato -->
         <div class="order-info-col">
             <form method="post" action="${pageContext.request.contextPath}/admin/ordini">
                 <input type="hidden" name="id" value="${ordine.id}">
@@ -67,10 +76,14 @@
             </form>
         </div>
     </div>
+
+    <!-- se il prodotto è stato eliminato dopo l'ordine d.prodotto è null;
+         d.costo è uno snapshot del prezzo al momento dell'acquisto -->
     <c:if test="${not empty ordine.dettagliOrdine}">
         <div class="order-items">
             <c:forEach var="d" items="${ordine.dettagliOrdine}">
                 <div class="order-item">
+                    <!-- immagine: fallback icona se il prodotto non ha immagine o è stato eliminato -->
                     <c:choose>
                         <c:when test="${d.prodotto != null && not empty d.prodotto.imgPath}">
                             <img class="order-item-thumb"
@@ -100,6 +113,7 @@
                         <div class="order-item-sub">&euro;&nbsp;<fmt:formatNumber value="${d.subtotale}" type="number"
                                                                                   minFractionDigits="2"
                                                                                   maxFractionDigits="2"/></div>
+                        <!-- prezzo unitario: mostrato solo se la quantità è > 1 -->
                         <c:if test="${d.quantita > 1}">
                             <div class="order-item-unit">&euro;&nbsp;<fmt:formatNumber value="${d.costo}" type="number"
                                                                                        minFractionDigits="2"

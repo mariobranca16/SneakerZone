@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%-- Lista utenti admin. Il pulsante "Elimina" è disabilitato per l'admin corrente
+     (confronto me.id == u.id) per evitare che cancelli se stesso. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -11,6 +13,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
+<!-- flash messages da sessione (pattern PRG: redirect dopo POST) -->
 <c:if test="${not empty sessionScope.flashSuccesso}">
     <div class="alert alert-success"><c:out value="${sessionScope.flashSuccesso}"/></div>
     <c:remove var="flashSuccesso" scope="session"/>
@@ -51,6 +54,8 @@
                     </tr>
                     </thead>
                     <tbody>
+                        <%-- isMe: true se l'utente della riga corrente è l'admin loggato.
+                             Usato per disabilitare il pulsante elimina su se stessi. --%>
                     <c:set var="me" value="${sessionScope.utenteConnesso}"/>
                     <c:forEach var="u" items="${utenti}">
                         <c:set var="isMe" value="${me != null && me.id == u.id}"/>

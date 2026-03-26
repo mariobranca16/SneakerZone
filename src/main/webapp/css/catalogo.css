@@ -1,17 +1,23 @@
+/* Layout due colonne (sidebar filtri + griglia prodotti), card prodotto. */
+
 .catalogo-page {
     max-width: 1100px;
     width: 100%;
     margin: 32px auto 48px auto;
 }
+
 .catalogo-title {
     font-size: 32px;
     margin-bottom: 18px;
 }
+
 .catalogo-subtitle {
     color: var(--muted);
     font-size: 15px;
     margin-bottom: 24px;
 }
+
+/* toolbar ricerca e ordinamento */
 .catalogo-toolbar {
     display: flex;
     gap: 12px;
@@ -20,6 +26,7 @@
     justify-content: space-between;
     margin-bottom: 18px;
 }
+
 .catalogo-search {
     flex: 1;
     min-width: 220px;
@@ -27,6 +34,7 @@
     gap: 10px;
     align-items: center;
 }
+
 .catalogo-search input[type="text"],
 .catalogo-toolbar select {
     height: 42px;
@@ -37,28 +45,36 @@
     color: var(--text);
     outline: none;
 }
+
 .catalogo-search input[type="text"] {
     width: 100%;
 }
+
 .catalogo-search input[type="text"]:focus,
 .catalogo-toolbar select:focus {
     border-color: var(--brand);
 }
+
+/* layout due colonne: sidebar + risultati */
 .catalogo-layout {
     display: grid;
     grid-template-columns: 220px 1fr;
     gap: 24px;
     align-items: start;
 }
+
+/* sidebar filtri */
 .catalogo-sidebar {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 20px;
 }
+
 .sidebar-section {
     margin-bottom: 22px;
 }
+
 .sidebar-label {
     font-size: 12px;
     font-weight: 700;
@@ -66,9 +82,12 @@
     color: var(--muted);
     margin-bottom: 10px;
 }
+
+/* campo di ricerca brand con icona sovrapposta */
 .sidebar-search-wrap {
     position: relative;
 }
+
 .sidebar-search-icon {
     position: absolute;
     left: 10px;
@@ -78,6 +97,7 @@
     font-size: 13px;
     pointer-events: none;
 }
+
 .sidebar-input {
     width: 100%;
     height: 38px;
@@ -90,9 +110,11 @@
     outline: none;
     box-sizing: border-box;
 }
+
 .sidebar-input:focus {
     border-color: var(--brand);
 }
+
 .sidebar-radio-list {
     list-style: none;
     padding: 0;
@@ -101,6 +123,7 @@
     flex-direction: column;
     gap: 4px;
 }
+
 .sidebar-radio-item {
     display: flex;
     align-items: center;
@@ -111,35 +134,44 @@
     font-size: 14px;
     color: var(--text);
 }
+
 .sidebar-radio-item:hover {
     background: #fff5f0;
 }
+
 .sidebar-radio-item input[type="radio"] {
     accent-color: var(--brand);
     width: 15px;
     height: 15px;
     flex-shrink: 0;
 }
+
+/* filtro prezzo */
 .sidebar-prezzo-row {
     display: flex;
     align-items: center;
     gap: 8px;
 }
+
 .sidebar-input--prezzo {
     padding-left: 12px;
     flex: 1;
     min-width: 0;
 }
+
 .sidebar-prezzo-sep {
     color: var(--muted);
     font-weight: 700;
     flex-shrink: 0;
 }
+
+/* bottoni filtri */
 .sidebar-actions {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
+
 .sidebar-btn {
     display: flex;
     align-items: center;
@@ -153,63 +185,81 @@
     text-decoration: none;
     border: none;
 }
+
 .sidebar-btn--reset {
     background: #D6CFC7;
     color: #111111;
 }
+
 .sidebar-btn--reset:hover {
     background: #C4BCB4;
 }
+
+/* area risultati */
 .catalogo-risultati-header {
     margin-bottom: 14px;
 }
+
 .catalogo-count {
     font-size: 14px;
     color: var(--muted);
     font-weight: 600;
 }
+
 .catalogo-empty {
     text-align: center;
     padding: 60px 20px;
     color: var(--muted);
 }
+
 .catalogo-empty-icon {
     font-size: 48px;
     margin-bottom: 16px;
     opacity: 0.4;
 }
+
 .catalogo-empty p {
     margin-bottom: 12px;
     font-size: 15px;
 }
+
 .catalogo-empty a {
     color: var(--brand);
     font-weight: 700;
     text-decoration: none;
 }
+
 .catalogo-empty a:hover {
     text-decoration: underline;
 }
+
+/* griglia prodotti */
 .catalogo-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
 }
+
 @media (max-width: 1024px) {
     .catalogo-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
 @media (max-width: 768px) {
+    /* Su mobile la sidebar si posiziona sopra la griglia */
     .catalogo-layout {
         grid-template-columns: 1fr;
     }
 }
+
 @media (max-width: 480px) {
     .catalogo-grid {
         grid-template-columns: 1fr;
     }
 }
+
+/* card prodotto */
 .prodotto-card {
     background: var(--surface);
     border: 1px solid #d0d5dc;
@@ -219,14 +269,17 @@
     flex-direction: column;
     min-height: 100%;
 }
+
 .prodotto-card:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .prodotto-thumb-link {
     display: block;
     text-decoration: none;
     color: inherit;
 }
+
 .prodotto-thumb {
     width: 100%;
     aspect-ratio: 4 / 3;
@@ -237,6 +290,7 @@
     align-items: center;
     justify-content: center;
 }
+
 .prodotto-thumb img {
     width: 100%;
     height: 100%;
@@ -244,6 +298,7 @@
     object-fit: contain;
     object-position: center;
 }
+
 .prodotto-body {
     padding: 14px 14px 12px 14px;
     display: flex;
@@ -251,6 +306,7 @@
     gap: 8px;
     flex: 1;
 }
+
 .prodotto-nome {
     font-size: 18px;
     font-weight: 700;
@@ -259,13 +315,16 @@
     margin: 0;
     min-height: 44px;
 }
+
 .prodotto-nome-link {
     color: inherit;
     text-decoration: none;
 }
+
 .prodotto-nome-link:hover {
     text-decoration: underline;
 }
+
 .prodotto-meta {
     display: flex;
     gap: 10px;
@@ -273,10 +332,13 @@
     font-size: 13px;
     color: var(--muted);
 }
+
 .prodotto-meta b {
     color: var(--text);
     font-weight: 700;
 }
+
+/* descrizione troncata a 2 righe con ellipsis */
 .prodotto-descrizione {
     font-size: 13px;
     color: #374151;
@@ -287,6 +349,8 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+
+/* footer della card: prezzo a sinistra, bottoni a destra */
 .prodotto-footer {
     padding: 12px 14px 14px 14px;
     display: flex;
@@ -296,30 +360,35 @@
     gap: 8px;
     border-top: 1px solid var(--border);
 }
+
 .prodotto-azioni {
     display: flex;
     gap: 8px;
     align-items: center;
     justify-content: flex-end;
 }
+
 .prodotto-azioni .btn-primary {
     height: 40px;
     padding: 0 16px;
     font-size: 14px;
     line-height: 40px;
 }
+
 .prodotto-prezzo {
     font-size: 18px;
     font-weight: 700;
     color: var(--text);
     white-space: nowrap;
 }
+
 .prodotto-prezzo .currency {
     font-weight: 700;
     font-size: 14px;
     color: #374151;
     margin-left: 3px;
 }
+
 .catalogo-link-back {
     display: inline-block;
     margin-top: 18px;
@@ -327,6 +396,7 @@
     text-decoration: none;
     font-weight: 700;
 }
+
 .catalogo-link-back:hover {
     text-decoration: underline;
 }

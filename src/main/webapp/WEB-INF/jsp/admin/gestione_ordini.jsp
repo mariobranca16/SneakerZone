@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%-- Lista ordini admin. ${emailUtenti} è una mappa idUtente → email;
+     ${stati} contiene tutti i valori dell'enum StatoOrdine per il select inline. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -12,6 +14,8 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
+
+<!-- flash messages da sessione (pattern PRG: redirect dopo POST) -->
 <c:if test="${not empty sessionScope.flashSuccesso}">
     <div class="alert alert-success"><c:out value="${sessionScope.flashSuccesso}"/></div>
     <c:remove var="flashSuccesso" scope="session"/>
@@ -20,9 +24,11 @@
     <div class="alert alert-error"><c:out value="${sessionScope.flashErrore}"/></div>
     <c:remove var="flashErrore" scope="session"/>
 </c:if>
+
 <div class="admin-page-header">
     <div>
         <h1 class="admin-page-title">Gestione ordini</h1>
+        <!-- conteggio ordini -->
         <p class="admin-page-subtitle">
             <c:choose>
                 <c:when test="${empty ordini}">Nessun ordine presente</c:when>
@@ -31,6 +37,7 @@
         </p>
     </div>
 </div>
+
 <div class="admin-card admin-card--flush">
     <c:choose>
         <c:when test="${empty ordini}">
@@ -40,6 +47,7 @@
             </div>
         </c:when>
         <c:otherwise>
+            <!-- tabella ordini: ogni riga ha un form inline per aggiornare lo stato -->
             <div class="admin-table-wrap ordini-table-wrap">
                 <table class="admin-table ordini-table">
                     <thead>
@@ -52,11 +60,14 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <!-- ogni riga ha un form inline per aggiornare lo stato senza aprire il dettaglio -->
                     <c:forEach var="o" items="${ordini}">
                         <tr>
+                            <!-- link al dettaglio del singolo ordine -->
                             <td class="col-id col-center">
                                 <a href="${pageContext.request.contextPath}/admin/ordine?id=${o.id}">#${o.id}</a>
                             </td>
+                            <!-- email dell'utente dalla mappa emailUtenti -->
                             <td class="col-utente">${emailUtenti[o.idUtente]}</td>
                             <td class="col-data col-hide-sm">${o.dataOrdineFormattata}</td>
                             <td class="col-totale col-center col-hide-xs">
@@ -65,6 +76,7 @@
                                                       minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                                 </span>
                             </td>
+                            <!-- form cambio stato inline: ${stati} contiene tutti i valori di StatoOrdine -->
                             <td class="col-aggiorna col-center">
                                 <div class="admin-table-actions">
                                     <form class="inline-form" method="post"

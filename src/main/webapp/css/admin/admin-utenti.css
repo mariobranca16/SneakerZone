@@ -1,24 +1,32 @@
+/* Tabella utenti admin. Il btn elimina è disabilitato per l'admin loggato (vedi .btn:disabled in admin-base.css). */
+
 .utenti-table-wrap {
     overflow-x: auto;
     margin-bottom: 0;
 }
+
 .utenti-table {
     min-width: 480px;
 }
+
 .col-id {
     width: 64px;
 }
+
 .col-email {
     min-width: 180px;
 }
+
 .col-actions {
     width: 100px;
 }
+
 @media (max-width: 768px) {
     .col-actions {
         width: auto;
     }
 }
+
 @media (max-width: 640px) {
     .admin-table-actions {
         flex-direction: column;

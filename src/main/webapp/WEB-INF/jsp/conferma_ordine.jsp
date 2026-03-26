@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%-- Conferma acquisto. ${ordine} è il bean appena creato con dettagliOrdine e indirizzo.
+     ${dataOrdine} è la data formattata dalla servlet. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -44,6 +46,7 @@
                     <span class="confirm-info-label">Articoli</span>
                     <span class="confirm-info-value">${ordine.numeroArticoli}</span>
                 </div>
+                <!-- indirizzo di spedizione: può mancare se eliminato dopo l'ordine -->
                 <c:if test="${not empty ordine.indirizzo}">
                     <div class="confirm-info-row">
                         <span class="confirm-info-label">Destinatario</span>
@@ -59,6 +62,7 @@
                     </div>
                 </c:if>
             </div>
+            <!-- elenco prodotti dell'ordine -->
             <div class="confirm-section-title">Prodotti ordinati</div>
             <div class="confirm-items">
                 <c:forEach var="d" items="${ordine.dettagliOrdine}">
@@ -73,7 +77,7 @@
                             <span class="confirm-item-meta">
                                 Taglia&nbsp;${d.taglia}&nbsp;&middot;&nbsp;Qt&agrave;&nbsp;${d.quantita}
                                 <c:if test="${not empty d.prodotto.brand}">&nbsp;&middot;&nbsp;<c:out
-                                    value="${d.prodotto.brand}"/></c:if>
+                                        value="${d.prodotto.brand}"/></c:if>
                             </span>
                         </div>
                         <span class="confirm-item-prezzo">
@@ -90,6 +94,7 @@
                                       minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
                 </span>
             </div>
+            <!-- azioni post-conferma -->
             <div class="confirm-actions">
                 <a class="confirm-btn-primary" href="${pageContext.request.contextPath}/ordini">
                     I miei ordini

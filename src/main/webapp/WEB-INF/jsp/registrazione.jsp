@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%-- Registrazione utente. In caso di errore la servlet rimanda qui
+     con attributi errore* e form* per ripopolare i campi. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -18,6 +20,7 @@
         <div class="register-card page-card">
             <h1 class="register-title page-title">Crea il tuo account</h1>
             <p class="register-subtitle page-subtitle">Inserisci i tuoi dati per completare la registrazione</p>
+            <!-- form registrazione: novalidate perché la validazione è gestita da validazione.js -->
             <form id="formRegistrazione" class="register-form" method="post"
                   action="${pageContext.request.contextPath}/registrazione" novalidate>
                 <div class="form-group">

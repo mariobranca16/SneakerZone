@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- Footer condiviso. Carica common.js e wishlist.js su ogni pagina pubblica. --%>
 <footer class="bottombar">
     <div class="footer-main">
         <div>

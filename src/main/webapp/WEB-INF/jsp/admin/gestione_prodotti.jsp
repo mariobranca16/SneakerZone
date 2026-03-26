@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Lista prodotti admin. "Elimina" usa POST con azione=elimina (cascade sul DB);
+     "Modifica" porta a /admin/prodotto?id=... --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -12,6 +14,7 @@
 </head>
 <body>
 <jsp:include page="/WEB-INF/jsp/admin/layout_admin.jsp"/>
+<!-- flash messages da sessione (pattern PRG: redirect dopo POST) -->
 <c:if test="${not empty sessionScope.flashSuccesso}">
     <div class="alert alert-success"><c:out value="${sessionScope.flashSuccesso}"/></div>
     <c:remove var="flashSuccesso" scope="session"/>

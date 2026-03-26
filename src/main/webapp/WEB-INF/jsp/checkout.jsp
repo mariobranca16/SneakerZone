@@ -2,11 +2,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Checkout. CheckoutServlet gestisce sia GET (carica ${carrello} e ${indirizzi})
+     sia POST: valida tutto, crea Ordine + DettaglioOrdine e decrementa lo stock in transazione JDBC. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- context path esposto via meta tag: autocomplete.js lo usa per costruire gli URL dei JSON -->
     <meta name="ctx" content="${pageContext.request.contextPath}">
     <title>Checkout – SneakerZone</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css">
@@ -18,12 +21,17 @@
 <jsp:include page="/WEB-INF/jsp/header.jsp"/>
 <main>
     <div class="checkout-page">
+
+        <!-- errore stock: disponibilità insufficiente al momento della conferma -->
         <c:if test="${not empty erroreStock}">
             <div class="alert alert-error alert-wide">
                 <i class="ti ti-alert-circle"></i>&nbsp;<c:out value="${erroreStock}"/>
             </div>
         </c:if>
+
         <h1 class="checkout-title page-title">Checkout</h1>
+
+        <!-- riepilogo del carrello in sessione (non ancora persistito su DB) -->
         <div class="checkout-card page-card">
             <h2 class="checkout-section-title">
                 <i class="ti ti-shopping-bag"></i> Riepilogo ordine
@@ -57,15 +65,21 @@
                 </span>
             </div>
         </div>
+
+        <!-- indirizzi salvati dell'utente; la lista può essere vuota se non ne ha ancora aggiunti -->
         <div class="checkout-card page-card" id="checkout-addr-section">
             <h2 class="checkout-section-title">
                 <i class="ti ti-map-pin"></i> Indirizzo di spedizione
             </h2>
+
+            <!-- errore indirizzo: campi ck-* mancanti o non validi dopo il POST -->
             <c:if test="${not empty erroreDestinatario or not empty erroreVia or not empty erroreCap or not empty erroreCitta or not empty erroreProvincia or not empty errorePaese}">
                 <div class="alert alert-error checkout-addr-alert">
                     Seleziona o inserisci un indirizzo di spedizione valido.
                 </div>
             </c:if>
+
+            <!-- card indirizzi: i data-attribute vengono copiati nei campi hidden ck-* da checkout.js -->
             <c:if test="${not empty indirizzi}">
                 <div class="profilo-addr-list">
                     <c:forEach var="ind" items="${indirizzi}">
@@ -91,9 +105,13 @@
                     </c:forEach>
                 </div>
             </c:if>
+
             <button type="button" class="btn-aggiungi-indirizzo" onclick="apriNuovoIndirizzo()">
                 Aggiungi un nuovo indirizzo
             </button>
+
+            <!-- form inline: action cambia dinamicamente (nuovo vs modifica);
+                 "from=checkout" serve per il redirect dopo il salvataggio dell'indirizzo -->
             <div class="profilo-edit-section${not empty apriFormIndirizzo ? ' open' : ''}" id="indirizzoFormWrap"
                  data-action-nuovo="${pageContext.request.contextPath}/aggiungi-indirizzo"
                  data-action-modifica="${pageContext.request.contextPath}/myAccount/indirizzo/modifica">
@@ -125,12 +143,14 @@
                     <div class="form-group">
                         <label for="provincia">Provincia</label>
                         <input type="text" id="provincia" name="provincia"
-                               placeholder="Es. MI" maxlength="5" data-ac="province" required>
+                               placeholder="Es. MI" maxlength="5" list="listaProvince" required>
+                        <datalist id="listaProvince"></datalist>
                     </div>
                     <div class="form-group">
                         <label for="paese">Paese</label>
                         <input type="text" id="paese" name="paese"
-                               placeholder="Es. Italia" data-ac="nazioni" required>
+                               placeholder="Es. Italia" list="listaNazioni" required>
+                        <datalist id="listaNazioni"></datalist>
                     </div>
                     <div class="account-actions">
                         <button type="submit" class="btn-primary" id="btnSalvaIndirizzo">Salva indirizzo</button>
@@ -141,6 +161,9 @@
                 </form>
             </div>
         </div>
+
+        <!-- form checkout: i campi hidden ck-* vengono popolati da checkout.js alla selezione della card;
+             ${indirizzoPrecompilato} li ripristina in caso di errore POST -->
         <form class="checkout-form" method="post" action="${pageContext.request.contextPath}/checkout">
             <input type="hidden" name="destinatario" id="ck-destinatario"
                    value="${fn:escapeXml(indirizzoPrecompilato.destinatario)}">
@@ -154,6 +177,8 @@
                    value="${fn:escapeXml(indirizzoPrecompilato.provincia)}">
             <input type="hidden" name="paese" id="ck-paese"
                    value="${fn:escapeXml(indirizzoPrecompilato.paese)}">
+
+            <!-- pagamento simulato: i dati carta non vengono mai persistiti su DB -->
             <div class="checkout-card page-card">
                 <h2 class="checkout-section-title">
                     <i class="ti ti-credit-card"></i> Dati di pagamento
@@ -170,6 +195,7 @@
                             <span class="pay-error">${erroreNomeCarta}</span>
                         </c:if>
                     </div>
+                    <!-- js-card-number: checkout.js formatta automaticamente il numero in gruppi di 4 cifre -->
                     <div class="pay-group pay-full">
                         <label class="pay-label" for="numeroCarta">Numero carta</label>
                         <input class="pay-input js-card-number ${not empty erroreNumeroCarta ? 'pay-input-error' : ''}"
@@ -181,6 +207,7 @@
                             <span class="pay-error">${erroreNumeroCarta}</span>
                         </c:if>
                     </div>
+                    <!-- js-card-expiry: checkout.js formatta automaticamente la scadenza come MM/AA -->
                     <div class="pay-group">
                         <label class="pay-label" for="scadenza">Scadenza</label>
                         <input class="pay-input js-card-expiry ${not empty erroreScadenza ? 'pay-input-error' : ''}"
@@ -215,6 +242,7 @@
 </main>
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
 <script src="${pageContext.request.contextPath}/js/validazione.js"></script>
+<!-- autocomplete.js: popola le datalist di provincia e paese -->
 <script src="${pageContext.request.contextPath}/js/autocomplete.js"></script>
 <script src="${pageContext.request.contextPath}/js/checkout.js"></script>
 </body>

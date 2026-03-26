@@ -2,6 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%-- Frammento dei risultati: incluso da catalogo.jsp al primo caricamento,
+     poi restituito direttamente dalla servlet nelle richieste AJAX di catalogo.js. --%>
 <div class="catalogo-risultati-header">
     <span class="catalogo-count">${fn:length(prodotti)} prodott${fn:length(prodotti) == 1 ? 'o' : 'i'} trovat${fn:length(prodotti) == 1 ? 'o' : 'i'}</span>
 </div>
@@ -52,6 +54,7 @@
                         <div class="prodotto-azioni">
                             <a class="btn-primary"
                                href="${pageContext.request.contextPath}/prodotto?id=${prodotto.id}">Scopri</a>
+                            <!-- pulsante wishlist: visibile solo agli utenti loggati -->
                             <c:if test="${not empty sessionScope.utenteConnesso}">
                                 <form class="form-wishlist" method="post"
                                       action="${pageContext.request.contextPath}/add-to-wishlist">

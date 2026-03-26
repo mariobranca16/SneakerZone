@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%-- Dettaglio prodotto. ${prodotto} è caricato con eager loading (taglie, categorie, immagine).
+     Mostra form carrello, form wishlist (solo utenti loggati) e sezione recensioni. --%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -18,13 +20,17 @@
     <a class="back-link" href="${pageContext.request.contextPath}/catalogo">
         <i class="ti ti-arrow-left" aria-hidden="true"></i> Catalogo
     </a>
+
+    <!-- messaggi flash: ${messaggio} per aggiunta al carrello, ${erroreCarrello} se disponibilità insufficiente -->
     <c:if test="${not empty messaggio}">
         <div class="alert alert-success">${messaggio}</div>
     </c:if>
     <c:if test="${not empty erroreCarrello}">
         <div class="alert alert-error">${erroreCarrello}</div>
     </c:if>
+
     <section class="prodotto-dettaglio">
+
         <div class="prodotto-immagini">
             <div class="immagine-principale">
                 <c:choose>
@@ -41,6 +47,7 @@
                 </c:choose>
             </div>
         </div>
+
         <div class="prodotto-info">
             <p class="prodotto-brand"><c:out value="${prodotto.brand}"/></p>
             <h1 class="prodotto-nome"><c:out value="${prodotto.nome}"/></h1>
@@ -48,6 +55,8 @@
             <p class="prodotto-prezzo">
                 <fmt:formatNumber value="${prodotto.costo}" minFractionDigits="2" maxFractionDigits="2"/>&nbsp;&euro;
             </p>
+
+            <!-- tag categorie: ogni tag linka al catalogo filtrato per quella categoria -->
             <c:if test="${not empty prodotto.categorie}">
                 <div class="prodotto-categorie">
                     <c:forEach var="cat" items="${prodotto.categorie}">
@@ -56,11 +65,15 @@
                     </c:forEach>
                 </div>
             </c:if>
+
+            <!-- form carrello: prodotto.js intercetta il submit per validare taglia e quantità -->
             <form method="post" action="${pageContext.request.contextPath}/carrello" class="form-carrello"
                   id="formCarrello">
                 <input type="hidden" name="azione" value="aggiungi"/>
                 <input type="hidden" name="id" value="${prodotto.id}"/>
                 <input type="hidden" name="origine" value="prodotto"/>
+
+                <!-- selezione taglia: mostra solo le taglie con quantita > 0 (${prodotto.taglie} include anche quelle esaurite) -->
                 <c:if test="${not empty prodotto.taglie}">
                     <div class="selezione-taglia">
                         <label for="taglia">Taglia:</label>
@@ -82,6 +95,8 @@
                     <i class="ti ti-shopping-cart" aria-hidden="true"></i> Aggiungi al carrello
                 </button>
             </form>
+
+            <!-- form wishlist: solo utenti loggati; wishlist.js intercetta via Fetch per aggiornare il badge -->
             <c:if test="${not empty sessionScope.utenteConnesso}">
                 <form method="post" action="${pageContext.request.contextPath}/add-to-wishlist" class="form-wishlist">
                     <input type="hidden" name="idProdotto" value="${prodotto.id}"/>
@@ -90,6 +105,7 @@
                     </button>
                 </form>
             </c:if>
+
             <c:if test="${not empty prodotto.descrizione}">
                 <div class="prodotto-descrizione">
                     <h3>Descrizione</h3>
@@ -98,8 +114,12 @@
             </c:if>
         </div>
     </section>
+
+    <!-- sezione recensioni: il form appare solo se l'utente può ancora recensire (puoRecensire) -->
     <section class="sezione-recensioni">
         <h2>Recensioni</h2>
+
+        <!-- messaggi esito: param.successoRecensione=1 dopo redirect, ${erroreRecensione} per errori -->
         <c:if test="${param.successoRecensione == '1'}">
             <div class="alert alert-success">Recensione pubblicata con successo!</div>
         </c:if>
@@ -109,6 +129,8 @@
         <c:if test="${param.erroreRecensione == '1' && empty erroreRecensione}">
             <div class="alert alert-error">Errore nell'invio della recensione. Verifica i dati e riprova.</div>
         </c:if>
+
+        <!-- form recensione: visibile solo se l'utente può ancora recensire -->
         <c:if test="${puoRecensire}">
             <div class="form-recensione-wrapper">
                 <h3>Scrivi una recensione</h3>
@@ -117,6 +139,7 @@
                     <input type="hidden" name="id" value="${prodotto.id}"/>
                     <div class="recensione-campo">
                         <label for="titolo">Titolo <span class="obbligatorio">*</span></label>
+                        <!-- campo titolo: ripopolato dopo errore -->
                         <input type="text" id="titolo" name="titolo" maxlength="255" required
                                placeholder="Riassumi la tua esperienza"
                                value="${fn:escapeXml(recensioneTitolo)}">
@@ -124,6 +147,7 @@
                             <p class="recensione-errore-campo">${erroreTitoloRecensione}</p>
                         </c:if>
                     </div>
+                    <!-- widget stelle: prodotto.js gestisce hover/click; il valore va nel campo hidden -->
                     <div class="recensione-campo">
                         <label>Valutazione <span class="obbligatorio">*</span></label>
                         <div class="stelle-input" id="stelleInput" role="group"
@@ -136,6 +160,7 @@
                                 </button>
                             </c:forEach>
                         </div>
+                            <%-- classe "visibile": aggiunta dal server dopo errore, o da prodotto.js al submit --%>
                         <p class="stelle-errore<c:if test="${not empty erroreValutazioneRecensione}"> visibile</c:if>"
                            id="stelleErrore">
                             <c:choose>
@@ -146,6 +171,7 @@
                     </div>
                     <div class="recensione-campo">
                         <label for="commento">Commento</label>
+                        <!-- campo commento: ripopolato dopo errore -->
                         <textarea id="commento" name="commento" rows="4" maxlength="2000"
                                   placeholder="Descrivi la tua esperienza con questo prodotto...">${fn:escapeXml(recensioneCommento)}</textarea>
                         <c:if test="${not empty erroreCommentoRecensione}">
@@ -156,9 +182,12 @@
                 </form>
             </div>
         </c:if>
+
         <c:if test="${haGiaRecensito}">
             <p class="info-recensione">Hai già recensito questo prodotto.</p>
         </c:if>
+
+        <!-- elenco recensioni oppure messaggio "nessuna recensione" -->
         <c:choose>
             <c:when test="${not empty recensioni}">
                 <div class="lista-recensioni">
@@ -172,6 +201,7 @@
                                     <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy"/>
                                 </span>
                             </div>
+                            <!-- stelle di visualizzazione -->
                             <div class="recensione-stelle" aria-label="Valutazione: ${rec.valutazione} su 5 stelle">
                                 <c:forEach begin="1" end="5" var="i">
                                     <c:choose>
@@ -187,6 +217,7 @@
                             <c:if test="${not empty rec.commento}">
                                 <p class="recensione-commento"><c:out value="${rec.commento}"/></p>
                             </c:if>
+                            <!-- pulsante elimina: visibile solo all'autore oppure a un admin -->
                             <c:if test="${not empty sessionScope.utenteConnesso && (rec.idUtente == sessionScope.utenteConnesso.id || sessionScope.utenteConnesso.admin)}">
                                 <form method="post" action="${pageContext.request.contextPath}/rimuovi-recensione"
                                       class="form-rimuovi-recensione">

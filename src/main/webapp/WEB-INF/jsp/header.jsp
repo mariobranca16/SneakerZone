@@ -1,4 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- Navbar condivisa. Le variabili di sessione utenteConnesso, wishlistCount e
+     carrello.totaleArticoli controllano badge e menu dropdown. --%>
 <header class="topbar">
     <div class="topbar-inner">
         <a class="topbar-logo" href="${pageContext.request.contextPath}/home">
@@ -9,9 +11,10 @@
                 <li><a href="${pageContext.request.contextPath}/catalogo">
                     <i class="ti ti-building-store topbar-nav-icon"></i><span class="topbar-nav-label"> Catalogo</span>
                 </a></li>
+                <!-- Icona wishlist: visibile solo agli utenti loggati -->
                 <c:if test="${not empty sessionScope.utenteConnesso}">
                     <li>
-                        <a class="topbar-icon-btn" href="${pageContext.request.contextPath}/wishlist"
+                        <a class="topbar-icon-btn" id="wishlist-link" href="${pageContext.request.contextPath}/wishlist"
                            aria-label="Wishlist">
                             <i class="ti ti-heart"></i>
                             <c:if test="${sessionScope.wishlistCount > 0}">
@@ -20,6 +23,8 @@
                         </a>
                     </li>
                 </c:if>
+                <!-- Menu utente: se loggato mostra dropdown con Profilo/Ordini/Logout
+                     (+ Pannello Admin se utenteConnesso.admin); se non loggato mostra link Login -->
                 <c:choose>
                     <c:when test="${not empty sessionScope.utenteConnesso}">
                         <li class="dropdown">
