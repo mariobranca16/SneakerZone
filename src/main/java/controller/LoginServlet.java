@@ -1,5 +1,6 @@
 package controller;
 
+import controller.util.ValidatoreInput;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -45,9 +46,11 @@ public class LoginServlet extends HttpServlet {
             email = email.trim();
         }
 
-        // Validazione semplice, entrambi i campi sono obbligatori
-        if (email == null || email.isBlank() || password == null || password.isBlank()) {
+        // controlla che i campi non siano vuoti e che l'email abbia un formato valido
+        if (email == null || email.isBlank() || password == null || password.isBlank()
+                || !ValidatoreInput.isEmailValida(email)) {
             request.setAttribute("errore", "Email o password non corretti. Riprova.");
+            request.setAttribute("emailInserita", email);
             request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request, response);
             return;
         }

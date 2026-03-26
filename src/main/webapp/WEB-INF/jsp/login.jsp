@@ -22,7 +22,7 @@
             <p class="login-subtitle">Inserisci le credenziali per continuare</p>
             <!-- form login: l'errore è mostrato sotto la password, non sotto l'email,
                  per non rivelare se è sbagliata l'email o la password -->
-            <form method="post" action="${pageContext.request.contextPath}/login">
+            <form id="formLogin" method="post" action="${pageContext.request.contextPath}/login">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input id="email" name="email" type="email" value="${fn:escapeXml(emailInserita)}" required>
@@ -52,5 +52,6 @@
     </div>
 </main>
 <jsp:include page="/WEB-INF/jsp/footer.jsp"/>
+<script src="${pageContext.request.contextPath}/js/validazione.js"></script>
 </body>
 </html>

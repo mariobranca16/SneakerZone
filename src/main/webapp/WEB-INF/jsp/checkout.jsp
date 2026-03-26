@@ -92,7 +92,8 @@
                              data-provincia="${fn:escapeXml(ind.provincia)}"
                              data-paese="${fn:escapeXml(ind.paese)}"
                              onclick="selezionaIndirizzoCheckout(this)">
-                            <input class="addr-radio" type="radio" name="addr-sel" tabindex="-1">
+                            <input class="addr-radio" type="radio" name="addr-sel"
+                                   onchange="selezionaIndirizzoCheckout(this.closest('.profilo-addr-card'))">
                             <div class="profilo-addr-info">
                                 <span class="addr-destinatario"><c:out value="${ind.destinatario}"/></span>
                                 <span class="addr-detail"><c:out value="${ind.via}"/></span>

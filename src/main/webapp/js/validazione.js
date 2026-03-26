@@ -64,6 +64,9 @@ function isViaValida(value) {
     // controlla la lunghezza consentita
     if (via.length < 5 || via.length > 100) return false;
 
+    // stessa restrizione di caratteri applicata lato server (lettere, cifre, spazi e punteggiatura comune)
+    if (!/^[A-Za-z0-9 .,'\/\-]+$/.test(via)) return false;
+
     // richiede almeno una lettera + almeno una cifra
     return /[A-Za-z]/.test(via) && /\d/.test(via);
 }
@@ -172,6 +175,53 @@ function isMaggiorenneData(value) {
 
 // applica la validazione client ai form quando la pagina è pronta
 document.addEventListener('DOMContentLoaded', function () {
+    // recupera il form di login
+    var formLogin = document.getElementById('formLogin');
+
+    // applica la validazione client solo se il form è presente
+    if (formLogin) {
+        formLogin.addEventListener('submit', function (e) {
+            // rimuove eventuali errori client del tentativo precedente
+            var erroriPrecedenti = formLogin.querySelectorAll('.field-error.js-err');
+            for (var n = 0; n < erroriPrecedenti.length; n++) {
+                erroriPrecedenti[n].remove();
+            }
+
+            var valid = true;
+
+            function mostraErrore(inputId, message) {
+                var input = document.getElementById(inputId);
+                if (!input) return;
+                var group = input.closest('.form-group') || input.parentNode;
+                var error = document.createElement('span');
+                error.className = 'field-error js-err';
+                error.textContent = message;
+                group.appendChild(error);
+                valid = false;
+            }
+
+            var email = document.getElementById('email').value.trim();
+            var password = document.getElementById('password').value;
+
+            // controlla presenza e formato dell'email
+            if (!email) {
+                mostraErrore('email', 'Campo obbligatorio');
+            } else if (!isEmailValida(email)) {
+                mostraErrore('email', 'Formato email non valido');
+            }
+
+            // controlla che la password non sia vuota
+            if (!password) {
+                mostraErrore('password', 'Campo obbligatorio');
+            }
+
+            // blocca l'invio del form in presenza di errori
+            if (!valid) {
+                e.preventDefault();
+            }
+        });
+    }
+
     // recupera il form di registrazione
     var formRegistrazione = document.getElementById('formRegistrazione');
 
