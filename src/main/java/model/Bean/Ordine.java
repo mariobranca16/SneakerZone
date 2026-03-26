@@ -128,6 +128,16 @@ public class Ordine implements Serializable {
         return stato == StatoOrdine.IN_ELABORAZIONE;
     }
 
+    public String getStatoCssClass() {
+        if (stato == null) return "";
+        return switch (stato) {
+            case CONSEGNATO -> "stato-consegnato";
+            case SPEDITO -> "stato-spedito";
+            case IN_ELABORAZIONE -> "stato-elaborazione";
+            case ANNULLATO -> "stato-annullato";
+        };
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
