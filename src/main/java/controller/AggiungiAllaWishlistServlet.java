@@ -23,7 +23,7 @@ public class AggiungiAllaWishlistServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // controlla se la richiesta arriva tramite AJAX
-        boolean isAjax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+        boolean isAjax = "1".equals(request.getParameter("ajax"));
         // recupera la sessione e l'utente loggato
         HttpSession session = request.getSession();
         Utente utente = (Utente) session.getAttribute("utenteConnesso");

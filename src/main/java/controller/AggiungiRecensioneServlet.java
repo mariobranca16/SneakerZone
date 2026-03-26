@@ -90,10 +90,10 @@ public class AggiungiRecensioneServlet extends HttpServlet {
         } else {
             try {
                 valutazione = Integer.parseInt(valutazioneStr);
-                if (valutazione < 1 || valutazione > 5) {
-                    throw new NumberFormatException();
-                }
             } catch (NumberFormatException e) {
+                valutazione = 0;
+            }
+            if (valutazione < 1 || valutazione > 5) {
                 request.setAttribute("erroreValutazioneRecensione", "Seleziona una valutazione da 1 a 5.");
                 hasError = true;
             }

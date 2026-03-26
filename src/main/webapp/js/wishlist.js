@@ -54,10 +54,9 @@ document.addEventListener('DOMContentLoaded', function () {
             fetch(form.action, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-Requested-With': 'XMLHttpRequest'
+                    'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                body: 'idProdotto=' + encodeURIComponent(idProdotto)
+                body: 'idProdotto=' + encodeURIComponent(idProdotto) + '&ajax=1'
             })
                 .then(function (response) {
                     // converte la risposta in json

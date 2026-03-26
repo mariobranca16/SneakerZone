@@ -9,31 +9,47 @@ var sections = document.querySelectorAll('.account-section');
 // attiva la sezione richiesta e disattiva le altre
 function mostraSezione(sectionId) {
     // aggiorna lo stato attivo dei pulsanti
-    tabBtns.forEach(function (tab) {
-        tab.classList.toggle('active', tab.dataset.section === sectionId);
-    });
+    for (var i = 0; i < tabBtns.length; i++) {
+        if (tabBtns[i].dataset.section === sectionId) {
+            tabBtns[i].classList.add('active');
+        } else {
+            tabBtns[i].classList.remove('active');
+        }
+    }
 
     // mostra solo la sezione collegata alla tab corrente
-    sections.forEach(function (section) {
-        var attiva = section.id === 'section-' + sectionId;
-        section.classList.toggle('active', attiva);
-        section.hidden = !attiva;
-    });
+    for (var j = 0; j < sections.length; j++) {
+        if (sections[j].id === 'section-' + sectionId) {
+            sections[j].classList.add('active');
+            sections[j].style.display = '';
+        } else {
+            sections[j].classList.remove('active');
+            sections[j].style.display = 'none';
+        }
+    }
 }
 
 // cambia tab e chiude l'eventuale form indirizzo aperto
-tabBtns.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-        mostraSezione(btn.dataset.section);
+for (var t = 0; t < tabBtns.length; t++) {
+    tabBtns[t].addEventListener('click', function () {
+        mostraSezione(this.dataset.section);
         chiudiEditIndirizzo();
     });
-});
+}
 
 // determina la tab iniziale dando priorità alla URL e poi al server
 var wrap = document.querySelector('.account-wrap');
 var tabAttiva = wrap ? wrap.dataset.tab : '';
-var urlParams = new URLSearchParams(window.location.search);
-var sezioneAttiva = urlParams.get('section') || tabAttiva;
+
+// legge il parametro section dalla query string dell'url
+var sezioneAttiva = '';
+var queryString = window.location.search;
+if (queryString.indexOf('section=') !== -1) {
+    sezioneAttiva = queryString.split('section=')[1].split('&')[0];
+}
+if (!sezioneAttiva) {
+    sezioneAttiva = tabAttiva;
+}
 
 // apre la sezione iniziale se presente
 if (sezioneAttiva) {
@@ -101,9 +117,10 @@ var formPassword = document.getElementById('formPassword');
 if (formPassword) {
     formPassword.addEventListener('submit', function (e) {
         // rimuove eventuali errori mostrati in precedenza
-        formPassword.querySelectorAll('.field-error').forEach(function (el) {
-            el.remove();
-        });
+        var erroriPassword = formPassword.querySelectorAll('.field-error');
+        for (var p = 0; p < erroriPassword.length; p++) {
+            erroriPassword[p].remove();
+        }
 
         var valid = true;
 
@@ -159,9 +176,10 @@ var formDatiPersonali = document.getElementById('formDatiPersonali');
 if (formDatiPersonali) {
     formDatiPersonali.addEventListener('submit', function (e) {
         // rimuove eventuali errori del tentativo precedente
-        formDatiPersonali.querySelectorAll('.field-error').forEach(function (el) {
-            el.remove();
-        });
+        var erroriDati = formDatiPersonali.querySelectorAll('.field-error');
+        for (var p = 0; p < erroriDati.length; p++) {
+            erroriDati[p].remove();
+        }
 
         var valid = true;
 
@@ -179,9 +197,9 @@ if (formDatiPersonali) {
         }
 
         // recupera e normalizza i valori da controllare
-        var nome = normalizeText(document.getElementById('nome').value);
-        var cognome = normalizeText(document.getElementById('cognome').value);
-        var email = normalizeText(document.getElementById('email').value);
+        var nome = document.getElementById('nome').value.trim();
+        var cognome = document.getElementById('cognome').value.trim();
+        var email = document.getElementById('email').value.trim();
         var telefono = document.getElementById('telefono').value;
         var dataNascita = document.getElementById('dataDiNascita').value;
 
@@ -207,7 +225,7 @@ if (formDatiPersonali) {
         }
 
         // controlla presenza e formato del telefono
-        if (!normalizeText(telefono)) {
+        if (!telefono.trim()) {
             mostraErroreDati('telefono', 'Il telefono è obbligatorio.');
         } else if (!isTelefonoValido(telefono)) {
             mostraErroreDati('telefono', 'Numero di telefono non valido.');

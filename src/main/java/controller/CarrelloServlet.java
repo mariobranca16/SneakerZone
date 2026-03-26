@@ -17,7 +17,6 @@ import model.DAO.ProdottoTagliaDAO;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 /*
  * Gestisce le operazioni sul carrello: aggiunta, rimozione e aggiornamento quantità.
@@ -61,8 +60,8 @@ public class CarrelloServlet extends HttpServlet {
                 // restituisce i dati aggiornati del carrello con JSON
                 boolean vuoto = carrello.getProdotti().isEmpty();
                 double totale = carrello.getTotale();
-                ValidatoreInput.sendJson(response, 200, String.format(Locale.US,
-                        "{\"success\":true,\"vuoto\":%b,\"totale\":%.2f}", vuoto, totale));
+                ValidatoreInput.sendJson(response, 200,
+                        "{\"success\":true,\"vuoto\":" + vuoto + ",\"totale\":" + String.format("%.2f", totale).replace(',', '.') + "}");
                 return;
             }
             // altrimenti fa redirect alla pagina del carrello
@@ -123,9 +122,11 @@ public class CarrelloServlet extends HttpServlet {
                     boolean rimosso = qtyEffettiva == 0;
                     boolean vuoto = carrello.getProdotti().isEmpty();
                     double totale = carrello.getTotale();
-                    ValidatoreInput.sendJson(response, 200, String.format(Locale.US,
-                            "{\"success\":true,\"nuovaQuantita\":%d,\"subtotale\":%.2f,\"totale\":%.2f,\"rimosso\":%b,\"vuoto\":%b}",
-                            qtyEffettiva, subtotale, totale, rimosso, vuoto));
+                    ValidatoreInput.sendJson(response, 200,
+                            "{\"success\":true,\"nuovaQuantita\":" + qtyEffettiva +
+                            ",\"subtotale\":" + String.format("%.2f", subtotale).replace(',', '.') +
+                            ",\"totale\":" + String.format("%.2f", totale).replace(',', '.') +
+                            ",\"rimosso\":" + rimosso + ",\"vuoto\":" + vuoto + "}");
                     return;
                 }
             }
@@ -136,7 +137,14 @@ public class CarrelloServlet extends HttpServlet {
 
         // se è uscito dai due if, l'azione è di aggiunta del prodotto, quindi la taglia è obbligatoria
         if (tagliaParam == null || tagliaParam.isBlank()) {
-            redirectConErrore(request, response, session, idProdotto, origine, "Seleziona una taglia");
+            if ("prodotto".equalsIgnoreCase(origine)) {
+                response.sendRedirect(request.getContextPath() + "/prodotto?id=" + idProdotto + "&erroreCarrello=1");
+            } else if ("wishlist".equalsIgnoreCase(origine)) {
+                response.sendRedirect(request.getContextPath() + "/wishlist?erroreCarrello=1");
+            } else {
+                session.setAttribute("flash_erroreCarrello", "Seleziona una taglia");
+                response.sendRedirect(request.getContextPath() + "/catalogo");
+            }
             return;
         }
 
@@ -145,7 +153,14 @@ public class CarrelloServlet extends HttpServlet {
         try {
             tagliaInt = Integer.parseInt(tagliaParam);
         } catch (NumberFormatException e) {
-            redirectConErrore(request, response, session, idProdotto, origine, "Taglia non valida");
+            if ("prodotto".equalsIgnoreCase(origine)) {
+                response.sendRedirect(request.getContextPath() + "/prodotto?id=" + idProdotto + "&erroreCarrello=1");
+            } else if ("wishlist".equalsIgnoreCase(origine)) {
+                response.sendRedirect(request.getContextPath() + "/wishlist?erroreCarrello=1");
+            } else {
+                session.setAttribute("flash_erroreCarrello", "Taglia non valida");
+                response.sendRedirect(request.getContextPath() + "/catalogo");
+            }
             return;
         }
 
@@ -158,22 +173,42 @@ public class CarrelloServlet extends HttpServlet {
         }
 
         if (quantita <= 0) {
-            redirectConErrore(request, response, session, idProdotto, origine, "Quantita non valida");
+            if ("prodotto".equalsIgnoreCase(origine)) {
+                response.sendRedirect(request.getContextPath() + "/prodotto?id=" + idProdotto + "&erroreCarrello=1");
+            } else if ("wishlist".equalsIgnoreCase(origine)) {
+                response.sendRedirect(request.getContextPath() + "/wishlist?erroreCarrello=1");
+            } else {
+                session.setAttribute("flash_erroreCarrello", "Quantita non valida");
+                response.sendRedirect(request.getContextPath() + "/catalogo");
+            }
             return;
         }
 
         // Verifica che il prodotto esista
         Prodotto prodotto = new ProdottoDAO().doRetrieveByKey(idProdotto);
         if (prodotto == null) {
-            redirectConErrore(request, response, session, idProdotto, origine, "Prodotto non disponibile");
+            if ("prodotto".equalsIgnoreCase(origine)) {
+                response.sendRedirect(request.getContextPath() + "/prodotto?id=" + idProdotto + "&erroreCarrello=1");
+            } else if ("wishlist".equalsIgnoreCase(origine)) {
+                response.sendRedirect(request.getContextPath() + "/wishlist?erroreCarrello=1");
+            } else {
+                session.setAttribute("flash_erroreCarrello", "Prodotto non disponibile");
+                response.sendRedirect(request.getContextPath() + "/catalogo");
+            }
             return;
         }
         // e che la quantità richiesta, associata al prodotto, sia disponibile
         ProdottoTagliaDAO ptDAO = new ProdottoTagliaDAO();
         int disponibilita = ptDAO.doRetrieveDisponibilita(idProdotto, tagliaInt);
         if (quantita > disponibilita) {
-            // affida la gestione del redirect a un metodo privato
-            redirectConErrore(request, response, session, idProdotto, origine, "Quantita richiesta superiore alla disponibilita del prodotto");
+            if ("prodotto".equalsIgnoreCase(origine)) {
+                response.sendRedirect(request.getContextPath() + "/prodotto?id=" + idProdotto + "&erroreCarrello=1");
+            } else if ("wishlist".equalsIgnoreCase(origine)) {
+                response.sendRedirect(request.getContextPath() + "/wishlist?erroreCarrello=1");
+            } else {
+                session.setAttribute("flash_erroreCarrello", "Quantita richiesta superiore alla disponibilita del prodotto");
+                response.sendRedirect(request.getContextPath() + "/catalogo");
+            }
             return;
         }
 
@@ -204,20 +239,5 @@ public class CarrelloServlet extends HttpServlet {
             request.setAttribute("indirizziUtente", indirizzi);
         }
         request.getRequestDispatcher("/WEB-INF/jsp/carrello.jsp").forward(request, response);
-    }
-
-    // Metodo privato che gestisce il redirect in caso di errore nell'aggiunta al carrello.
-    // Distingue tra prodotto, wishlist e catalogo per scegliere la destinazione giusta.
-    private void redirectConErrore(HttpServletRequest request, HttpServletResponse response, HttpSession session, long idProdotto, String origine, String messaggio) throws IOException {
-        if ("prodotto".equalsIgnoreCase(origine)) {
-            response.sendRedirect(request.getContextPath() + "/prodotto?id=" + idProdotto + "&erroreCarrello=1");
-            return;
-        }
-        if ("wishlist".equalsIgnoreCase(origine)) {
-            response.sendRedirect(request.getContextPath() + "/wishlist?erroreCarrello=1");
-        } else {
-            session.setAttribute("flash_erroreCarrello", messaggio);
-            response.sendRedirect(request.getContextPath() + "/catalogo");
-        }
     }
 }

@@ -21,7 +21,6 @@ public class ValidatoreInput {
     public static final int LUNGHEZZA_MAX_VIA = 100;
     public static final int LUNGHEZZA_MAX_LOCALITA = 100;
     public static final int LUNGHEZZA_MAX_NOME_CARTA = 26;
-    public static final int ANNI_MAX_SCADENZA_CARTA = 15;
     public static final int LUNGHEZZA_MAX_NOME_PRODOTTO = 150;
     public static final int LUNGHEZZA_MAX_BRAND = 100;
     public static final int LUNGHEZZA_MAX_COLORE_PRODOTTO = 50;
@@ -105,7 +104,7 @@ public class ValidatoreInput {
         String t = normalizzaTesto(nome);
         if (!contieneTesto(t) || t.length() < 2 || t.length() > 50)
             return false;
-        return Pattern.matches("^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$", t);
+        return Pattern.matches("^[A-Za-z]+([ '-][A-Za-z]+)*$", t);
     }
 
     // valida la via, controllando la lunghezza, i caratteri ammessi e la presenza sia di lettere che numeri
@@ -113,7 +112,7 @@ public class ValidatoreInput {
         String t = normalizzaTesto(via);
         if (!contieneTesto(t) || t.length() < 5 || t.length() > LUNGHEZZA_MAX_VIA)
             return false;
-        if (!Pattern.matches("^[A-Za-zÀ-ÿ0-9 .,'/\\-]+$", t))
+        if (!Pattern.matches("^[A-Za-z0-9 .,'/\\-]+$", t))
             return false;
         boolean hasLettera = false;
         boolean hasNumero = false;
@@ -142,7 +141,7 @@ public class ValidatoreInput {
         String t = normalizzaTesto(localita);
         if (!contieneTesto(t) || t.length() < 2 || t.length() > LUNGHEZZA_MAX_LOCALITA)
             return false;
-        return Pattern.matches("^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$", t);
+        return Pattern.matches("^[A-Za-z]+([ '-][A-Za-z]+)*$", t);
     }
 
     // valida il nome della carta per il pagamento controllando che la stringa contenga sia nome che cognome
@@ -150,7 +149,7 @@ public class ValidatoreInput {
         String t = normalizzaTesto(nome);
         if (!contieneTesto(t) || t.length() < 3 || t.length() > LUNGHEZZA_MAX_NOME_CARTA)
             return false;
-        return Pattern.matches("^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*\\s+[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$", t);
+        return Pattern.matches("^[A-Za-z]+([ '-][A-Za-z]+)*\\s+[A-Za-z]+([ '-][A-Za-z]+)*$", t);
     }
 
     // stessa validazione del nome della carta applicato al destinatario della spedizione
@@ -158,7 +157,7 @@ public class ValidatoreInput {
         String t = normalizzaTesto(dest);
         if (!contieneTesto(t) || t.length() < 4 || t.length() > LUNGHEZZA_MAX_LOCALITA)
             return false;
-        return Pattern.matches("^[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*\\s+[A-Za-zÀ-ÿ]+([ '-][A-Za-zÀ-ÿ]+)*$", t);
+        return Pattern.matches("^[A-Za-z]+([ '-][A-Za-z]+)*\\s+[A-Za-z]+([ '-][A-Za-z]+)*$", t);
     }
 
     // valida il numero della carta per il pagamento, controllando che abbia 16 cifre
@@ -217,12 +216,11 @@ public class ValidatoreInput {
     }
 
     // valida la scadenza della carta di pagamento nel formato MM/AA
-    // se è valida restituisce null, altrimenti dà un messaggio di errore
-    public static String getErroreScadenzaCarta(String scadenza) {
+    public static boolean isScadenzaCartaValida(String scadenza) {
         String t = normalizzaTesto(scadenza);
         // controllo del formato per evitare parsing inutili
         if (!contieneTesto(t) || !Pattern.matches("^\\d{2}/\\d{2}$", t)) {
-            return "Formato non valido. Usa MM/AA.";
+            return false;
         }
         // conversione della data
         String[] parti = t.split("/");
@@ -230,18 +228,11 @@ public class ValidatoreInput {
         try {
             scad = YearMonth.of(2000 + Integer.parseInt(parti[1]), Integer.parseInt(parti[0]));
         } catch (Exception e) {
-            return "Formato non valido. Usa MM/AA.";
+            return false;
         }
         // blocca le carte scadute
         YearMonth oggi = YearMonth.now();
-        if (scad.isBefore(oggi)) {
-            return "La carta è scaduta.";
-        }
-        // blocca date troppo lontane nel tempo e quindi poco realistiche
-        if (scad.isAfter(oggi.plusYears(ANNI_MAX_SCADENZA_CARTA))) {
-            return "Data di scadenza non realistica.";
-        }
-        return null;
+        return !scad.isBefore(oggi);
     }
 
     // serve per inviare una risposta JSON impostando lo stato HTTP e il content type corretto

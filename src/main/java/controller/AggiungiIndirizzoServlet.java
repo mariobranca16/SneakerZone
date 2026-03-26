@@ -43,12 +43,12 @@ public class AggiungiIndirizzoServlet extends HttpServlet {
         }
 
         // recupero dei parametri inviati dal form
-        String destinatario = request.getParameter("destinatario");
-        String via = request.getParameter("via");
-        String cap = request.getParameter("cap");
-        String citta = request.getParameter("citta");
-        String provincia = request.getParameter("provincia");
-        String paese = request.getParameter("paese");
+        String destinatario = ValidatoreInput.normalizzaTesto(request.getParameter("destinatario"));
+        String via = ValidatoreInput.normalizzaTesto(request.getParameter("via"));
+        String cap = ValidatoreInput.normalizzaTesto(request.getParameter("cap"));
+        String citta = ValidatoreInput.normalizzaTesto(request.getParameter("citta"));
+        String provincia = ValidatoreInput.normalizzaTesto(request.getParameter("provincia"));
+        String paese = ValidatoreInput.normalizzaTesto(request.getParameter("paese"));
         String from = request.getParameter("from");
 
         boolean hasError = false;

@@ -73,14 +73,12 @@ function initDropdown() {
         e.stopPropagation();
 
         // aggiorna lo stato visivo del dropdown
-        var open = dropdown.classList.toggle('is-open');
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        dropdown.classList.toggle('is-open');
     });
 
     // chiude il menu quando avviene un click fuori dal dropdown
     document.addEventListener('click', function () {
         dropdown.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
     });
 }
 

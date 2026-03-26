@@ -55,9 +55,8 @@ public class ModificaOrdineServlet extends HttpServlet {
         }
 
         // controlla che l'ordine appartenga davvero all'utente loggato
-        long idUtenteLoggato = utente.getId();
-        if (ordine.getIdUtente() != idUtenteLoggato) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+        if (ordine.getIdUtente() != utente.getId()) {
+            response.sendRedirect(request.getContextPath() + "/ordini");
             return;
         }
 

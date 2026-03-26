@@ -99,7 +99,7 @@ public class CatalogoServlet extends HttpServlet {
             request.setAttribute("messaggio", "Prodotto aggiunto alla wishlist");
 
         // controlla se la richiesta arriva tramite AJAX
-        if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+        if ("1".equals(request.getParameter("ajax"))) {
             // in questo caso restituisce solo il frammento con i risultati del catalogo
             request.getRequestDispatcher("/WEB-INF/jsp/catalogo_risultati.jsp").forward(request, response);
             return;

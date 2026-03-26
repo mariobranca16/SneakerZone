@@ -27,14 +27,11 @@ public class GestioneOrdiniAdminServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // recupero di tutti gli ordini dal db
         List<Ordine> ordini = new OrdineDAO().doRetrieveAll();
-        // costruisce una mappa email-utenti per evitare di fare troppe query
         UtenteDAO utenteDAO = new UtenteDAO();
         Map<Long, String> emailUtenti = new HashMap<>();
         for (Ordine o : ordini) {
-            if (!emailUtenti.containsKey(o.getIdUtente())) { // carica l'email solo se è già stata recuperata
-                Utente u = utenteDAO.doRetrieveByKey(o.getIdUtente());
-                emailUtenti.put(o.getIdUtente(), u != null ? u.getEmail() : "#" + o.getIdUtente());
-            }
+            Utente u = utenteDAO.doRetrieveByKey(o.getIdUtente());
+            emailUtenti.put(o.getIdUtente(), u != null ? u.getEmail() : "#" + o.getIdUtente());
         }
 
         request.setAttribute("ordini", ordini);

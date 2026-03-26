@@ -114,9 +114,8 @@ public class CheckoutServlet extends HttpServlet {
             request.setAttribute("erroreNumeroCarta", "Inserisci un numero di carta valido (16 cifre).");
             hasError = true;
         }
-        String erroreScadenza = ValidatoreInput.getErroreScadenzaCarta(scadenza);
-        if (erroreScadenza != null) {
-            request.setAttribute("erroreScadenza", erroreScadenza);
+        if (!ValidatoreInput.isScadenzaCartaValida(scadenza)) {
+            request.setAttribute("erroreScadenza", "Inserisci una data di scadenza valida (MM/AA).");
             hasError = true;
         }
         String cvv = ValidatoreInput.normalizzaTesto(request.getParameter("cvv"));
@@ -140,15 +139,18 @@ public class CheckoutServlet extends HttpServlet {
 
         // se l'indirizzo inserito esiste già tra quelli salvati, lo riusa invece di duplicarlo
         IndirizzoSpedizioneDAO indirizzoDAO = new IndirizzoSpedizioneDAO();
-        IndirizzoSpedizione indirizzo = indirizzoDAO.doRetrieveByUtente(utente.getId()).stream()
-                .filter(i -> i.getDestinatario().equalsIgnoreCase(destinatario)
-                        && i.getVia().equalsIgnoreCase(via)
-                        && i.getCap().equalsIgnoreCase(cap)
-                        && i.getCitta().equalsIgnoreCase(citta)
-                        && i.getProvincia().equalsIgnoreCase(provincia)
-                        && i.getPaese().equalsIgnoreCase(paese))
-                .findFirst()
-                .orElse(null);
+        IndirizzoSpedizione indirizzo = null;
+        for (IndirizzoSpedizione i : indirizzoDAO.doRetrieveByUtente(utente.getId())) {
+            if (i.getDestinatario().equalsIgnoreCase(destinatario)
+                    && i.getVia().equalsIgnoreCase(via)
+                    && i.getCap().equalsIgnoreCase(cap)
+                    && i.getCitta().equalsIgnoreCase(citta)
+                    && i.getProvincia().equalsIgnoreCase(provincia)
+                    && i.getPaese().equalsIgnoreCase(paese)) {
+                indirizzo = i;
+                break;
+            }
+        }
         // se invece non esiste ancora, lo crea e lo salva nel db
         if (indirizzo == null) {
             indirizzo = new IndirizzoSpedizione();

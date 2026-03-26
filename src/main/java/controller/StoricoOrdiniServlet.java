@@ -35,7 +35,6 @@ public class StoricoOrdiniServlet extends HttpServlet {
         // recupera tutti gli ordini dell'utente
         List<Ordine> ordini = new OrdineDAO().doRetrieveByUtente(utente.getId());
 
-
         IndirizzoSpedizioneDAO isDAO = new IndirizzoSpedizioneDAO();
         // per ogni ordine dell'utente, recupera l'indirizzo di spedizione
         for (Ordine ordine : ordini) {

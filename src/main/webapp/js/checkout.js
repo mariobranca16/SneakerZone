@@ -4,115 +4,121 @@
  * e la validazione dei dati di pagamento.
  */
 
-document.addEventListener('DOMContentLoaded', function () {
-    // recupera gli elementi principali usati nella pagina checkout
+// seleziona un indirizzo di spedizione tra quelli disponibili
+function selezionaIndirizzoCheckout(card) {
+    // recupera tutte le card indirizzo mostrate nella pagina
+    var cards = document.querySelectorAll('.profilo-addr-card');
+
+    // rimuove la selezione precedente da tutte le card
+    for (var i = 0; i < cards.length; i++) {
+        cards[i].classList.remove('selected');
+
+        // deseleziona anche l'eventuale radio associato
+        var radio = cards[i].querySelector('.addr-radio');
+        if (radio) {
+            radio.checked = false;
+        }
+    }
+
+    // interrompe il flusso se non è stata passata alcuna card
+    if (!card) return;
+
+    // applica lo stato selezionato alla card corrente
+    card.classList.add('selected');
+
+    // seleziona il radio collegato alla card scelta
+    var radioSelezionato = card.querySelector('.addr-radio');
+    if (radioSelezionato) {
+        radioSelezionato.checked = true;
+    }
+
+    // recupera i campi nascosti o compilati del checkout
+    var ckDestinatario = document.getElementById('ck-destinatario');
+    var ckVia = document.getElementById('ck-via');
+    var ckCap = document.getElementById('ck-cap');
+    var ckCitta = document.getElementById('ck-citta');
+    var ckProvincia = document.getElementById('ck-provincia');
+    var ckPaese = document.getElementById('ck-paese');
+
+    // copia nel checkout i dati dell'indirizzo selezionato
+    if (ckDestinatario) ckDestinatario.value = card.dataset.destinatario || '';
+    if (ckVia) ckVia.value = card.dataset.via || '';
+    if (ckCap) ckCap.value = card.dataset.cap || '';
+    if (ckCitta) ckCitta.value = card.dataset.citta || '';
+    if (ckProvincia) ckProvincia.value = card.dataset.provincia || '';
+    if (ckPaese) ckPaese.value = card.dataset.paese || '';
+
+    // chiude il form indirizzo se era aperto
     var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
+    if (indirizzoFormWrap) {
+        indirizzoFormWrap.classList.remove('open');
+    }
+}
+
+// apre il form per inserire un nuovo indirizzo
+function apriNuovoIndirizzo() {
     var formIndirizzo = document.getElementById('formIndirizzo');
+    var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
+
+    // interrompe il flusso se form o contenitore non sono presenti
+    if (!formIndirizzo || !indirizzoFormWrap) return;
+
+    // resetta il form per partire da campi vuoti
+    formIndirizzo.reset();
+
+    // recupera i campi usati per distinguere nuovo inserimento e provenienza
+    var indirizzoId = document.getElementById('indirizzoId');
+    var indirizzoFrom = document.getElementById('indirizzoFrom');
+
+    // svuota id e provenienza perché si tratta di un nuovo indirizzo
+    if (indirizzoId) indirizzoId.value = '';
+    if (indirizzoFrom) indirizzoFrom.value = '';
+
+    // apre il form in modalità inserimento
+    apriFormIndirizzo('Nuovo indirizzo', 'Salva indirizzo', indirizzoFormWrap.dataset.actionNuovo);
+}
+
+// carica i dati dell'indirizzo nel form e apre la modalità modifica
+function apriEditIndirizzo(card) {
+    var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
+
+    // interrompe il flusso se la card o il contenitore non sono presenti
+    if (!card || !indirizzoFormWrap) return;
+
+    // recupera i campi del form indirizzo
+    var indirizzoId = document.getElementById('indirizzoId');
+    var destinatario = document.getElementById('destinatario');
+    var via = document.getElementById('via');
+    var cap = document.getElementById('cap');
+    var citta = document.getElementById('citta');
+    var provincia = document.getElementById('provincia');
+    var paese = document.getElementById('paese');
+    var indirizzoFrom = document.getElementById('indirizzoFrom');
+
+    // copia nel form i valori presenti nella card selezionata
+    if (indirizzoId) indirizzoId.value = card.dataset.id || '';
+    if (destinatario) destinatario.value = card.dataset.destinatario || '';
+    if (via) via.value = card.dataset.via || '';
+    if (cap) cap.value = card.dataset.cap || '';
+    if (citta) citta.value = card.dataset.citta || '';
+    if (provincia) provincia.value = card.dataset.provincia || '';
+    if (paese) paese.value = card.dataset.paese || '';
+
+    // salva l'origine del form per distinguere il flusso lato server
+    if (indirizzoFrom) indirizzoFrom.value = 'checkout';
+
+    // apre il form in modalità modifica
+    apriFormIndirizzo('Modifica indirizzo', 'Salva modifiche', indirizzoFormWrap.dataset.actionModifica);
+}
+
+// chiude il form indirizzo
+function chiudiEditIndirizzo() {
+    chiudiFormIndirizzo();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var indirizzoFormWrap = document.getElementById('indirizzoFormWrap');
     var formCheckout = document.querySelector('.checkout-form');
-
-    // espone la funzione globale per selezionare un indirizzo di spedizione
-    window.selezionaIndirizzoCheckout = function (card) {
-        // recupera tutte le card indirizzo mostrate nella pagina
-        var cards = document.querySelectorAll('.profilo-addr-card');
-
-        // rimuove la selezione precedente da tutte le card
-        for (var i = 0; i < cards.length; i++) {
-            cards[i].classList.remove('selected');
-
-            // deseleziona anche l'eventuale radio associato
-            var radio = cards[i].querySelector('.addr-radio');
-            if (radio) {
-                radio.checked = false;
-            }
-        }
-
-        // interrompe il flusso se non è stata passata alcuna card
-        if (!card) return;
-
-        // applica lo stato selezionato alla card corrente
-        card.classList.add('selected');
-
-        // seleziona il radio collegato alla card scelta
-        var radioSelezionato = card.querySelector('.addr-radio');
-        if (radioSelezionato) {
-            radioSelezionato.checked = true;
-        }
-
-        // recupera i campi nascosti o compilati del checkout
-        var ckDestinatario = document.getElementById('ck-destinatario');
-        var ckVia = document.getElementById('ck-via');
-        var ckCap = document.getElementById('ck-cap');
-        var ckCitta = document.getElementById('ck-citta');
-        var ckProvincia = document.getElementById('ck-provincia');
-        var ckPaese = document.getElementById('ck-paese');
-
-        // copia nel checkout i dati dell'indirizzo selezionato
-        if (ckDestinatario) ckDestinatario.value = card.dataset.destinatario || '';
-        if (ckVia) ckVia.value = card.dataset.via || '';
-        if (ckCap) ckCap.value = card.dataset.cap || '';
-        if (ckCitta) ckCitta.value = card.dataset.citta || '';
-        if (ckProvincia) ckProvincia.value = card.dataset.provincia || '';
-        if (ckPaese) ckPaese.value = card.dataset.paese || '';
-
-        // chiude il form indirizzo se era aperto
-        if (indirizzoFormWrap) {
-            indirizzoFormWrap.classList.remove('open');
-        }
-    };
-
-    // espone la funzione globale per l'inserimento di un nuovo indirizzo
-    window.apriNuovoIndirizzo = function () {
-        // interrompe il flusso se form o contenitore non sono presenti
-        if (!formIndirizzo || !indirizzoFormWrap) return;
-
-        // resetta il form per partire da campi vuoti
-        formIndirizzo.reset();
-
-        // recupera i campi usati per distinguere nuovo inserimento e provenienza
-        var indirizzoId = document.getElementById('indirizzoId');
-        var indirizzoFrom = document.getElementById('indirizzoFrom');
-
-        // svuota id e provenienza perché si tratta di un nuovo indirizzo
-        if (indirizzoId) indirizzoId.value = '';
-        if (indirizzoFrom) indirizzoFrom.value = '';
-
-        // apre il form in modalità inserimento
-        apriFormIndirizzo('Nuovo indirizzo', 'Salva indirizzo', indirizzoFormWrap.dataset.actionNuovo);
-    };
-
-    // espone la funzione globale per modificare un indirizzo esistente
-    window.apriEditIndirizzo = function (card) {
-        // interrompe il flusso se la card o il contenitore non sono presenti
-        if (!card || !indirizzoFormWrap) return;
-
-        // recupera i campi del form indirizzo
-        var indirizzoId = document.getElementById('indirizzoId');
-        var destinatario = document.getElementById('destinatario');
-        var via = document.getElementById('via');
-        var cap = document.getElementById('cap');
-        var citta = document.getElementById('citta');
-        var provincia = document.getElementById('provincia');
-        var paese = document.getElementById('paese');
-        var indirizzoFrom = document.getElementById('indirizzoFrom');
-
-        // copia nel form i valori presenti nella card selezionata
-        if (indirizzoId) indirizzoId.value = card.dataset.id || '';
-        if (destinatario) destinatario.value = card.dataset.destinatario || '';
-        if (via) via.value = card.dataset.via || '';
-        if (cap) cap.value = card.dataset.cap || '';
-        if (citta) citta.value = card.dataset.citta || '';
-        if (provincia) provincia.value = card.dataset.provincia || '';
-        if (paese) paese.value = card.dataset.paese || '';
-
-        // salva l'origine del form per distinguere il flusso lato server
-        if (indirizzoFrom) indirizzoFrom.value = 'checkout';
-
-        // apre il form in modalità modifica
-        apriFormIndirizzo('Modifica indirizzo', 'Salva modifiche', indirizzoFormWrap.dataset.actionModifica);
-    };
-
-    // espone la chiusura del form indirizzo anche fuori da questo file
-    window.chiudiEditIndirizzo = chiudiFormIndirizzo;
 
     // seleziona automaticamente il primo indirizzo disponibile
     var primaCard = document.querySelector('.profilo-addr-card');
@@ -202,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // controlla presenza e formato del nome sulla carta
             var nomeCarta = document.getElementById('nomeCarta');
             if (nomeCarta) {
-                var valoreNome = normalizeText(nomeCarta.value);
+                var valoreNome = nomeCarta.value.trim();
 
                 if (!valoreNome) {
                     mostraErrore('nomeCarta', 'Il nome sulla carta è obbligatorio.');

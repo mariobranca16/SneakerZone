@@ -3,15 +3,10 @@
  * e applica i controlli ai form di registrazione e indirizzo.
  */
 
-// normalizza il testo rimuovendo spazi iniziali e finali
-function normalizeText(value) {
-    return value == null ? '' : value.trim();
-}
-
 // controlla il formato base dell'email
 function isEmailValida(value) {
     // normalizza il valore prima del controllo
-    var email = normalizeText(value);
+    var email = value.trim();
 
     // blocca email troppo lunghe
     if (email.length > 100) return false;
@@ -26,7 +21,7 @@ function isEmailValida(value) {
 // controlla il formato del numero di telefono
 function isTelefonoValido(value) {
     // rimuove spazi e trattini prima della validazione
-    var telefono = normalizeText(value).replace(/[\s-]+/g, '');
+    var telefono = value.trim().replace(/[\s-]+/g, '');
 
     // accetta prefisso + opzionale + da 8 a 13 cifre
     return /^\+?\d{8,13}$/.test(telefono);
@@ -52,91 +47,91 @@ function isPasswordForte(value) {
 // controlla il formato di nome e cognome singoli
 function isNomeValido(value) {
     // normalizza il valore prima del controllo
-    var nome = normalizeText(value);
+    var nome = value.trim();
 
     // controlla la lunghezza consentita
     if (nome.length < 2 || nome.length > 50) return false;
 
-    // accetta solo lettere, anche accentate, con gruppi separati da spazio, apostrofo o trattino
-    return /^[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*$/.test(nome);
+    // accetta solo lettere con gruppi separati da spazio, apostrofo o trattino
+    return /^[A-Za-z]+([ '\-][A-Za-z]+)*$/.test(nome);
 }
 
 // controlla che l'indirizzo contenga testo e numero civico
 function isViaValida(value) {
     // normalizza il valore prima del controllo
-    var via = normalizeText(value);
+    var via = value.trim();
 
     // controlla la lunghezza consentita
     if (via.length < 5 || via.length > 100) return false;
 
     // richiede almeno una lettera + almeno una cifra
-    return /[A-Za-zÀ-ÿ]/.test(via) && /\d/.test(via);
+    return /[A-Za-z]/.test(via) && /\d/.test(via);
 }
 
 // controlla che il cap abbia esattamente 5 cifre
 function isCapValido(value) {
     // accetta solo 5 cifre
-    return /^\d{5}$/.test(normalizeText(value));
+    return /^\d{5}$/.test(value.trim());
 }
 
 // controlla il formato della provincia
 function isProvinciaValida(value) {
     // accetta solo lettere senza spazi o simboli, da 2 a 5 caratteri
-    return /^[A-Za-z]{2,5}$/.test(normalizeText(value));
+    return /^[A-Za-z]{2,5}$/.test(value.trim());
 }
 
 // controlla il formato di città e paese
 function isLocalitaValida(value) {
     // normalizza il valore prima del controllo
-    var localita = normalizeText(value);
+    var localita = value.trim();
 
     // controlla la lunghezza consentita
     if (localita.length < 2 || localita.length > 100) return false;
 
-    // accetta solo lettere, anche accentate, con gruppi separati da spazio, apostrofo o trattino
-    return /^[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*$/.test(localita);
+    // accetta solo lettere con gruppi separati da spazio, apostrofo o trattino
+    return /^[A-Za-z]+([ '\-][A-Za-z]+)*$/.test(localita);
 }
 
 // controlla che il destinatario contenga almeno nome e cognome
 function isDestinatarioValido(value) {
     // normalizza il valore prima del controllo
-    var destinatario = normalizeText(value);
+    var destinatario = value.trim();
 
     // controlla la lunghezza consentita
     if (destinatario.length < 4 || destinatario.length > 100) return false;
 
     // richiede almeno due gruppi di parole separati da almeno uno spazio
-    return /^[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*\s+[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*$/.test(destinatario);
+    return /^[A-Za-z]+([ '\-][A-Za-z]+)*\s+[A-Za-z]+([ '\-][A-Za-z]+)*$/.test(destinatario);
 }
 
 // controlla che il nome sulla carta contenga almeno nome e cognome
 function isNomeCartaValido(value) {
     // normalizza il valore prima del controllo
-    var nomeCarta = normalizeText(value);
+    var nomeCarta = value.trim();
 
     // controlla la lunghezza consentita
     if (nomeCarta.length < 3 || nomeCarta.length > 26) return false;
 
     // richiede almeno due gruppi di parole separati da almeno uno spazio
-    return /^[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*\s+[A-Za-zÀ-ÿ]+([ '\-][A-Za-zÀ-ÿ]+)*$/.test(nomeCarta);
+    return /^[A-Za-z]+([ '\-][A-Za-z]+)*\s+[A-Za-z]+([ '\-][A-Za-z]+)*$/.test(nomeCarta);
 }
 
 // controlla che il numero carta abbia 16 cifre effettive
 function isNumeroCartaValido(value) {
     // accetta solo 16 cifre dopo la rimozione di spazi e trattini
-    return /^\d{16}$/.test(normalizeText(value).replace(/[\s-]+/g, ''));
+    return /^\d{16}$/.test(value.trim().replace(/[\s-]+/g, ''));
 }
 
 // controlla il formato del cvv
 function isCvvValido(value) {
     // accetta solo 3 o 4 cifre
-    return /^\d{3,4}$/.test(normalizeText(value));
+    return /^\d{3,4}$/.test(value.trim());
 }
 
 // controlla il formato e la validità temporale della scadenza carta
 function isScadenzaCartaValida(value) {
     // normalizza il valore prima del controllo
-    var scadenza = normalizeText(value);
+    var scadenza = value.trim();
 
     // richiede esattamente 2 cifre + / + 2 cifre
     if (!/^\d{2}\/\d{2}$/.test(scadenza)) return false;
@@ -151,10 +146,9 @@ function isScadenzaCartaValida(value) {
     // recupera la data attuale per il confronto
     var oggi = new Date();
 
-    // blocca carte già scadute o con data troppo lontana
+    // blocca carte già scadute
     if (anno < oggi.getFullYear()) return false;
     if (anno === oggi.getFullYear() && mese < oggi.getMonth() + 1) return false;
-    if (anno > oggi.getFullYear() + 15) return false;
 
     return true;
 }
@@ -162,7 +156,7 @@ function isScadenzaCartaValida(value) {
 // controlla che la data inserita corrisponda a un utente maggiorenne
 function isMaggiorenneData(value) {
     // normalizza il valore prima del controllo
-    var testo = normalizeText(value);
+    var testo = value.trim();
 
     // blocca il valore vuoto
     if (!testo) return false;
@@ -171,40 +165,9 @@ function isMaggiorenneData(value) {
     var nascita = new Date(testo);
     if (isNaN(nascita.getTime())) return false;
 
-    // calcola l'età a partire dalla data attuale
-    var oggi = new Date();
-    var eta = oggi.getFullYear() - nascita.getFullYear();
-    var mesi = oggi.getMonth() - nascita.getMonth();
-
-    // corregge l'età se il compleanno non è ancora passato
-    if (mesi < 0 || (mesi === 0 && oggi.getDate() < nascita.getDate())) {
-        eta--;
-    }
-
+    // calcola l'età e controlla il minimo
+    var eta = new Date().getFullYear() - nascita.getFullYear();
     return eta >= 18;
-}
-
-// aggiunge un messaggio di errore vicino al campo non valido
-function aggiungiErrore(input, message) {
-    // recupera il contenitore più adatto per mostrare il messaggio
-    var group = input.closest('.form-group') || input.parentNode;
-
-    // crea e inserisce il messaggio di errore
-    var error = document.createElement('span');
-    error.className = 'field-error';
-    error.textContent = message;
-    group.appendChild(error);
-}
-
-// rimuove tutti gli errori già presenti nel form
-function pulisciErrori(form) {
-    // recupera i messaggi di errore esistenti
-    var errors = form.querySelectorAll('.field-error');
-
-    // rimuove ogni messaggio prima di una nuova validazione
-    for (var i = 0; i < errors.length; i++) {
-        errors[i].remove();
-    }
 }
 
 // applica la validazione client ai form quando la pagina è pronta
@@ -216,7 +179,10 @@ document.addEventListener('DOMContentLoaded', function () {
     if (formRegistrazione) {
         formRegistrazione.addEventListener('submit', function (e) {
             // rimuove gli errori del tentativo precedente
-            pulisciErrori(formRegistrazione);
+            var erroriPrecedenti = formRegistrazione.querySelectorAll('.field-error');
+            for (var n = 0; n < erroriPrecedenti.length; n++) {
+                erroriPrecedenti[n].remove();
+            }
 
             // inizializza il flag usato per decidere l'invio del form
             var valid = true;
@@ -226,14 +192,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 var input = formRegistrazione.querySelector('[name="' + nomeCampo + '"]');
                 if (!input) return;
 
-                aggiungiErrore(input, message);
+                var group = input.closest('.form-group') || input.parentNode;
+                var error = document.createElement('span');
+                error.className = 'field-error';
+                error.textContent = message;
+                group.appendChild(error);
                 valid = false;
             }
 
             // recupera e normalizza i valori da controllare
-            var nome = normalizeText(formRegistrazione.querySelector('[name="nome"]').value);
-            var cognome = normalizeText(formRegistrazione.querySelector('[name="cognome"]').value);
-            var email = normalizeText(formRegistrazione.querySelector('[name="email"]').value);
+            var nome = formRegistrazione.querySelector('[name="nome"]').value.trim();
+            var cognome = formRegistrazione.querySelector('[name="cognome"]').value.trim();
+            var email = formRegistrazione.querySelector('[name="email"]').value.trim();
             var password = formRegistrazione.querySelector('[name="password"]').value;
             var telefono = formRegistrazione.querySelector('[name="telefono"]').value;
             var dataNascita = formRegistrazione.querySelector('[name="dataNascita"]').value;
@@ -267,7 +237,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // controlla presenza e formato del telefono
-            if (!normalizeText(telefono)) {
+            if (!telefono.trim()) {
                 mostraErrore('telefono', 'Campo obbligatorio');
             } else if (!isTelefonoValido(telefono)) {
                 mostraErrore('telefono', 'Numero di telefono non valido');
@@ -294,7 +264,10 @@ document.addEventListener('DOMContentLoaded', function () {
     if (formIndirizzo) {
         formIndirizzo.addEventListener('submit', function (e) {
             // rimuove gli errori del tentativo precedente
-            pulisciErrori(formIndirizzo);
+            var erroriPrecedenti = formIndirizzo.querySelectorAll('.field-error');
+            for (var n = 0; n < erroriPrecedenti.length; n++) {
+                erroriPrecedenti[n].remove();
+            }
 
             // inizializza il flag usato per decidere l'invio del form
             var valid = true;
@@ -304,17 +277,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 var input = formIndirizzo.querySelector('[name="' + nomeCampo + '"]');
                 if (!input) return;
 
-                aggiungiErrore(input, message);
+                var group = input.closest('.form-group') || input.parentNode;
+                var error = document.createElement('span');
+                error.className = 'field-error';
+                error.textContent = message;
+                group.appendChild(error);
                 valid = false;
             }
 
             // recupera e normalizza i valori da controllare
-            var destinatario = normalizeText(formIndirizzo.querySelector('[name="destinatario"]').value);
-            var via = normalizeText(formIndirizzo.querySelector('[name="via"]').value);
-            var cap = normalizeText(formIndirizzo.querySelector('[name="cap"]').value);
-            var citta = normalizeText(formIndirizzo.querySelector('[name="citta"]').value);
-            var provincia = normalizeText(formIndirizzo.querySelector('[name="provincia"]').value);
-            var paese = normalizeText(formIndirizzo.querySelector('[name="paese"]').value);
+            var destinatario = formIndirizzo.querySelector('[name="destinatario"]').value.trim();
+            var via = formIndirizzo.querySelector('[name="via"]').value.trim();
+            var cap = formIndirizzo.querySelector('[name="cap"]').value.trim();
+            var citta = formIndirizzo.querySelector('[name="citta"]').value.trim();
+            var provincia = formIndirizzo.querySelector('[name="provincia"]').value.trim();
+            var paese = formIndirizzo.querySelector('[name="paese"]').value.trim();
 
             // controlla presenza e formato del destinatario
             if (!destinatario) {

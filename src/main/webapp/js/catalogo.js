@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var prezzoMax = campoPrezzoMax ? campoPrezzoMax.value.trim() : '';
 
         // prepara i parametri della query solo per i filtri valorizzati
-        var params = [];
+        var params = ['ajax=1'];
 
         if (q) {
             params.push('q=' + encodeURIComponent(q));
@@ -60,11 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // invia la richiesta ajax al server
-        fetch(url, {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
+        fetch(url)
             .then(function (response) {
                 // converte la risposta in html testuale
                 return response.text();

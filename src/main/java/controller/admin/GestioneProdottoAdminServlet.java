@@ -186,7 +186,7 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
         }
 
         List<ProdottoTaglia> taglie = new ArrayList<>();
-        Map<Integer, String> valoriFormTaglie = new LinkedHashMap<>();
+        Map<Integer, String> valoriFormTaglie = new HashMap<>();
         boolean hasInvalidTaglie = false;
         boolean hasPositiveQuantity = false;
         // scorre tutte le taglie disponibili previste dal sistema
@@ -312,7 +312,7 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
 
         // se non è stata passata una mappa delle quantità, la costruisce da zero
         if (quantitaPerTaglia == null) {
-            Map<Integer, String> mappa = new LinkedHashMap<>();
+            Map<Integer, String> mappa = new HashMap<>();
             // inizializza tutte le taglie con quantità 0
             for (int t : ProdottoTagliaDAO.TAGLIE_DISPONIBILI) {
                 mappa.put(t, "0");
@@ -330,7 +330,7 @@ public class GestioneProdottoAdminServlet extends HttpServlet {
         request.setAttribute("quantitaPerTaglia", quantitaPerTaglia);
         request.setAttribute("tutteCategorie", new CategoriaDAO().doRetrieveAll());
         request.setAttribute("idCategorieSelezionate",
-                idCategorieSelezionate != null ? idCategorieSelezionate : Collections.emptySet());
+                idCategorieSelezionate != null ? idCategorieSelezionate : new HashSet<>());
 
         // se è in modalità modifica, carica le recensioni del prodotto e le email degli autori
         if (prodotto != null && prodotto.getId() > 0) {

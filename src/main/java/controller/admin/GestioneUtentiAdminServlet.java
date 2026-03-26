@@ -50,8 +50,7 @@ public class GestioneUtentiAdminServlet extends HttpServlet {
         }
 
         // al momento l'unica azione consentita è l'eliminazione
-        boolean azioneValida = "elimina".equalsIgnoreCase(azione);
-        if (!azioneValida) {
+        if (!"elimina".equalsIgnoreCase(azione)) {
             response.sendRedirect(request.getContextPath() + "/admin/utenti");
             return;
         }
@@ -75,12 +74,9 @@ public class GestioneUtentiAdminServlet extends HttpServlet {
             return;
         }
 
-        // se l'azione richiesta è effettivamente la cancellazione, procede con la rimozione dal db
-        if ("elimina".equalsIgnoreCase(azione)) {
-            utenteDAO.doDelete(idUtente);
-            request.getSession().setAttribute("flashSuccesso", "Utente eliminato con successo");
-        }
-
+        // procede con la rimozione dal db
+        utenteDAO.doDelete(idUtente);
+        request.getSession().setAttribute("flashSuccesso", "Utente eliminato con successo");
         response.sendRedirect(request.getContextPath() + "/admin/utenti");
     }
 }

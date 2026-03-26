@@ -23,7 +23,7 @@ function aggiornaTotale(totale) {
 
     // aggiorna il testo solo se l'elemento è presente
     if (totaleElemento) {
-        totaleElemento.textContent = parseFloat(totale).toFixed(2).replace('.', ',');
+        totaleElemento.textContent = parseFloat(totale).toFixed(2);
     }
 }
 
@@ -131,7 +131,7 @@ function inviaAggiornamento(form) {
 
                 // aggiorna il subtotale del prodotto
                 if (cellaPrezzo) {
-                    cellaPrezzo.textContent = parseFloat(data.subtotale).toFixed(2).replace('.', ',') + ' €';
+                    cellaPrezzo.textContent = parseFloat(data.subtotale).toFixed(2) + ' €';
                 }
 
                 // riallinea il valore dell'input con quello confermato dal server

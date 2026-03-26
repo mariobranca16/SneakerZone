@@ -21,8 +21,8 @@ public class RimuoviDallaWishlistServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // recupera la sessione corrente e l'utente autenticato
-        HttpSession session = request.getSession();
-        Utente utente = (Utente) session.getAttribute("utenteConnesso");
+        HttpSession session = request.getSession(false);
+        Utente utente = (session != null) ? (Utente) session.getAttribute("utenteConnesso") : null;
         // se non c'è un utente loggato, rimanda alla pagina di login
         if (utente == null) {
             response.sendRedirect(request.getContextPath() + "/login?redirect=wishlist");
