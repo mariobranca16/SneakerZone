@@ -73,7 +73,6 @@ function isViaValida(value) {
 
 // controlla che il cap abbia esattamente 5 cifre
 function isCapValido(value) {
-    // accetta solo 5 cifre
     return /^\d{5}$/.test(value.trim());
 }
 
@@ -127,7 +126,6 @@ function isNumeroCartaValido(value) {
 
 // controlla il formato del cvv
 function isCvvValido(value) {
-    // accetta solo 3 o 4 cifre
     return /^\d{3,4}$/.test(value.trim());
 }
 
@@ -146,7 +144,6 @@ function isScadenzaCartaValida(value) {
     // blocca mesi fuori intervallo
     if (mese < 1 || mese > 12) return false;
 
-    // recupera la data attuale per il confronto
     var oggi = new Date();
 
     // blocca carte già scadute

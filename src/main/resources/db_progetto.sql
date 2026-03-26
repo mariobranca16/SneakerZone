@@ -95,7 +95,7 @@ CREATE TABLE Dettaglio_Ordine
     costo       DECIMAL(10, 2) NOT NULL,
     PRIMARY KEY (ordine_id, prodotto_id, taglia),
     FOREIGN KEY (ordine_id) REFERENCES Ordine (id) ON DELETE CASCADE,
-    FOREIGN KEY (prodotto_id) REFERENCES Prodotto (id) ON DELETE CASCADE
+    FOREIGN KEY (prodotto_id) REFERENCES Prodotto (id) ON DELETE RESTRICT
 );
 
 CREATE TABLE MetodoPagamento

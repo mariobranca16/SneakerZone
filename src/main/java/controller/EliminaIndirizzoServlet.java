@@ -43,7 +43,15 @@ public class EliminaIndirizzoServlet extends HttpServlet {
             IndirizzoSpedizioneDAO dao = new IndirizzoSpedizioneDAO();
             IndirizzoSpedizione is = dao.doRetrieveByKey(idIndirizzo);
             if (is != null && is.getIdUtente() == utente.getId()) {
-                dao.doDelete(idIndirizzo);
+                try {
+                    dao.doDelete(idIndirizzo);
+                } catch (RuntimeException e) {
+                    // l'indirizzo è collegato a un ordine esistente e non può essere eliminato
+                    session.setAttribute("flashErrore", "Impossibile eliminare l'indirizzo: è associato a un ordine esistente");
+                    session.setAttribute("tabAttiva", "indirizzo");
+                    response.sendRedirect(request.getContextPath() + "/myAccount");
+                    return;
+                }
             }
         }
 

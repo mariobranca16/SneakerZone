@@ -23,7 +23,6 @@ function selezionaIndirizzoCheckout(card) {
     // interrompe il flusso se non è stata passata alcuna card
     if (!card) return;
 
-    // applica lo stato selezionato alla card corrente
     card.classList.add('selected');
 
     // seleziona il radio collegato alla card scelta
@@ -74,7 +73,6 @@ function apriNuovoIndirizzo() {
     if (indirizzoId) indirizzoId.value = '';
     if (indirizzoFrom) indirizzoFrom.value = '';
 
-    // apre il form in modalità inserimento
     apriFormIndirizzo('Nuovo indirizzo', 'Salva indirizzo', indirizzoFormWrap.dataset.actionNuovo);
 }
 
@@ -107,7 +105,6 @@ function apriEditIndirizzo(card) {
     // salva l'origine del form per distinguere il flusso lato server
     if (indirizzoFrom) indirizzoFrom.value = 'checkout';
 
-    // apre il form in modalità modifica
     apriFormIndirizzo('Modifica indirizzo', 'Salva modifiche', indirizzoFormWrap.dataset.actionModifica);
 }
 

@@ -62,8 +62,13 @@ public class GestioneProdottiAdminServlet extends HttpServlet {
 
         // esegue la cancellazione solo se l'azione richiesta corrisponde ad "elimina"
         if ("elimina".equalsIgnoreCase(azione)) {
-            prodottoDAO.doDelete(id);
-            request.getSession().setAttribute("flashSuccesso", "Prodotto eliminato con successo");
+            try {
+                prodottoDAO.doDelete(id);
+                request.getSession().setAttribute("flashSuccesso", "Prodotto eliminato con successo");
+            } catch (RuntimeException e) {
+                // il prodotto potrebbe essere collegato ad ordini esistenti
+                request.getSession().setAttribute("flashErrore", "Impossibile eliminare il prodotto: è presente in ordini esistenti");
+            }
         } else {
             // se l'azione non è valida, ritorna alla pagina di gestione prodotti
             response.sendRedirect(request.getContextPath() + "/admin/prodotti");
