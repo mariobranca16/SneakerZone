@@ -21,7 +21,7 @@ public class ImmagineProdottoDAO {
     public String doRetrievePrimaImmagine(long idProdotto) {
         try (Connection connection = ConPool.getConnection();
              PreparedStatement ps = connection.prepareStatement(
-                     "SELECT imgPath FROM Immagine_Prodotto WHERE prodotto_id = ? ORDER BY posizione ASC LIMIT 1"
+                     "SELECT imgPath FROM Immagine_Prodotto WHERE prodotto_id = ?"
              )) {
             ps.setLong(1, idProdotto);
             try (ResultSet rs = ps.executeQuery()) {
@@ -53,7 +53,7 @@ public class ImmagineProdottoDAO {
             doDeleteByProdottoRows(connection, idProdotto);
             // salva nel db il path della nuova immagine
             try (PreparedStatement ps = connection.prepareStatement(
-                    "INSERT INTO Immagine_Prodotto (prodotto_id, imgPath, descrizione, posizione) VALUES (?, ?, '', 1)"
+                    "INSERT INTO Immagine_Prodotto (prodotto_id, imgPath) VALUES (?, ?)"
             )) {
                 ps.setLong(1, idProdotto);
                 ps.setString(2, imgPath);

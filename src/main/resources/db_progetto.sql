@@ -1,10 +1,10 @@
 DROP
-    DATABASE IF EXISTS db_progetto;
+DATABASE IF EXISTS db_progetto;
 CREATE
-    DATABASE IF NOT EXISTS db_progetto;
+DATABASE IF NOT EXISTS db_progetto;
 
 USE
-    db_progetto;
+db_progetto;
 
 CREATE TABLE Utente
 (
@@ -28,10 +28,10 @@ CREATE TABLE Categoria
 CREATE TABLE Prodotto
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nome        VARCHAR(255)                   NOT NULL,
+    nome        VARCHAR(255)   NOT NULL,
     descrizione TEXT,
-    brand       VARCHAR(100)                   NOT NULL,
-    costo       DECIMAL(10, 2)                 NOT NULL,
+    brand       VARCHAR(100)   NOT NULL,
+    costo       DECIMAL(10, 2) NOT NULL,
     colore      VARCHAR(50),
     genere      ENUM ('Uomo','Donna','Unisex') NOT NULL DEFAULT 'Unisex'
 );
@@ -47,11 +47,8 @@ CREATE TABLE Prodotto_Taglia
 
 CREATE TABLE Immagine_Prodotto
 (
-    id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    prodotto_id BIGINT UNSIGNED NOT NULL,
-    imgPath     VARCHAR(255)    NOT NULL,
-    descrizione VARCHAR(255),
-    posizione   INT DEFAULT 0,
+    prodotto_id BIGINT UNSIGNED PRIMARY KEY,
+    imgPath     VARCHAR(255) NOT NULL,
     FOREIGN KEY (prodotto_id) REFERENCES Prodotto (id) ON DELETE CASCADE
 );
 
@@ -68,12 +65,12 @@ CREATE TABLE IndirizzoSpedizione
 (
     id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     utente_id    BIGINT UNSIGNED NOT NULL,
-    destinatario VARCHAR(255)    NOT NULL,
-    via          VARCHAR(255)    NOT NULL,
-    citta        VARCHAR(100)    NOT NULL,
-    provincia    VARCHAR(100)    NOT NULL,
-    cap          VARCHAR(10)     NOT NULL,
-    paese        VARCHAR(100)    NOT NULL,
+    destinatario VARCHAR(255) NOT NULL,
+    via          VARCHAR(255) NOT NULL,
+    citta        VARCHAR(100) NOT NULL,
+    provincia    VARCHAR(100) NOT NULL,
+    cap          VARCHAR(10)  NOT NULL,
+    paese        VARCHAR(100) NOT NULL,
     FOREIGN KEY (utente_id) REFERENCES Utente (id) ON DELETE CASCADE
 );
 
@@ -82,7 +79,7 @@ CREATE TABLE Ordine
     id                      BIGINT UNSIGNED                                                NOT NULL AUTO_INCREMENT PRIMARY KEY,
     utente_id               BIGINT UNSIGNED                                                NOT NULL,
     indirizzo_spedizione_id BIGINT UNSIGNED                                                NOT NULL,
-    data_ordine             DATE                                                           NOT NULL,
+    data_ordine             DATE NOT NULL,
     stato_ordine            ENUM ('IN_ELABORAZIONE', 'SPEDITO', 'CONSEGNATO', 'ANNULLATO') NOT NULL DEFAULT 'IN_ELABORAZIONE',
     data_consegna           DATE,
     FOREIGN KEY (utente_id) REFERENCES Utente (id) ON DELETE CASCADE,
@@ -105,9 +102,9 @@ CREATE TABLE MetodoPagamento
 (
     id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     utente_id    BIGINT UNSIGNED NOT NULL UNIQUE,
-    nome_carta   VARCHAR(255)    NOT NULL,
-    numero_carta VARCHAR(16)     NOT NULL,
-    scadenza     VARCHAR(5)      NOT NULL,
+    nome_carta   VARCHAR(255) NOT NULL,
+    numero_carta VARCHAR(16)  NOT NULL,
+    scadenza     VARCHAR(5)   NOT NULL,
     FOREIGN KEY (utente_id) REFERENCES Utente (id) ON DELETE CASCADE
 );
 
@@ -360,47 +357,27 @@ VALUES (1, 40, 8),
        (20, 40, 6),
        (20, 41, 3);
 
-INSERT INTO Immagine_Prodotto (id, prodotto_id, imgPath, descrizione, posizione)
-VALUES (1, 1, '/images/prodotti/1_1.webp', 'Immagine principale', 1),
-       (2, 1, '/images/prodotti/1_2.webp', 'Dettaglio', 2),
-       (3, 2, '/images/prodotti/2_1.webp', 'Immagine principale', 1),
-       (4, 2, '/images/prodotti/2_2.webp', 'Dettaglio', 2),
-       (5, 3, '/images/prodotti/3_1.webp', 'Immagine principale', 1),
-       (6, 3, '/images/prodotti/3_2.webp', 'Dettaglio', 2),
-       (7, 4, '/images/prodotti/4_1.webp', 'Immagine principale', 1),
-       (8, 4, '/images/prodotti/4_2.webp', 'Dettaglio', 2),
-       (9, 5, '/images/prodotti/5_1.webp', 'Immagine principale', 1),
-       (10, 5, '/images/prodotti/5_2.webp', 'Dettaglio', 2),
-       (11, 6, '/images/prodotti/6_1.webp', 'Immagine principale', 1),
-       (12, 6, '/images/prodotti/6_2.webp', 'Dettaglio', 2),
-       (13, 7, '/images/prodotti/7_1.webp', 'Immagine principale', 1),
-       (14, 7, '/images/prodotti/7_2.webp', 'Dettaglio', 2),
-       (15, 8, '/images/prodotti/8_1.webp', 'Immagine principale', 1),
-       (16, 8, '/images/prodotti/8_2.webp', 'Dettaglio', 2),
-       (17, 9, '/images/prodotti/9_1.webp', 'Immagine principale', 1),
-       (18, 9, '/images/prodotti/9_2.webp', 'Dettaglio', 2),
-       (19, 10, '/images/prodotti/10_1.webp', 'Immagine principale', 1),
-       (20, 10, '/images/prodotti/10_2.webp', 'Dettaglio', 2),
-       (21, 11, '/images/prodotti/11_1.webp', 'Immagine principale', 1),
-       (22, 11, '/images/prodotti/11_2.webp', 'Dettaglio', 2),
-       (23, 12, '/images/prodotti/12_1.webp', 'Immagine principale', 1),
-       (24, 12, '/images/prodotti/12_2.webp', 'Dettaglio', 2),
-       (25, 13, '/images/prodotti/13_1.webp', 'Immagine principale', 1),
-       (26, 13, '/images/prodotti/13_2.webp', 'Dettaglio', 2),
-       (27, 14, '/images/prodotti/14_1.webp', 'Immagine principale', 1),
-       (28, 14, '/images/prodotti/14_2.webp', 'Dettaglio', 2),
-       (29, 15, '/images/prodotti/15_1.webp', 'Immagine principale', 1),
-       (30, 15, '/images/prodotti/15_2.webp', 'Dettaglio', 2),
-       (31, 16, '/images/prodotti/16_1.webp', 'Immagine principale', 1),
-       (32, 16, '/images/prodotti/16_2.webp', 'Dettaglio', 2),
-       (33, 17, '/images/prodotti/17_1.webp', 'Immagine principale', 1),
-       (34, 17, '/images/prodotti/17_2.webp', 'Dettaglio', 2),
-       (35, 18, '/images/prodotti/18_1.webp', 'Immagine principale', 1),
-       (36, 18, '/images/prodotti/18_2.webp', 'Dettaglio', 2),
-       (37, 19, '/images/prodotti/19_1.webp', 'Immagine principale', 1),
-       (38, 19, '/images/prodotti/19_2.webp', 'Dettaglio', 2),
-       (39, 20, '/images/prodotti/20_1.webp', 'Immagine principale', 1),
-       (40, 20, '/images/prodotti/20_2.webp', 'Dettaglio', 2);
+INSERT INTO Immagine_Prodotto (prodotto_id, imgPath)
+VALUES (1, '/images/prodotti/1_1.webp'),
+       (2, '/images/prodotti/2_1.webp'),
+       (3, '/images/prodotti/3_1.webp'),
+       (4, '/images/prodotti/4_1.webp'),
+       (5, '/images/prodotti/5_1.webp'),
+       (6, '/images/prodotti/6_1.webp'),
+       (7, '/images/prodotti/7_1.webp'),
+       (8, '/images/prodotti/8_1.webp'),
+       (9, '/images/prodotti/9_1.webp'),
+       (10, '/images/prodotti/10_1.webp'),
+       (11, '/images/prodotti/11_1.webp'),
+       (12, '/images/prodotti/12_1.webp'),
+       (13, '/images/prodotti/13_1.webp'),
+       (14, '/images/prodotti/14_1.webp'),
+       (15, '/images/prodotti/15_1.webp'),
+       (16, '/images/prodotti/16_1.webp'),
+       (17, '/images/prodotti/17_1.webp'),
+       (18, '/images/prodotti/18_1.webp'),
+       (19, '/images/prodotti/19_1.webp'),
+       (20, '/images/prodotti/20_1.webp');
 
 INSERT INTO Prodotto_Categoria (prodotto_id, categoria_id)
 VALUES (1, 1),
