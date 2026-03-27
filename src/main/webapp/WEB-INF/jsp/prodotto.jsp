@@ -194,12 +194,15 @@
                     <c:forEach var="rec" items="${recensioni}">
                         <div class="recensione-card">
                             <div class="recensione-header">
+                                <div class="recensione-meta">
+                                    <span class="recensione-autore"><c:out value="${emailUtenti[rec.idUtente]}"/></span>
+                                    <span class="recensione-data">
+                                        <fmt:parseDate value="${rec.dataRecensione}" pattern="yyyy-MM-dd" var="parsedDate"
+                                                       type="date"/>
+                                        <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy"/>
+                                    </span>
+                                </div>
                                 <span class="recensione-titolo"><c:out value="${rec.titolo}"/></span>
-                                <span class="recensione-data">
-                                    <fmt:parseDate value="${rec.dataRecensione}" pattern="yyyy-MM-dd" var="parsedDate"
-                                                   type="date"/>
-                                    <fmt:formatDate value="${parsedDate}" pattern="dd/MM/yyyy"/>
-                                </span>
                             </div>
                             <!-- stelle di visualizzazione -->
                             <div class="recensione-stelle" aria-label="Valutazione: ${rec.valutazione} su 5 stelle">

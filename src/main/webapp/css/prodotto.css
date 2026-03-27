@@ -239,9 +239,20 @@
 
 .recensione-header {
     display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 6px;
+}
+
+.recensione-meta {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 6px;
+}
+
+.recensione-autore {
+    font-size: 13px;
+    color: #6B7280;
 }
 
 .recensione-titolo {

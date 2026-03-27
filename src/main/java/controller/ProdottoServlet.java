@@ -10,8 +10,13 @@ import model.Bean.Prodotto;
 import model.Bean.Utente;
 import model.DAO.ProdottoDAO;
 import model.DAO.RecensioneDAO;
+import model.DAO.UtenteDAO;
+import model.Bean.Recensione;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /*
  * Mostra la pagina di dettaglio di un prodotto.
@@ -56,7 +61,19 @@ public class ProdottoServlet extends HttpServlet {
 
         // Carica le recensioni del prodotto
         RecensioneDAO recensioneDAO = new RecensioneDAO();
-        request.setAttribute("recensioni", recensioneDAO.doRetrieveByProdotto(idProdotto));
+        List<Recensione> recensioni = recensioneDAO.doRetrieveByProdotto(idProdotto);
+        request.setAttribute("recensioni", recensioni);
+
+        // Costruisce la mappa email per ogni recensione
+        UtenteDAO utenteDAO = new UtenteDAO();
+        Map<Long, String> emailUtenti = new HashMap<>();
+        for (Recensione rec : recensioni) {
+            if (!emailUtenti.containsKey(rec.getIdUtente())) {
+                Utente u = utenteDAO.doRetrieveByKey(rec.getIdUtente());
+                emailUtenti.put(rec.getIdUtente(), u != null ? u.getEmail() : "-");
+            }
+        }
+        request.setAttribute("emailUtenti", emailUtenti);
 
         // se l'utente è autenticato e non è admin, controlla se può recensire il prodotto
         HttpSession session = request.getSession(false);
