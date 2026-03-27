@@ -1,10 +1,10 @@
 DROP
-DATABASE IF EXISTS db_progetto;
+    DATABASE IF EXISTS db_progetto;
 CREATE
-DATABASE IF NOT EXISTS db_progetto;
+    DATABASE IF NOT EXISTS db_progetto;
 
 USE
-db_progetto;
+    db_progetto;
 
 CREATE TABLE Utente
 (
@@ -28,10 +28,10 @@ CREATE TABLE Categoria
 CREATE TABLE Prodotto
 (
     id          BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    nome        VARCHAR(255)   NOT NULL,
+    nome        VARCHAR(255)                   NOT NULL,
     descrizione TEXT,
-    brand       VARCHAR(100)   NOT NULL,
-    costo       DECIMAL(10, 2) NOT NULL,
+    brand       VARCHAR(100)                   NOT NULL,
+    costo       DECIMAL(10, 2)                 NOT NULL,
     colore      VARCHAR(50),
     genere      ENUM ('Uomo','Donna','Unisex') NOT NULL DEFAULT 'Unisex'
 );
@@ -65,12 +65,12 @@ CREATE TABLE IndirizzoSpedizione
 (
     id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     utente_id    BIGINT UNSIGNED NOT NULL,
-    destinatario VARCHAR(255) NOT NULL,
-    via          VARCHAR(255) NOT NULL,
-    citta        VARCHAR(100) NOT NULL,
-    provincia    VARCHAR(100) NOT NULL,
-    cap          VARCHAR(10)  NOT NULL,
-    paese        VARCHAR(100) NOT NULL,
+    destinatario VARCHAR(255)    NOT NULL,
+    via          VARCHAR(255)    NOT NULL,
+    citta        VARCHAR(100)    NOT NULL,
+    provincia    VARCHAR(100)    NOT NULL,
+    cap          VARCHAR(10)     NOT NULL,
+    paese        VARCHAR(100)    NOT NULL,
     FOREIGN KEY (utente_id) REFERENCES Utente (id) ON DELETE CASCADE
 );
 
@@ -79,7 +79,7 @@ CREATE TABLE Ordine
     id                      BIGINT UNSIGNED                                                NOT NULL AUTO_INCREMENT PRIMARY KEY,
     utente_id               BIGINT UNSIGNED                                                NOT NULL,
     indirizzo_spedizione_id BIGINT UNSIGNED                                                NOT NULL,
-    data_ordine             DATE NOT NULL,
+    data_ordine             DATE                                                           NOT NULL,
     stato_ordine            ENUM ('IN_ELABORAZIONE', 'SPEDITO', 'CONSEGNATO', 'ANNULLATO') NOT NULL DEFAULT 'IN_ELABORAZIONE',
     data_consegna           DATE,
     FOREIGN KEY (utente_id) REFERENCES Utente (id) ON DELETE CASCADE,
@@ -88,11 +88,15 @@ CREATE TABLE Ordine
 
 CREATE TABLE Dettaglio_Ordine
 (
-    ordine_id   BIGINT UNSIGNED,
-    prodotto_id BIGINT UNSIGNED,
-    taglia      INT            NOT NULL,
-    quantita    INT            NOT NULL CHECK (quantita > 0),
-    costo       DECIMAL(10, 2) NOT NULL,
+    ordine_id      BIGINT UNSIGNED,
+    prodotto_id    BIGINT UNSIGNED,
+    taglia         INT            NOT NULL,
+    quantita       INT            NOT NULL CHECK (quantita > 0),
+    costo           DECIMAL(10, 2) NOT NULL,
+    nome_prodotto   VARCHAR(255)   NOT NULL,
+    brand_prodotto  VARCHAR(100)   NOT NULL,
+    colore_prodotto VARCHAR(50),
+    img_path        VARCHAR(255),
     PRIMARY KEY (ordine_id, prodotto_id, taglia),
     FOREIGN KEY (ordine_id) REFERENCES Ordine (id) ON DELETE CASCADE,
     FOREIGN KEY (prodotto_id) REFERENCES Prodotto (id) ON DELETE RESTRICT
@@ -102,9 +106,9 @@ CREATE TABLE MetodoPagamento
 (
     id           BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     utente_id    BIGINT UNSIGNED NOT NULL UNIQUE,
-    nome_carta   VARCHAR(255) NOT NULL,
-    numero_carta VARCHAR(16)  NOT NULL,
-    scadenza     VARCHAR(5)   NOT NULL,
+    nome_carta   VARCHAR(255)    NOT NULL,
+    numero_carta VARCHAR(16)     NOT NULL,
+    scadenza     VARCHAR(5)      NOT NULL,
     FOREIGN KEY (utente_id) REFERENCES Utente (id) ON DELETE CASCADE
 );
 
@@ -451,28 +455,28 @@ VALUES (1, 2, 1, '2026-01-05', 'CONSEGNATO', '2026-01-10'),
        (19, 19, 19, '2026-02-26', 'SPEDITO', NULL),
        (20, 20, 20, '2026-02-28', 'IN_ELABORAZIONE', NULL);
 
-INSERT INTO Dettaglio_Ordine (ordine_id, prodotto_id, taglia, quantita, costo)
-VALUES (1, 8, 42, 1, 119.99),
-       (1, 7, 42, 1, 119.99),
-       (2, 1, 42, 1, 139.99),
-       (3, 6, 41, 2, 80.00),
-       (4, 9, 40, 1, 159.99),
-       (5, 3, 42, 1, 199.99),
-       (6, 2, 40, 1, 179.99),
-       (7, 5, 41, 1, 119.99),
-       (8, 10, 42, 1, 109.99),
-       (9, 4, 41, 1, 159.99),
-       (10, 7, 42, 1, 119.99),
-       (11, 11, 40, 1, 149.99),
-       (12, 12, 42, 1, 184.99),
-       (13, 13, 41, 1, 120.00),
-       (14, 14, 37, 1, 109.99),
-       (15, 15, 42, 1, 134.99),
-       (16, 16, 42, 1, 109.99),
-       (17, 17, 42, 1, 109.99),
-       (18, 18, 42, 1, 99.99),
-       (19, 19, 41, 1, 89.99),
-       (20, 20, 38, 1, 190.00);
+INSERT INTO Dettaglio_Ordine (ordine_id, prodotto_id, taglia, quantita, costo, nome_prodotto, brand_prodotto, colore_prodotto, img_path)
+VALUES (1, 8, 42, 1, 119.99, 'adidas Originals Samba OG', 'Adidas', 'Bianco/Nero', '/images/prodotti/8_1.webp'),
+       (1, 7, 42, 1, 119.99, 'Nike Air Force 1 ''07', 'Nike', 'Bianco', '/images/prodotti/7_1.webp'),
+       (2, 1, 42, 1, 139.99, 'Nike Pegasus Trail 5', 'Nike', 'Blu/Rosa', '/images/prodotti/1_1.webp'),
+       (3, 6, 41, 2, 80.00, 'Vans Knu Skool', 'Vans', 'Nero/Bianco', '/images/prodotti/6_1.webp'),
+       (4, 9, 40, 1, 159.99, 'adidas Originals Gazelle', 'Adidas', 'Blu/Marrone', '/images/prodotti/9_1.webp'),
+       (5, 3, 42, 1, 199.99, 'Jordan Air 1 Low', 'Jordan', 'Nero/Marrone', '/images/prodotti/3_1.webp'),
+       (6, 2, 40, 1, 179.99, 'ASICS GEL-1130', 'ASICS', 'Argento', '/images/prodotti/2_1.webp'),
+       (7, 5, 41, 1, 119.99, 'Vans Old Skool', 'Vans', 'Nero/Bianco', '/images/prodotti/5_1.webp'),
+       (8, 10, 42, 1, 109.99, 'HOKA Clifton 9 GORE-TEX', 'HOKA', 'Blu/Nero', '/images/prodotti/10_1.webp'),
+       (9, 4, 41, 1, 159.99, 'Nike Dunk Low', 'Nike', 'Bianco/Nero', '/images/prodotti/4_1.webp'),
+       (10, 7, 42, 1, 119.99, 'Nike Air Force 1 ''07', 'Nike', 'Bianco', '/images/prodotti/7_1.webp'),
+       (11, 11, 40, 1, 149.99, 'Nike Air Max 90', 'Nike', 'Bianco/Rosa', '/images/prodotti/11_1.webp'),
+       (12, 12, 42, 1, 184.99, 'Nike Air Max 95', 'Nike', 'Grigio/Nero', '/images/prodotti/12_1.webp'),
+       (13, 13, 41, 1, 120.00, 'New Balance 740', 'New Balance', 'Crema', '/images/prodotti/13_1.webp'),
+       (14, 14, 37, 1, 109.99, 'New Balance 530', 'New Balance', 'Bianco', '/images/prodotti/14_1.webp'),
+       (15, 15, 42, 1, 134.99, 'Jordan Air 1 Mid', 'Jordan', 'Blu', '/images/prodotti/15_1.webp'),
+       (16, 16, 42, 1, 109.99, 'adidas Originals Campus 00s', 'Adidas', 'Nero', '/images/prodotti/16_1.webp'),
+       (17, 17, 42, 1, 109.99, 'adidas Originals Superstar II', 'Adidas', 'Bianco', '/images/prodotti/17_1.webp'),
+       (18, 18, 42, 1, 99.99, 'Puma Speedcat X', 'Puma', 'Grigio', '/images/prodotti/18_1.webp'),
+       (19, 19, 41, 1, 89.99, 'Reebok Club C', 'Reebok', 'Bianco', '/images/prodotti/19_1.webp'),
+       (20, 20, 38, 1, 190.00, 'New Balance 9060', 'New Balance', 'Grigio', '/images/prodotti/20_1.webp');
 
 INSERT INTO MetodoPagamento (id, utente_id, nome_carta, numero_carta, scadenza)
 VALUES (1, 2, 'Luca Rossi', '4532015112830366', '09/27'),

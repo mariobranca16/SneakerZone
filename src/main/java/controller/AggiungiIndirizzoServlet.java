@@ -19,7 +19,7 @@ import java.util.List;
  * Aggiunge un nuovo indirizzo di spedizione.
  * Può essere chiamata sia dalla pagina del profilo sia dal checkout.
  * Il redirect finale cambia il base al parametro from che indica l'origine della richiesta.
-*/
+ */
 @WebServlet(name = "aggiungi-indirizzo", urlPatterns = "/aggiungi-indirizzo")
 public class AggiungiIndirizzoServlet extends HttpServlet {
 

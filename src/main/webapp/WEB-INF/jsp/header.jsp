@@ -24,7 +24,7 @@
                     </li>
                 </c:if>
                 <!-- Menu utente: se loggato mostra dropdown con Profilo/Ordini/Logout
-                     (+ Pannello Admin se utenteConnesso.admin); se non loggato mostra link Login -->
+                     (Pannello Admin se utenteConnesso.admin); se non loggato mostra link Login -->
                 <c:choose>
                     <c:when test="${not empty sessionScope.utenteConnesso}">
                         <li class="dropdown">

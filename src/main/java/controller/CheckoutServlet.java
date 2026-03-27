@@ -179,7 +179,13 @@ public class CheckoutServlet extends HttpServlet {
             d.setProdotto(item.getProdotto());
             d.setTaglia(item.getTaglia());
             d.setQuantita(item.getQuantita());
-            d.setCosto(item.getProdotto().getCosto()); // salva il prezzo del prodotto al momento dell'acquisto
+            // I dati del prodotto vengono copiati nel dettaglio ordine al momento dell'acquisto
+            // così lo storico ordini resta coerente anche se il catalogo viene modificato in seguito
+            d.setCosto(item.getProdotto().getCosto());
+            d.setNomeProdotto(item.getProdotto().getNome());
+            d.setBrandProdotto(item.getProdotto().getBrand());
+            d.setColoreProdotto(item.getProdotto().getColore());
+            d.setImgPath(item.getProdotto().getImgPath());
             dettagli.add(d);
         }
         ordine.setDettagliOrdine(dettagli);

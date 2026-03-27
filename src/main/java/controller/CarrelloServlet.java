@@ -124,9 +124,9 @@ public class CarrelloServlet extends HttpServlet {
                     double totale = carrello.getTotale();
                     ValidatoreInput.sendJson(response, 200,
                             "{\"success\":true,\"nuovaQuantita\":" + qtyEffettiva +
-                            ",\"subtotale\":" + String.format("%.2f", subtotale).replace(',', '.') +
-                            ",\"totale\":" + String.format("%.2f", totale).replace(',', '.') +
-                            ",\"rimosso\":" + rimosso + ",\"vuoto\":" + vuoto + "}");
+                                    ",\"subtotale\":" + String.format("%.2f", subtotale).replace(',', '.') +
+                                    ",\"totale\":" + String.format("%.2f", totale).replace(',', '.') +
+                                    ",\"rimosso\":" + rimosso + ",\"vuoto\":" + vuoto + "}");
                     return;
                 }
             }

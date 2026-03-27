@@ -61,9 +61,9 @@
                         <c:set var="isMe" value="${me != null && me.id == u.id}"/>
                         <tr>
                             <td class="col-id col-center">${u.id}</td>
-                            <td class="col-email td-email">${u.email}</td>
-                            <td class="col-hide-sm">${u.nome}</td>
-                            <td class="col-hide-sm">${u.cognome}</td>
+                            <td class="col-email td-email"><c:out value="${u.email}"/></td>
+                            <td class="col-hide-sm"><c:out value="${u.nome}"/></td>
+                            <td class="col-hide-sm"><c:out value="${u.cognome}"/></td>
                             <td class="col-actions col-center">
                                 <div class="admin-table-actions">
                                     <form class="inline-form" method="post"

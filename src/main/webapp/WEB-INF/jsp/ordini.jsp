@@ -132,7 +132,7 @@
                                                 <span class="ordine-item-meta">
                                                     Taglia&nbsp;${item.taglia}&nbsp;&middot;&nbsp;Qt&agrave;&nbsp;${item.quantita}
                                                     <c:if test="${not empty item.prodotto.brand}">&nbsp;&middot;&nbsp;<c:out
-                                                        value="${item.prodotto.brand}"/></c:if>
+                                                            value="${item.prodotto.brand}"/></c:if>
                                                 </span>
                                             </div>
                                             <span class="ordine-item-subtotale">

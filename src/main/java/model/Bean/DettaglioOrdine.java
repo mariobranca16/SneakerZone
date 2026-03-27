@@ -12,6 +12,10 @@ public class DettaglioOrdine {
     private int taglia;
     private int quantita;
     private double costo;
+    private String nomeProdotto;
+    private String brandProdotto;
+    private String coloreProdotto;
+    private String imgPath;
     private Prodotto prodotto;
 
     public DettaglioOrdine() {
@@ -63,6 +67,38 @@ public class DettaglioOrdine {
 
     public void setCosto(double costo) {
         this.costo = costo;
+    }
+
+    public String getNomeProdotto() {
+        return nomeProdotto;
+    }
+
+    public void setNomeProdotto(String nomeProdotto) {
+        this.nomeProdotto = nomeProdotto;
+    }
+
+    public String getBrandProdotto() {
+        return brandProdotto;
+    }
+
+    public void setBrandProdotto(String brandProdotto) {
+        this.brandProdotto = brandProdotto;
+    }
+
+    public String getColoreProdotto() {
+        return coloreProdotto;
+    }
+
+    public void setColoreProdotto(String coloreProdotto) {
+        this.coloreProdotto = coloreProdotto;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
     public Prodotto getProdotto() {

@@ -354,6 +354,7 @@ main {
         padding: 0 16px;
         height: 72px;
     }
+
     .topbar-nav > li:not(.dropdown) > a:not(.topbar-icon-btn) {
         width: 44px;
         height: 44px;

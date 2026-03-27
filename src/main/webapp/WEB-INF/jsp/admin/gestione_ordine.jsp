@@ -77,8 +77,9 @@
         </div>
     </div>
 
-    <!-- se il prodotto è stato eliminato dopo l'ordine d.prodotto è null;
-         d.costo è uno snapshot del prezzo al momento dell'acquisto -->
+    <!-- d.prodotto è sempre costruito dal DAO con i dati salvati al momento dell'acquisto
+         (nome, brand, colore, immagine, prezzo): lo storico resta coerente anche se il
+         catalogo viene modificato successivamente -->
     <c:if test="${not empty ordine.dettagliOrdine}">
         <div class="order-items">
             <c:forEach var="d" items="${ordine.dettagliOrdine}">

@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class ProdottoTagliaDAO {
     public static final int[] TAGLIE_DISPONIBILI = {35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46};
+
     // Cancella tutte le taglie associate a un prodotto
     public void doDeleteByProdotto(Connection connection, long idProdotto) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(

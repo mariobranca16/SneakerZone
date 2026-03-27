@@ -24,7 +24,7 @@ public class CategoriaDAO {
              PreparedStatement ps = connection.prepareStatement(
                      "SELECT * FROM Categoria ORDER BY nome"
              );
-            ResultSet rs = ps.executeQuery()) {
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Categoria categoria = new Categoria();
                 categoria.setId(rs.getLong("id"));

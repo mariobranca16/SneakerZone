@@ -18,7 +18,7 @@ import java.time.format.DateTimeParseException;
 /*
  * Aggiorna i dati personali dell'utente.
  * Valida tutti i campi inseriti e controlla che l'email non sia già usata da un altro account.
-*/
+ */
 @WebServlet(name = "aggiornaDatiPersonali", urlPatterns = "/myAccount/datiPersonali")
 public class ModificaDatiPersonaliServlet extends HttpServlet {
 

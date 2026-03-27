@@ -44,7 +44,7 @@ public class ModificaPasswordServlet extends HttpServlet {
         if (passwordAttuale == null || passwordAttuale.isBlank()) {
             request.setAttribute("errorePasswordAttuale", "Inserisci la password attuale.");
             hasError = true;
-        // e che corrisponda a quella dell'utente
+            // e che corrisponda a quella dell'utente
         } else if (dao.doRetrieveByEmailAndPassword(utente.getEmail(), passwordAttuale) == null) {
             request.setAttribute("errorePasswordAttuale", "La password attuale non e corretta.");
             hasError = true;
