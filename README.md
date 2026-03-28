@@ -1,4 +1,4 @@
-#  SneakerZone👟
+# 👟 SneakerZone
 
 > E-commerce per la vendita online di sneakers, sviluppato per il corso di **Tecnologie Software per il Web**.
 >
@@ -6,7 +6,7 @@
 
 ---
 
-## Stack tecnologico
+## ⚙️ Stack tecnologico
 
 | Layer      | Tecnologie                                    |
 |------------|-----------------------------------------------|
@@ -21,7 +21,7 @@ Il progetto segue il pattern **MVC (Model–View–Controller)** senza l'uso di 
 
 ---
 
-## Funzionalità
+## 👥 Funzionalità
 
 ### Utente non registrato
 - Navigazione del catalogo con filtri (brand, categoria, genere, taglia, prezzo)
@@ -47,7 +47,7 @@ Il progetto segue il pattern **MVC (Model–View–Controller)** senza l'uso di 
 
 ---
 
-## Schema del database
+## 🗄️ Schema del database
 
 Il database `db_progetto` include le seguenti tabelle principali:
 
@@ -67,7 +67,7 @@ Il database `db_progetto` include le seguenti tabelle principali:
 
 ---
 
-## Installazione
+## 🚀 Installazione
 
 ### Prerequisiti
 
@@ -84,19 +84,21 @@ git clone https://github.com/mariobranca16/SneakerZone.git
 
 ### 2. Configura il database
 
+Importa lo schema ed i dati iniziali:
+
 ```sql
 source src/main/resources/db_progetto.sql
 ```
 
-Il file SQL crea il database `db_progetto`, le tabelle e i dati iniziali.
-
-Configura le credenziali nella classe `ConPool`:
+Apri la classe `src/main/java/model/ConPool.java` e sostituisci i segnaposto con le credenziali della tua installazione MySQL:
 
 ```java
-p.setUrl("jdbc:mysql://localhost:3306/db_progetto?serverTimezone=<tuo_timezone>");
-p.setUsername("root");
-p.setPassword("tuaPassword");
+p.setUrl("jdbc:mysql://localhost:3306/db_progetto?serverTimezone=" + TimeZone.getDefault().getID()); // MY_URL
+p.setUsername("MY_USERNAME"); // es. root
+p.setPassword("MY_PASSWORD"); // la tua password MySQL
 ```
+
+> ⚠️ I valori `MY_URL`, `MY_USERNAME` e `MY_PASSWORD` sono segnaposto e vanno obbligatoriamente sostituiti prima di avviare l'applicazione.
 
 ### 3. Build e deploy
 
@@ -114,7 +116,7 @@ http://localhost:8080/SneakerZone
 
 ---
 
-## Struttura del progetto
+## 🧠 Struttura del progetto
 
 ```
 src/main/
@@ -139,7 +141,7 @@ src/main/
 
 ---
 
-## Sicurezza
+## 🔐 Sicurezza
 
 - Password cifrate con hash SHA-256 nel database
 - Validazione degli input lato client (`validazione.js`) e lato server (`ValidatoreInput.java`)
@@ -149,7 +151,7 @@ src/main/
 
 ---
 
-## Design
+## 🎨 Design
 
 Il design è volutamente semplice e minimale.
 
