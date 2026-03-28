@@ -61,7 +61,7 @@ Il database `db_progetto` include le seguenti tabelle principali:
 | `Prodotto_Categoria`  | Relazione N:M prodotto–categoria                 |
 | `IndirizzoSpedizione` | Indirizzi salvati per utente                     |
 | `Ordine`              | Testata ordine con stato e snapshot indirizzo    |
-| `DettaglioOrdine`     | Righe ordine con prezzo unitario al momento      |
+| `DettaglioOrdine`     | Righe ordine con snapshot prodotti|
 | `Recensione`          | Recensioni con voto e testo                      |
 | `Wishlist`            | Prodotti salvati dall'utente                     |
 
