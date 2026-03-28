@@ -1,6 +1,6 @@
 # SneakerZone 👟 
 
-> E-commerce per la vendita online di sneakers, sviluppato per il corso di **Tecnologie Software per il Web**.
+> E-commerce per la vendita online di sneakers, sviluppato per il corso di **Tecnologie Software per il Web** presso l'Università degli Studi di Salerno.
 >
 > Progetto realizzato da:
 > - **Mario Branca**
