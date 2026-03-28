@@ -1,4 +1,4 @@
-# 👟 SneakerZone
+#  SneakerZone👟
 
 > E-commerce per la vendita online di sneakers, sviluppato per il corso di **Tecnologie Software per il Web**.
 >
@@ -6,7 +6,7 @@
 
 ---
 
-## ⚙️ Stack tecnologico
+## Stack tecnologico
 
 | Layer      | Tecnologie                                    |
 |------------|-----------------------------------------------|
@@ -21,7 +21,7 @@ Il progetto segue il pattern **MVC (Model–View–Controller)** senza l'uso di 
 
 ---
 
-## 👥 Funzionalità
+## Funzionalità
 
 ### Utente non registrato
 - Navigazione del catalogo con filtri (brand, categoria, genere, taglia, prezzo)
@@ -47,7 +47,7 @@ Il progetto segue il pattern **MVC (Model–View–Controller)** senza l'uso di 
 
 ---
 
-## 🗄️ Schema del database
+## Schema del database
 
 Il database `db_progetto` include le seguenti tabelle principali:
 
@@ -67,7 +67,7 @@ Il database `db_progetto` include le seguenti tabelle principali:
 
 ---
 
-## 🚀 Installazione
+## Installazione
 
 ### Prerequisiti
 
@@ -114,7 +114,7 @@ http://localhost:8080/SneakerZone
 
 ---
 
-## 🧠 Struttura del progetto
+## Struttura del progetto
 
 ```
 src/main/
@@ -139,7 +139,7 @@ src/main/
 
 ---
 
-## 🔐 Sicurezza
+## Sicurezza
 
 - Password cifrate con hash SHA-256 nel database
 - Validazione degli input lato client (`validazione.js`) e lato server (`ValidatoreInput.java`)
@@ -149,7 +149,7 @@ src/main/
 
 ---
 
-## 🎨 Design
+## Design
 
 Il design è volutamente semplice e minimale.
 
