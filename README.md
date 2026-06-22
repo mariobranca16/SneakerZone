@@ -1,164 +1,112 @@
-# SneakerZone 👟 
+# SneakerZone
 
-> E-commerce per la vendita online di sneakers, sviluppato per il corso di **Tecnologie Software per il Web** presso l'Università degli Studi di Salerno.
->
-> Progetto realizzato da:
-> - **Mario Branca**
-> - **Gaetano Pascarella**
+E-commerce per la vendita di sneakers online, realizzato per l'esame di Tecnologie Software per il Web presso l'Università degli Studi di Salerno.
 
----
+Progetto di gruppo, sviluppato insieme a Gaetano Pascarella.
 
-## Stack tecnologico
+L'applicazione gestisce un negozio di scarpe completo, dalla navigazione del catalogo fino al checkout, con un'area riservata all'amministratore per la gestione di prodotti, ordini e utenti. È costruita seguendo il pattern MVC (Model-View-Controller) senza l'uso di framework esterni.
 
-| Layer      | Tecnologie                                    |
-|------------|-----------------------------------------------|
-| Backend    | Java 21, Jakarta Servlet API 6.1, JDBC        |
-| Frontend   | JSP + JSTL, HTML/CSS, JavaScript              |
-| Database   | MySQL (`db_progetto`)                         |
-| Server     | Apache Tomcat 11, Tomcat JDBC Connection Pool |
-| Build      | Maven (packaging WAR)                         |
-| Dinamismo  | AJAX (fetch JSON)                             |
+## Tecnologie
 
-Il progetto segue il pattern **MVC (Model–View–Controller)** senza l'uso di framework esterni.
-
----
+- Java 21 con Jakarta Servlet API e JDBC per il backend
+- JSP, JSTL, HTML, CSS e JavaScript per il frontend
+- MySQL per il database (`db_progetto`)
+- Apache Tomcat 11 come server, con connection pool Tomcat JDBC
+- Maven per la build (packaging WAR)
+- Chiamate AJAX per le parti dinamiche
 
 ## Funzionalità
 
-### Utente non registrato
-- Navigazione del catalogo con filtri (brand, categoria, genere, taglia, prezzo)
-- Carrello gestito in sessione
-- Ricerca prodotti con autocomplete
+Utente non registrato:
 
-### Utente registrato
-- Registrazione, login e logout
-- Gestione profilo, password e indirizzi di spedizione
-- Checkout con selezione indirizzo
-- Storico ordini con dettaglio
-- Wishlist
-- Recensioni sui prodotti
+- navigazione del catalogo con filtri per brand, categoria, genere, taglia e prezzo
+- carrello gestito in sessione
+- ricerca dei prodotti con autocomplete
 
-### Amministratore
-- Pannello admin dedicato
-- Gestione prodotti (creazione, modifica, eliminazione con taglie e immagini)
-- Gestione ordini (visualizzazione e aggiornamento stato)
-- Gestione utenti
-- Moderazione recensioni
+Utente registrato:
 
-> **Nota:** il prezzo viene salvato al momento dell'ordine (`DettaglioOrdine.prezzoUnitario`) per garantire la coerenza dei dati nel tempo.
+- registrazione, login e logout
+- gestione del profilo, della password e degli indirizzi di spedizione
+- checkout con scelta dell'indirizzo
+- storico degli ordini con dettaglio
+- wishlist e recensioni sui prodotti
 
----
+Amministratore:
+
+- pannello dedicato
+- gestione dei prodotti (creazione, modifica ed eliminazione, con taglie e immagini)
+- gestione degli ordini e aggiornamento del loro stato
+- gestione degli utenti e moderazione delle recensioni
 
 ## Schema del database
 
-Il database `db_progetto` include le seguenti tabelle principali:
+Il database `db_progetto` è composto dalle seguenti tabelle principali:
 
-| Tabella               | Descrizione                                      |
-|-----------------------|--------------------------------------------------|
-| `Utente`              | Dati anagrafici e credenziali (password in hash) |
-| `Prodotto`            | Nome, brand, costo, colore, genere               |
-| `Prodotto_Taglia`     | Disponibilità per taglia                         |
-| `Immagine_Prodotto`   | Path immagine associata al prodotto              |
-| `Categoria`           | Categorie (es. Running, Basketball, Lifestyle)   |
-| `Prodotto_Categoria`  | Relazione N:M prodotto–categoria                 |
-| `IndirizzoSpedizione` | Indirizzi salvati per utente                     |
-| `Ordine`              | Testata ordine con stato e snapshot indirizzo    |
-| `DettaglioOrdine`     | Righe ordine con snapshot prodotti|
-| `Recensione`          | Recensioni con voto e testo                      |
-| `Wishlist`            | Prodotti salvati dall'utente                     |
-
----
-
-## Installazione
-
-### Prerequisiti
-
-- JDK 21+
-- Apache Tomcat 11+
-- MySQL 8+
-- Maven 3.8+
-
-### 1. Clona il repository
-
-```bash
-git clone https://github.com/mariobranca16/SneakerZone.git
-```
-
-### 2. Configura il database
-
-Importa lo schema ed i dati iniziali:
-
-```sql
-source src/main/resources/db_progetto.sql
-```
-
-Apri la classe `src/main/java/model/ConPool.java` e sostituisci i segnaposto con le credenziali della tua installazione MySQL:
-
-```java
-p.setUrl("jdbc:mysql://localhost:3306/db_progetto?serverTimezone=" + TimeZone.getDefault().getID()); // MY_URL
-p.setUsername("MY_USERNAME"); // es. root
-p.setPassword("MY_PASSWORD"); // la tua password MySQL
-```
-
-> I valori `MY_URL`, `MY_USERNAME` e `MY_PASSWORD` sono segnaposto e vanno obbligatoriamente sostituiti prima di avviare l'applicazione.
-
-### 3. Build e deploy
-
-```bash
-mvn clean package
-```
-
-Copia il file `.war` generato in `target/` nella cartella `webapps/` di Tomcat, oppure configura il progetto direttamente nell'IDE (es. IntelliJ IDEA).
-
-### 4. Avvia l'applicazione
-
-```
-http://localhost:8080/SneakerZone
-```
-
----
+- `Utente`: dati anagrafici e credenziali (password in hash)
+- `Prodotto`: nome, brand, costo, colore, genere
+- `Prodotto_Taglia`: disponibilità per taglia
+- `Immagine_Prodotto`: immagini associate al prodotto
+- `Categoria` e `Prodotto_Categoria`: categorie e relazione N:M con i prodotti
+- `IndirizzoSpedizione`: indirizzi salvati per ogni utente
+- `Ordine` e `DettaglioOrdine`: testata e righe degli ordini, con i dati salvati al momento dell'acquisto
+- `Recensione`: recensioni con voto e testo
+- `Wishlist`: prodotti salvati dall'utente
 
 ## Struttura del progetto
 
 ```
 src/main/
 ├── java/
-│   ├── controller/          # Servlet — gestione delle richieste HTTP
-│   │   ├── admin/           # Servlet area amministratore
-│   │   ├── filter/          # Filtri (autenticazione, ruoli, sessione)
-│   │   └── util/            # ValidatoreInput — validazione server-side
+│   ├── controller/          servlet per la gestione delle richieste HTTP
+│   │   ├── admin/           servlet dell'area amministratore
+│   │   ├── filter/          filtri per autenticazione, ruoli e sessione
+│   │   └── util/            validazione lato server
 │   └── model/
-│       ├── Bean/            # Entità di dominio (Prodotto, Utente, Ordine…)
-│       ├── DAO/             # Accesso al database via JDBC
-│       └── ConPool.java     # Connection pool (Tomcat JDBC)
+│       ├── Bean/            entità di dominio (Prodotto, Utente, Ordine...)
+│       ├── DAO/             accesso al database via JDBC
+│       └── ConPool.java     connection pool (Tomcat JDBC)
 ├── resources/
-│   └── db_progetto.sql      # Schema e dati iniziali
+│   └── db_progetto.sql      schema e dati iniziali
 └── webapp/
-    ├── WEB-INF/jsp/         # Viste JSP (utente e admin)
-    ├── css/                 # Fogli di stile per pagina
-    ├── js/                  # Script per pagina + validazione client
-    ├── images/              # Immagini prodotti e categorie
-    └── data/                # JSON statici (province, nazioni) per autocomplete
+    ├── WEB-INF/jsp/         viste JSP (utente e admin)
+    ├── css/                 fogli di stile
+    ├── js/                  script client e validazione
+    ├── images/              immagini di prodotti e categorie
+    └── data/                JSON statici (province, nazioni) per l'autocomplete
 ```
 
----
+## Come avviarlo
+
+Prerequisiti: JDK 21+, Apache Tomcat 11+, MySQL 8+, Maven 3.8+.
+
+1. Clonare il repository:
+
+   ```bash
+   git clone https://github.com/mariobranca16/SneakerZone.git
+   ```
+
+2. Importare lo schema e i dati iniziali:
+
+   ```sql
+   source src/main/resources/db_progetto.sql
+   ```
+
+3. Aprire `src/main/java/model/ConPool.java` e inserire le proprie credenziali MySQL al posto dei segnaposto `MY_USERNAME` e `MY_PASSWORD`.
+
+4. Generare il pacchetto e portarlo su Tomcat:
+
+   ```bash
+   mvn clean package
+   ```
+
+   Copiare il file `.war` da `target/` nella cartella `webapps/` di Tomcat, oppure configurare il progetto direttamente dall'IDE.
+
+5. Aprire l'applicazione su `http://localhost:8080/SneakerZone`.
 
 ## Sicurezza
 
-- Password cifrate con hash SHA-256 nel database
-- Validazione degli input lato client (`validazione.js`) e lato server (`ValidatoreInput.java`)
-- Filtri servlet per il controllo degli accessi basato sui ruoli (`AdminFilter`, `LoginFilter`, `SessionFilter`)
-- Trasporto HTTPS configurato tramite `CONFIDENTIAL` in `web.xml`
-- Gestione centralizzata degli errori (pagine 404, 500)
-
----
-
-## Design
-
-Il design è volutamente semplice e minimale.
-
-| Colore    | Utilizzo             |
-|-----------|----------------------|
-| `#FFFFFF` | Sfondo               |
-| `#000000` | Elementi principali  |
-| `#FF4500` | Elementi interattivi |
+- password cifrate con hash SHA-256 nel database
+- validazione degli input sia lato client sia lato server
+- filtri servlet per il controllo degli accessi in base al ruolo
+- trasporto HTTPS configurato in `web.xml`
+- gestione centralizzata degli errori (pagine 404 e 500)
